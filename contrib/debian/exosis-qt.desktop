@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=Exosis Core
+Comment=Connect to the Exosus P2P Network
+Exec=bitcoin-qt %u
+Terminal=false
+Type=Application
+Icon=bitcoin128
+MimeType=x-scheme-handler/exosis;
+Categories=Office;Finance;
+StartupWMClass=Exosis-qt
+Name[en_ZA]=exosis-qt.desktop

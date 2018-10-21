@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+#  exosisd The exosis core server.
+#
+#
+# chkconfig: 345 80 20
+# description: exosisd
+# processname: exosisd
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+# you can override defaults in /etc/sysconfig/exosisd, see below
+if [ -f /etc/sysconfig/exosisd ]; then
+        . /etc/sysconfig/exosisd
+fi
+
+RETVAL=0
+
+prog=exosisd
+# you can override the lockfile via exosisD_LOCKFILE in /etc/sysconfig/exosisd
+lockfile=${exosisD_LOCKFILE-/var/lock/subsys/exosisd}
+
+# exosisd defaults to /usr/bin/exosisd, override with exosisD_BIN
+exosisd=${exosisD_BIN-/usr/bin/exosisd}
+
+# exosisd opts default to -disablewallet, override with exosisD_OPTS
+exosisd_opts=${exosisD_OPTS--disablewallet}
+
+start() {
+    echo -n $"Starting $prog: "
+    daemon $DAEMONOPTS $exosisd $exosisd_opts
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch $lockfile
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc $prog
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && rm -f $lockfile
+    return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status $prog
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: service $prog {start|stop|status|restart}"
+        exit 1
+        ;;
+esac

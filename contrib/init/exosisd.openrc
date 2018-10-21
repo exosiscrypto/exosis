@@ -1,0 +1,92 @@
+#!/sbin/openrc-run
+
+# backward compatibility for existing gentoo layout 
+#
+if [ -d "/var/lib/exosis/.exosis" ]; then
+	EXOSISD_DEFAULT_DATADIR="/var/lib/exosis/.exosis"
+else
+	EXOSISD_DEFAULT_DATADIR="/var/lib/exosisd"
+fi
+
+EXOSISD_CONFIGFILE=${EXOSISD_CONFIGFILE:-/etc/exosis/exosis.conf}
+EXOSISD_PIDDIR=${EXOSISD_PIDDIR:-/var/run/exosisd}
+EXOSISD_PIDFILE=${EXOSISD_PIDFILE:-${EXOSISD_PIDDIR}/exosisd.pid}
+EXOSISD_DATADIR=${EXOSISD_DATADIR:-${EXOSISD_DEFAULT_DATADIR}}
+EXOSISD_USER=${EXOSISD_USER:-${EXOSIS_USER:-exosis}}
+EXOSISD_GROUP=${EXOSISD_GROUP:-exosis}
+EXOSISD_BIN=${EXOSISD_BIN:-/usr/bin/exosisd}
+EXOSISD_NICE=${EXOSISD_NICE:-${NICELEVEL:-0}}
+EXOSISD_OPTS="${EXOSISD_OPTS:-${EXOSIS_OPTS}}"
+
+name="Exosis Core Daemon"
+description="Exosis cryptocurrency P2P network daemon"
+
+command="/usr/bin/exosisd"
+command_args="-pid=\"${EXOSISD_PIDFILE}\" \
+		-conf=\"${EXOSISD_CONFIGFILE}\" \
+		-datadir=\"${EXOSISD_DATADIR}\" \
+		-daemon \
+		${EXOSISD_OPTS}"
+
+required_files="${EXOSISD_CONFIGFILE}"
+start_stop_daemon_args="-u ${EXOSISD_USER} \
+			-N ${EXOSISD_NICE} -w 2000"
+pidfile="${EXOSISD_PIDFILE}"
+
+# The retry schedule to use when stopping the daemon. Could be either
+# a timeout in seconds or multiple signal/timeout pairs (like
+# "SIGKILL/180 SIGTERM/300")
+retry="${EXOSISD_SIGTERM_TIMEOUT}"
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${EXOSISD_USER}:${EXOSISD_GROUP}" \
+	"${EXOSISD_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${EXOSISD_USER}:${EXOSISD_GROUP}" \
+	"${EXOSISD_PIDDIR}"
+
+	checkpath -f \
+	-o ${EXOSISD_USER}:${EXOSISD_GROUP} \
+	-m 0660 \
+	${EXOSISD_CONFIGFILE}
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if ! grep -qs '^rpcpassword=' "${EXOSISD_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run exosisd."
+		eerror "The setting must appear in ${EXOSISD_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following "
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"Exosis Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}
