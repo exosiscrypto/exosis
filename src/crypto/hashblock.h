@@ -58,7 +58,7 @@ GLOBAL sph_echo512_context      z_echo;
 #define ZKECCAK (memcpy(&ctx_keccak, &z_keccak, sizeof(z_keccak)))
 #define ZSKEIN (memcpy(&ctx_skein, &z_skein, sizeof(z_skein)))
 
-#define HASH_FUNC_BASE_TIMESTAMP 1538556426 // Exosis: Genesis Timestamp
+#define HASH_FUNC_BASE_TIMESTAMP 1492973331U // Exosis: Genesis Timestamp
 #define HASH_FUNC_COUNT 8                   // Exosis: HASH_FUNC_COUNT of 11
 #define HASH_FUNC_COUNT_PERMUTATIONS 40320  // Exosis: HASH_FUNC_COUNT!
 
