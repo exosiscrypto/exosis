@@ -3,6 +3,8 @@ configurewin.sh
 copybin.sh
 copyexe.sh
 
+nbproject*
+
 *.tar.gz
 *.zip
 src/*.zip
