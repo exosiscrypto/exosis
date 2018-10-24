@@ -312,8 +312,8 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        //vSeeds.emplace_back("testnet-seed.exosis.org");
-      
+        //vSeeds.emplace_back("testnet-seed.exosis.io");
+        //vSeeds.emplace_back("testnet-exosis.midnightminer.net");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,118);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,199);

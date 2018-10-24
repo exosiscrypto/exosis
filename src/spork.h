@@ -17,9 +17,13 @@ class CSporkManager;
     Don't ever reuse these IDs for other sporks
     - This would result in old clients getting confused about which spork is for what
 */
-
 static const int SPORK_START                                            = 10001;
 static const int SPORK_END                                              = 10013;
+
+// EXOSIS BEGIN
+static const int SPORK_EXOSIS_START                                    = 94690010;
+static const int SPORK_EXOSIS_END                                      = 94690030;
+// EXOSIS END
 
 static const int SPORK_2_INSTANTSEND_ENABLED                            = 10001;
 static const int SPORK_3_INSTANTSEND_BLOCK_FILTERING                    = 10002;
@@ -30,18 +34,56 @@ static const int SPORK_10_MASTERNODE_PAY_UPDATED_NODES                  = 10009;
 static const int SPORK_12_RECONSIDER_BLOCKS                             = 10011;
 static const int SPORK_13_OLD_SUPERBLOCK_FLAG                           = 10012;
 static const int SPORK_14_REQUIRE_SENTINEL_FLAG                         = 10013;
+// FXTC BEGIN
+static const int SPORK_FXTC_01_HANDBRAKE_HEIGHT                      = 94680010;
+static const int SPORK_FXTC_01_HANDBRAKE_FORCE_SHA256D               = 94680011;
+static const int SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT                = 94680012;
+static const int SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5                 = 94680013;
+static const int SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z                = 94680014;
+static const int SPORK_FXTC_01_HANDBRAKE_FORCE_X11                   = 94680015;
+static const int SPORK_FXTC_01_HANDBRAKE_FORCE_X16R                  = 94680016;
+
+static const int SPORK_FXTC_02_IGNORE_SLIGHTLY_HIGHER_COINBASE       = 94680021;
+static const int SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_VALUE        = 94680024;
+static const int SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_PAYEE        = 94680025;
+
+static const int SPORK_FXTC_03_BLOCK_REWARD_SMOOTH_HALVING_START     = 94680031;
+// FXTC END
+// EXOSIS BEGIN
+static const int SPORK_EXOSIS_01_FXTC_CHAIN_START                      = 94690010;
+static const int SPORK_EXOSIS_02_UNLIMITED_BLOCK_SUBSIDY_START         = 94690020;
+static const int SPORK_EXOSIS_03_NO_SUBSIDY_HALVING_START              = 94690030;
+// EXOSIS END
 
 static const int64_t SPORK_2_INSTANTSEND_ENABLED_DEFAULT                = 0;            // ON
 static const int64_t SPORK_3_INSTANTSEND_BLOCK_FILTERING_DEFAULT        = 0;            // ON
-static const int64_t SPORK_5_INSTANTSEND_MAX_VALUE_DEFAULT              = 1000;         // 1000 EXO
-static const int64_t SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT_DEFAULT     = 1540378800;   // ON after  24 2017 11:00 UTC
-static const int64_t SPORK_9_SUPERBLOCKS_ENABLED_DEFAULT                = 4070908800ULL;            // ON
+static const int64_t SPORK_5_INSTANTSEND_MAX_VALUE_DEFAULT              = 1000;         // 1000 Exosis
+static const int64_t SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT_DEFAULT     = 1540386000;// OFF
+static const int64_t SPORK_9_SUPERBLOCKS_ENABLED_DEFAULT                = 4070908800ULL;// OFF
 static const int64_t SPORK_10_MASTERNODE_PAY_UPDATED_NODES_DEFAULT      = 4070908800ULL;// OFF
 static const int64_t SPORK_12_RECONSIDER_BLOCKS_DEFAULT                 = 0;            // 0 BLOCKS
 static const int64_t SPORK_13_OLD_SUPERBLOCK_FLAG_DEFAULT               = 4070908800ULL;// OFF
 static const int64_t SPORK_14_REQUIRE_SENTINEL_FLAG_DEFAULT             = 4070908800ULL;// OFF
+// FXTC BEGIN
+static const int64_t SPORK_FXTC_01_HANDBRAKE_HEIGHT_DEFAULT             = 4070908800ULL;// OFF
+static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_SHA256D_DEFAULT      = 4070908800ULL;            // 1x
+static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT_DEFAULT       = 4070908800ULL;            // 1x
+static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5_DEFAULT        = 4070908800ULL;            // 1x
+static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z_DEFAULT       = 4070908800ULL;            // 1x
+static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_X11_DEFAULT          = 4070908800ULL;            // 1x
+static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_X16R_DEFAULT         = 4070908800ULL;            // 1x
 
+static const int64_t SPORK_FXTC_02_IGNORE_SLIGHTLY_HIGHER_COINBASE_DEFAULT  = 4070908800ULL;// OFF
+static const int64_t SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_VALUE_DEFAULT   = 4070908800ULL;// OFF
+static const int64_t SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_PAYEE_DEFAULT   = 4070908800ULL;// OFF
 
+static const int64_t SPORK_FXTC_03_BLOCK_REWARD_SMOOTH_HALVING_START_DEFAULT  = 4070908800ULL;// OFF
+// FXTC END
+// EXOSIS BEGIN
+static const int64_t SPORK_EXOSIS_01_FXTC_CHAIN_START_DEFAULT                 = 4070908800ULL;// OFF
+static const int64_t SPORK_EXOSIS_02_UNLIMITED_BLOCK_SUBSIDY_START_DEFAULT    = 4070908800ULL;// OFF
+static const int64_t SPORK_EXOSIS_03_NO_SUBSIDY_HALVING_START_DEFAULT         = 4070908800ULL;// OFF
+// EXOSIS END
 
 extern std::map<uint256, CSporkMessage> mapSporks;
 extern CSporkManager sporkManager;
