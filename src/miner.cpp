@@ -78,7 +78,7 @@ int64_t UpdateTime(CBlock* pblock, const Consensus::Params& consensusParams, con
             CMutableTransaction coinbaseTx(*pblock->vtx[0]);
             coinbaseTx.vout[0].nValue = nFees + nBlockReward;
 
-            
+            int nHeight = pindexPrev->nHeight + 1;
             // FXTC TODO: add superblocks support
 
             // Update masternode reward to new value
@@ -86,7 +86,10 @@ int64_t UpdateTime(CBlock* pblock, const Consensus::Params& consensusParams, con
             if(mnpayments.GetBlockPayee(pindexPrev->nHeight + 1, cMasternodePayee)) {
                 for (auto output : coinbaseTx.vout) {
                     if (output.scriptPubKey == cMasternodePayee) {
-                        coinbaseTx.vout[0].nValue -= nMasternodePayment;
+			if (nHeight <= 1400)
+			{
+                             coinbaseTx.vout[0].nValue -= nMasternodePayment;
+                        }
                         output.nValue = nMasternodePayment;
                         break;
                     }

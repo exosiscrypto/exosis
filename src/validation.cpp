@@ -1219,10 +1219,14 @@ CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Param
     // EXOSIS BEGIN
    
 
-    if (nHeight <= 100)
-        nSubsidy = 20000 * COIN;
-	else
-		nSubsidy = 5 * COIN;
+    if (nHeight <= 100){
+        nSubsidy = 20000 * COIN;}
+    else
+    if (nHeight > 100 && nHeight <= 1400)    {
+	nSubsidy = 5 * COIN;}
+    else{
+	nSubsidy = 0.25 * COIN;}
+
     
 
 	//if (!fSuperblockPartOnly)
@@ -1241,7 +1245,7 @@ CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Param
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
     // EXOSIS BEGIN
-    return blockValue * 0.95;
+    return 4.75;
     // EXOSIS END
 
     
