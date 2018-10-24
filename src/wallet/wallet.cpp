@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -959,7 +959,7 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose)
         wtx.nOrderPos = IncOrderPosNext(&walletdb);
         wtx.m_it_wtxOrdered = wtxOrdered.insert(std::make_pair(wtx.nOrderPos, TxPair(&wtx, nullptr)));
         wtx.nTimeSmart = ComputeTimeSmart(wtx);
-        // FXTC TODO:
+        // EXOSIS TODO:
         // Dash
             if (!wtxIn.hashUnset())
             {
@@ -1006,7 +1006,7 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose)
             }
         //
         AddToSpends(hash);
-        // FXTC TODO:
+        // EXOSIS TODO:
         // Dash
             for(unsigned int i = 0; i < wtx.tx->vout.size(); ++i) {
                 if (IsMine(wtx.tx->vout[i]) && !IsSpent(hash, i)) {
@@ -2335,7 +2335,7 @@ CAmount CWallet::GetBalance() const
     return nTotal;
 }
 
-// FXTC TODO:
+// EXOSIS TODO:
 // Dash
 CAmount CWallet::GetAnonymizableBalance(bool fSkipDenominated, bool fSkipUnconfirmed) const
 {
@@ -2704,10 +2704,10 @@ void CWallet::AvailableCoins(std::vector<COutput> &vCoins, bool fOnlySafe, const
                     if (CPrivateSend::IsCollateralAmount(pcoin->tx->vout[i].nValue)) continue; // do not use collateral amounts
                     found = !CPrivateSend::IsDenominatedAmount(pcoin->tx->vout[i].nValue);
                 } else if(nCoinType == ONLY_MASTERNODE_COLLATERAL) {
-                    // FXTC BEGIN
+                    // EXOSIS BEGIN
                     //found = pcoin->tx->vout[i].nValue == 1000*COIN;
                     found = CMasternode::CheckCollateral(COutPoint(pcoin->GetHash(),i)) == CMasternode::COLLATERAL_OK;
-                    // FXTC END
+                    // EXOSIS END
                 } else if(nCoinType == ONLY_PRIVATESEND_COLLATERAL) {
                     found = CPrivateSend::IsCollateralAmount(pcoin->tx->vout[i].nValue);
                 } else {
@@ -2868,7 +2868,7 @@ bool CWallet::SelectCoinsMinConf(const CAmount& nTargetValue, const int nConfMin
 
     // List of values less than target
     boost::optional<CInputCoin> coinLowestLarger;
-    // FXTC TODO: revise implementation of coinLowestLarger
+    // EXOSIS TODO: revise implementation of coinLowestLarger
     // Dash
     //coinLowestLarger->txout.nValue = fUseInstantSend
     //                                    ? sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN
@@ -3074,7 +3074,7 @@ bool CWallet::SelectCoins(const std::vector<COutput>& vAvailableCoins, const CAm
     return res;
 }
 
-// FXTC TODO:
+// EXOSIS TODO:
 // Dash
 bool CWallet::SelectCoinsByDenominations(int nDenom, CAmount nValueMin, CAmount nValueMax, std::vector<CTxDSIn>& vecTxDSInRet, std::vector<COutput>& vCoinsRet, CAmount& nValueRet, int nPrivateSendRoundsMin, int nPrivateSendRoundsMax)
 {
@@ -3106,9 +3106,9 @@ bool CWallet::SelectCoinsByDenominations(int nDenom, CAmount nValueMin, CAmount 
     {
         // masternode-like input should not be selected by AvailableCoins now anyway
         //if(out.tx->vout[out.i].nValue == 1000*COIN) continue;
-        // FXTC BEGIN
+        // EXOSIS BEGIN
         //if(CMasternode::CheckCollateral(COutPoint(out.tx->GetHash(),i)) == COLLATERAL_OK) continue;
-        // FXTC END
+        // EXOSIS END
         if(nValueRet + out.tx->tx->vout[out.i].nValue <= nValueMax){
 
             CTxIn txin = CTxIn(out.tx->tx->GetHash(), out.i);
@@ -3208,7 +3208,7 @@ bool CWallet::SelectCoinsGrouppedByAddresses(std::vector<CompactTallyItem>& vecT
             if(fAnonymizable) {
                 // ignore collaterals
                 if(CPrivateSend::IsCollateralAmount(wtx.tx->vout[i].nValue)) continue;
-                // FXTC BEGIN
+                // EXOSIS BEGIN
                 //if(fMasterNode && wtx.tx->vout[i].nValue == 1000*COIN) continue;
                 if(fMasterNode && CMasternode::CheckCollateral(COutPoint(wtx.GetHash(),i)) == CMasternode::COLLATERAL_OK) continue;
                 // ignore outputs that are 10 times smaller then the smallest denomination
@@ -3276,10 +3276,10 @@ bool CWallet::SelectCoinsDark(CAmount nValueMin, CAmount nValueMax, std::vector<
         if(out.tx->tx->vout[out.i].nValue < nValueMin/10) continue;
         //do not allow collaterals to be selected
         if(CPrivateSend::IsCollateralAmount(out.tx->tx->vout[out.i].nValue)) continue;
-        // FXTC BEGIN
+        // EXOSIS BEGIN
         //if(fMasterNode && out.tx->tx->vout[out.i].nValue == 1000*COIN) continue; //masternode input
         if(fMasterNode && CMasternode::CheckCollateral(COutPoint(out.tx->GetHash(),out.i)) == CMasternode::COLLATERAL_OK) continue; //masternode input
-        // FXTC END
+        // EXOSIS END
 
         if(nValueRet + out.tx->tx->vout[out.i].nValue <= nValueMax){
             CTxIn txin = CTxIn(out.tx->GetHash(),out.i);
@@ -3336,7 +3336,7 @@ bool CWallet::GetMasternodeOutpointAndKeys(COutPoint& outpointRet, CPubKey& pubK
     int nOutputIndex = atoi(strOutputIndex.c_str());
 
     for (auto& out : vPossibleCoins)
-        // FXTC TODO: tx or tx->tx ?
+        // EXOSIS TODO: tx or tx->tx ?
         if(out.tx->GetHash() == txHash && out.i == nOutputIndex) // found it!
             return GetOutpointAndKeysFromOutput(out, outpointRet, pubKeyRet, keyRet);
 
@@ -3351,7 +3351,7 @@ bool CWallet::GetOutpointAndKeysFromOutput(const COutput& out, COutPoint& outpoi
 
     CScript pubScript;
 
-    // FXTC TODO: tx or tx->tx ?
+    // EXOSIS TODO: tx or tx->tx ?
     outpointRet = COutPoint(out.tx->GetHash(), out.i);
     pubScript = out.tx->tx->vout[out.i].scriptPubKey; // the inputs PubKey
 
@@ -3385,7 +3385,7 @@ int CWallet::CountInputsWithAmount(CAmount nInputAmount)
                 int nDepth = pcoin->GetDepthInMainChain(false);
 
                 for (unsigned int i = 0; i < pcoin->tx->vout.size(); i++) {
-                    COutput out = COutput(pcoin, i, nDepth, true, true, true); // FXTC TODO: last bool is fSafe
+                    COutput out = COutput(pcoin, i, nDepth, true, true, true); // EXOSIS TODO: last bool is fSafe
                     COutPoint outpoint = COutPoint(out.tx->GetHash(), out.i);
 
                     if(out.tx->tx->vout[out.i].nValue != nInputAmount) continue;
@@ -3436,7 +3436,7 @@ bool CWallet::CreateCollateralTransaction(CMutableTransaction& txCollateral, std
     CTxOut txout = CTxOut(nValue - CPrivateSend::GetCollateralAmount(), scriptChange);
     txCollateral.vout.push_back(txout);
 
-    // FXTC TODO: not sur if right way
+    // EXOSIS TODO: not sur if right way
     //if(!SignSignature(*this, txdsinCollateral.prevPubKey, txCollateral, 0, int(SIGHASH_ALL|SIGHASH_ANYONECANPAY))) {
     const CKeyStore &keystore = *this;
     if(!SignSignature(keystore, txdsinCollateral.prevPubKey, txCollateral, 0, nValue, int(SIGHASH_ALL|SIGHASH_ANYONECANPAY))) {
@@ -3800,7 +3800,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
                         //reflecting an assumption the user would accept a bit more delay for
                         //a chance at a free transaction.
                         //But mempool inputs might still be in the mempool, so their age stays 0
-                        int age = pcoin.depth; // FXTC TODO: check if can use cached version of GetDepthInMainChain()
+                        int age = pcoin.depth; // EXOSIS TODO: check if can use cached version of GetDepthInMainChain()
                         assert(age >= 0);
                         if (age != 0)
                             age += 1;
@@ -3828,7 +3828,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
                         CScript scriptChange;
 
                         // coin control: send change to custom address
-                        // FXTC TODO: check
+                        // EXOSIS TODO: check
                         //if (coinControl && !boost::get<CNoDestination>(&coinControl->destChange))
                         //    scriptChange = GetScriptForDestination(coinControl->destChange);
                         if (!boost::get<CNoDestination>(&coin_control.destChange))
@@ -3917,7 +3917,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
                 }
 
                 nFeeNeeded = GetMinimumFee(nBytes, coin_control, ::mempool, ::feeEstimator, &feeCalc);
-/* FXTC TODO: something wrong here
+/* EXOSIS TODO: something wrong here
                 // Dash
                 dPriority = wtxNew.tx->ComputePriority(dPriority, nBytes);
 
@@ -3936,7 +3936,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
 //                        break;
                 }
                 CAmount nFeeNeeded = max(nFeePay, GetMinimumFeeDash(nBytes, nTxConfirmTarget, mempool));
-                // FXTC TODO: check
+                // EXOSIS TODO: check
                 //if (coinControl && nFeeNeeded > 0 && coinControl->nMinimumTotalFee > nFeeNeeded) {
                 //    nFeeNeeded = coinControl->nMinimumTotalFee;
                 if (nFeeNeeded > 0 && coin_control.nMinimumTotalFee > nFeeNeeded) {

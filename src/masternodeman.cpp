@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -706,11 +706,11 @@ void CMasternodeMan::ProcessMasternodeConnections(CConnman& connman)
 #else
         if(pnode->fMasternode) {
 #endif // ENABLE_WALLET
-            // FXTC BEGIN
+            // EXOSIS BEGIN
             //LogPrintf("Closing Masternode connection: peer=%d, addr=%s\n", pnode->GetId(), pnode->addr.ToString());
             LogPrintf("CMasternodeMan::ProcessMasternodeConnections -- removing node: peer=%d addr=%s nRefCount=%d fNetworkNode=%d fInbound=%d fMasternode=%d\n",
                       pnode->GetId(), pnode->addr.ToString(), pnode->GetRefCount(), pnode->fNetworkNode, pnode->fInbound, pnode->fMasternode);
-            // FXTC END
+            // EXOSIS END
             pnode->fDisconnect = true;
         }
     });
@@ -1050,10 +1050,10 @@ bool CMasternodeMan::SendVerifyRequest(const CAddress& addr, const std::vector<C
         return false;
     }
 
-    // FXTC BEGIN
+    // EXOSIS BEGIN
     //CNode* pnode = connman.ConnectNode(addr, NULL, false, true);
     CNode* pnode = connman.OpenNetworkConnection(addr, false, nullptr, NULL, false, false, false, true);
-    // FXTC END
+    // EXOSIS END
     if(pnode == NULL) {
         LogPrintf("CMasternodeMan::SendVerifyRequest -- can't connect to node to verify it, addr=%s\n", addr.ToString());
         return false;

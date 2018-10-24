@@ -28,7 +28,7 @@ namespace Checkpoints {
         return nullptr;
     }
 
-    // FXTC BEGIN
+    // EXOSIS BEGIN
     bool IsExpectedCheckpoint(const CCheckpointData& data, int nHeight, const uint256& hash)
     {
         const MapCheckpoints& checkpoints = data.mapCheckpoints;
@@ -47,6 +47,6 @@ namespace Checkpoints {
         // valid if there are no checkpoints
         return true;
     }
-    // FXTC END
+    // EXOSIS END
 
 } // namespace Checkpoints

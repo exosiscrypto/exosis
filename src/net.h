@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -183,18 +183,18 @@ public:
     void Interrupt();
     bool GetNetworkActive() const { return fNetworkActive; };
     void SetNetworkActive(bool active);
-    // FXTC BEGIN
+    // EXOSIS BEGIN
     //void OpenNetworkConnection(const CAddress& addrConnect, bool fCountFailure, CSemaphoreGrant *grantOutbound = nullptr, const char *strDest = nullptr, bool fOneShot = false, bool fFeeler = false, bool manual_connection = false);
     // fConnectToMasternode should be 'true' only if you want this node to allow to connect to itself
     // and/or you want it to be disconnected on CMasternodeMan::ProcessMasternodeConnections()
     CNode* OpenNetworkConnection(const CAddress& addrConnect, bool fCountFailure, CSemaphoreGrant *grantOutbound = nullptr, const char *strDest = nullptr, bool fOneShot = false, bool fFeeler = false, bool manual_connection = false, bool fConnectToMasternode = false);
-    // FXTC END
+    // EXOSIS END
     bool CheckIncomingNonce(uint64_t nonce);
 
     // Dash
-    // FXTC BEGIN
+    // EXOSIS BEGIN
     // ConnectNode() is private because public ConnectNode() is replaced by public OpenNetworkConnection() in Dash functions
-    // FXTC END
+    // EXOSIS END
     struct CFullyConnectedOnly {
         bool operator() (const CNode* pnode) const {
             return NodeFullyConnected(pnode);
@@ -437,10 +437,10 @@ private:
     CNode* FindNode(const CService& addr);
 
     bool AttemptToEvictConnection();
-    // FXTC BEGIN
+    // EXOSIS BEGIN
     //CNode* ConnectNode(CAddress addrConnect, const char *pszDest, bool fCountFailure);
     CNode* ConnectNode(CAddress addrConnect, const char *pszDest, bool fCountFailure, bool fConnectToMasternode = false);
-    // FXTC END
+    // EXOSIS END
     bool IsWhitelistedRange(const CNetAddr &addr);
 
     void DeleteNode(CNode* pnode);

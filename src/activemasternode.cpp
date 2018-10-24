@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -183,10 +183,10 @@ void CActiveMasternode::ManageStateInitial(CConnman& connman)
 
     LogPrintf("CActiveMasternode::ManageStateInitial -- Checking inbound connection to '%s'\n", service.ToString());
 
-    // FXTC BEGIN
+    // EXOSIS BEGIN
     //if(!connman.ConnectNode(CAddress(service, NODE_NETWORK), NULL, false, true)) {
     if(!connman.OpenNetworkConnection(CAddress(service, NODE_NETWORK), false, nullptr, NULL, false, false, false, true)) {
-    // FXTC END
+    // EXOSIS END
         nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
         strNotCapableReason = "Could not connect to " + service.ToString();
         LogPrintf("CActiveMasternode::ManageStateInitial -- %s: %s\n", GetStateString(), strNotCapableReason);

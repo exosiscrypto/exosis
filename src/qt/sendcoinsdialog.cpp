@@ -1,6 +1,6 @@
 // Copyright (c) 2011-2017 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -243,7 +243,7 @@ void SendCoinsDialog::on_sendButton_clicked()
     }
 
     // Dash
-    // FXTC TODO: privatesend and instantsend checkbox must be added to GUI! next two rows are just temporary placeholder!
+    // EXOSIS TODO: privatesend and instantsend checkbox must be added to GUI! next two rows are just temporary placeholder!
     recipients[0].inputType = ALL_COINS;
     recipients[0].fUseInstantSend = false;
     /*
@@ -282,7 +282,7 @@ void SendCoinsDialog::on_sendButton_clicked()
     // will call relock
 
     //WalletModel::UnlockContext ctx(model->requestUnlock());
-    // FXTC TODO: Obsolete check, remove later
+    // EXOSIS TODO: Obsolete check, remove later
     //WalletModel::EncryptionStatus encStatus = model->getEncryptionStatus();
     //if(encStatus == model->Locked || encStatus == model->UnlockedForMixingOnly)
     //{

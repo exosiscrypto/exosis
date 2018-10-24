@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -135,10 +135,10 @@ UniValue masternode(const JSONRPCRequest& request)
 #endif // ENABLE_WALLET
          strCommand != "list" && strCommand != "list-conf" && strCommand != "count" &&
          strCommand != "debug" && strCommand != "current" && strCommand != "winner" && strCommand != "winners" && strCommand != "genkey" &&
-         // FXTC BEGIN
+         // EXOSIS BEGIN
          //strCommand != "connect" && strCommand != "status"))
          strCommand != "connect" && strCommand != "status" && strCommand != "collateral"))
-         // FXTC END
+         // EXOSIS END
             throw std::runtime_error(
                 "masternode \"command\"...\n"
                 "Set of commands to execute masternode related actions\n"
@@ -158,9 +158,9 @@ UniValue masternode(const JSONRPCRequest& request)
                 "  list-conf    - Print masternode.conf in JSON format\n"
                 "  winner       - Print info on next masternode winner to vote for\n"
                 "  winners      - Print list of masternode winners\n"
-                // FXTC BEGIN
+                // EXOSIS BEGIN
                 "  collateral   - Print actual masternode collateral value\n"
-                // FXTC END
+                // EXOSIS END
                 );
 
     if (strCommand == "list")
@@ -186,7 +186,7 @@ UniValue masternode(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_INTERNAL_ERROR, strprintf("Incorrect masternode address %s", strAddress));
 
         // TODO: Pass CConnman instance somehow and don't use global variable.
-        // FXTC BEGIN
+        // EXOSIS BEGIN
         //CNode *pnode = g_connman->ConnectNode(CAddress(addr, NODE_NETWORK), NULL, false);
         CNode *pnode = g_connman->OpenNetworkConnection(CAddress(addr, NODE_NETWORK), false, nullptr, NULL, false, false, false, true);
         //
@@ -456,7 +456,7 @@ UniValue masternode(const JSONRPCRequest& request)
         return obj;
     }
 
-    // FXTC BEGIN
+    // EXOSIS BEGIN
     if (strCommand == "collateral")
     {
         LOCK(cs_main);
@@ -469,7 +469,7 @@ UniValue masternode(const JSONRPCRequest& request)
 
         return ValueFromAmount(nValue);
     }
-    // FXTC END
+    // EXOSIS END
 
     return NullUniValue;
 }
@@ -927,7 +927,7 @@ static const CRPCCommand commands[] =
     { "exosis",               "getpoolinfo",            &getpoolinfo,            {}  },
     { "exosis",               "sentinelping",           &sentinelping,           {"version"}  },
 #ifdef ENABLE_WALLET
-// FXTC TODO:    { "dash",               "privatesend",            &privatesend,            {"command"}  },
+// EXOSIS TODO:    { "dash",               "privatesend",            &privatesend,            {"command"}  },
 #endif
 };
 

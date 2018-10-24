@@ -124,7 +124,7 @@ public:
     uint256() {}
     explicit uint256(const std::vector<unsigned char>& vch) : base_blob<256>(vch) {}
 
-    // FXTC X16R
+    // EXOSIS X16R
     int GetNibble(int index) const
     {
         index = 63 - index;

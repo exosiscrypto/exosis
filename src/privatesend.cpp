@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #include "privatesend.h"
@@ -216,7 +216,7 @@ bool CPrivateSend::IsCollateralValid(const CTransaction& txCollateral)
     {
         LOCK(cs_main);
         CValidationState validationState;
-        // FXTC TODO: if(!AcceptToMemoryPool(mempool, validationState, txCollateral, false, NULL, false, true, true)) {
+        // EXOSIS TODO: if(!AcceptToMemoryPool(mempool, validationState, txCollateral, false, NULL, false, true, true)) {
         if(!AcceptToMemoryPool(mempool, validationState, MakeTransactionRef(txCollateral), nullptr, NULL, false, maxTxFee)) {
             LogPrint(BCLog::PRIVATESEND, "CPrivateSend::IsCollateralValid -- didn't pass AcceptToMemoryPool()\n");
             return false;

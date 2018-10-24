@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -79,7 +79,7 @@ int64_t UpdateTime(CBlock* pblock, const Consensus::Params& consensusParams, con
             coinbaseTx.vout[0].nValue = nFees + nBlockReward;
 
             int nHeight = pindexPrev->nHeight + 1;
-            // FXTC TODO: add superblocks support
+            // EXOSIS TODO: add superblocks support
 
             // Update masternode reward to new value
             CScript cMasternodePayee;

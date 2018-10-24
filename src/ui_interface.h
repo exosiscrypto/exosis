@@ -1,7 +1,7 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2012-2017 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -89,7 +89,7 @@ public:
     boost::signals2::signal<void (bool networkActive)> NotifyNetworkActiveChanged;
 
     /** Number of masternodes changed. */
-    // FXTC TODO: boost::signals2::signal<void (int newNumMasternodes)> NotifyStrMasternodeCountChanged; 
+    // EXOSIS TODO: boost::signals2::signal<void (int newNumMasternodes)> NotifyStrMasternodeCountChanged; 
 
     /**
      * Status bar alerts changed.
@@ -106,7 +106,7 @@ public:
     boost::signals2::signal<void (const std::string &title, int nProgress, bool resume_possible)> ShowProgress;
 
     /** Set progress break action (possible "cancel button" triggers that action) */
-    // FXTC TODO: boost::signals2::signal<void (std::function<void(void)> action)> SetProgressBreakAction; 
+    // EXOSIS TODO: boost::signals2::signal<void (std::function<void(void)> action)> SetProgressBreakAction; 
 
     /** New block has been accepted */
     boost::signals2::signal<void (bool, const CBlockIndex *)> NotifyBlockTip;

@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -543,9 +543,9 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageGroup(_("Block creation options:"));
     strUsage += HelpMessageOpt("-blockmaxweight=<n>", strprintf(_("Set maximum BIP141 block weight (default: %d)"), DEFAULT_BLOCK_MAX_WEIGHT));
     strUsage += HelpMessageOpt("-blockmintxfee=<amt>", strprintf(_("Set lowest fee rate (in %s/kB) for transactions to be included in block creation. (default: %s)"), CURRENCY_UNIT, FormatMoney(DEFAULT_BLOCK_MIN_TX_FEE)));
-    // FXTC BEGIN
+    // EXOSIS BEGIN
     strUsage += HelpMessageOpt("-algo=<algo>", strprintf(_("Mining algorithm: sha256d, scrypt, nist5, lyra2z, x11, x16r (default: scrypt)")));
-    // FXTC END
+    // EXOSIS END
     if (showDebug)
         strUsage += HelpMessageOpt("-blockversion=<n>", "Override block version to test forking scenarios");
 
@@ -1749,7 +1749,7 @@ bool AppInitMain()
 #ifdef ENABLE_WALLET
     LogPrintf("Using masternode config file %s\n", GetConfigFile(gArgs.GetArg(MASTERNODE_CONF_FILENAME_ARG, MASTERNODE_CONF_FILENAME)).string());
 
-    // FXTC TODO: always first wallet in QT
+    // EXOSIS TODO: always first wallet in QT
     CWallet * const pwallet = ::vpwallets[0];
     if(gArgs.GetBoolArg("-mnconflock", true) && pwallet && (masternodeConfig.getCount() > 0)) {
         LOCK(pwallet->cs_wallet);

@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -117,13 +117,13 @@ CMasternode::CollateralStatus CMasternode::CheckCollateral(const COutPoint& outp
         return COLLATERAL_UTXO_NOT_FOUND;
     }
 
-    // FXTC BEGIN
+    // EXOSIS BEGIN
     nHeightRet = coin.nHeight;
 
     CMasternode cm;
     //if(coin.out.nValue != 1000 * COIN) {
     if(!cm.CollateralValueCheck(coin.nHeight,coin.out.nValue)) {
-    // FXTC END
+    // EXOSIS END
         return COLLATERAL_INVALID_AMOUNT;
     }
 
@@ -131,7 +131,7 @@ CMasternode::CollateralStatus CMasternode::CheckCollateral(const COutPoint& outp
     return COLLATERAL_OK;
 }
 
-// FXTC BEGIN
+// EXOSIS BEGIN
 bool CMasternode::CollateralValueCheck(int nHeight, CAmount TxValue)
 {
     CAmount MNCollateral = CollateralValue(nHeight);
@@ -283,12 +283,12 @@ bool CMasternode::IsInputAssociatedWithPubkey()
     CTransactionRef tx;
     uint256 hash;
     if(GetTransaction(vin.prevout.hash, tx, Params().GetConsensus(), hash, true)) {
-        // FXTC BEGIN
+        // EXOSIS BEGIN
         //for (auto out : tx->vout)
         //    if(out.nValue == 1000*COIN && out.scriptPubKey == payee) return true;
         for(unsigned int i = 0; i < tx->vout.size(); ++i)
             if(CheckCollateral(COutPoint(tx->GetHash(),i)) == COLLATERAL_OK && tx->vout[i].scriptPubKey == payee) return true;
-        // FXTC END
+        // EXOSIS END
     }
 
     return false;
@@ -403,7 +403,7 @@ bool CMasternodeBroadcast::Create(std::string strService, std::string strKeyMast
     if (!CMessageSigner::GetKeysFromSecret(strKeyMasternode, keyMasternodeNew, pubKeyMasternodeNew))
         return Log(strprintf("Invalid masternode key %s", strKeyMasternode));
 
-    // FXTC TODO: always using first wallet with MN
+    // EXOSIS TODO: always using first wallet with MN
     CWallet * const pwallet = ::vpwallets[0];
     if (!pwallet->GetMasternodeOutpointAndKeys(outpoint, pubKeyCollateralAddressNew, keyCollateralAddressNew, strTxHash, strOutputIndex))
         return Log(strprintf("Could not allocate outpoint %s:%s for masternode %s", strTxHash, strOutputIndex, strService));

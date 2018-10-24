@@ -1,7 +1,7 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -207,9 +207,9 @@ public:
                
             }
         };
-        // FXTC BEGIN
+        // EXOSIS BEGIN
         consensus.nlastValidPowHashHeight = 1100000;
-        // FXTC
+        // EXOSIS
 
         chainTxData = ChainTxData{
             0, // * UNIX timestamp of last known number of transactions
@@ -341,9 +341,9 @@ public:
                 //{1, uint256S("0xc1976360739525c4ea0949fc4a1b0086284614198a0f133b1513d79c55b5466b")},
             }
         };
-        // FXTC BEGIN
+        // EXOSIS BEGIN
         consensus.nlastValidPowHashHeight = 1;
-        // FXTC
+        // EXOSIS
 
         chainTxData = ChainTxData{
             // Data as of block 00000706ff7091032d187cf1c2515a5d7891b6797f414526ef8a277491117d08 (height 0)
@@ -404,7 +404,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
-        // FXTC TODO:
+        // EXOSIS TODO:
         // Deployment of DIP0001
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].bit = 1;
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nStartTime = 0;
@@ -456,9 +456,9 @@ public:
 //                {0, uint256S("0x00000f72bba40f458c48d44c842cee04ff91a2ae833fea4c179fe62170714681")},
             }
         };
-        // FXTC BEGIN
+        // EXOSIS BEGIN
         consensus.nlastValidPowHashHeight = 0;
-        // FXTC
+        // EXOSIS
 
         chainTxData = ChainTxData{
             0,
@@ -467,11 +467,11 @@ public:
         };
 
         // Bitcoin defaults
-        // FXTC prefix 'c'
+        // EXOSIS prefix 'c'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,88);
-        // FXTC prefix 'C'
+        // EXOSIS prefix 'C'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,28);
-        // FXTC prefix 'Z'
+        // EXOSIS prefix 'Z'
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,221);
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};

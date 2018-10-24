@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -845,7 +845,7 @@ TxMempoolInfo CTxMemPool::info(const uint256& hash) const
 CFeeRate CTxMemPool::estimateSmartFee(int nBlocks, int *answerFoundAtBlocks) const
 {
     LOCK(cs);
-    // FXTC TODO:
+    // EXOSIS TODO:
     FeeCalculation feeCalc;
     CFeeRate feeRate = minerPolicyEstimator->estimateSmartFee(nBlocks, &feeCalc, true);
     *answerFoundAtBlocks = feeCalc.returnedTarget;

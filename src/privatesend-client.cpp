@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #include "privatesend-client.h"
@@ -424,7 +424,7 @@ bool CPrivateSendClient::SendDenominate(const std::vector<CTxDSIn>& vecTxDSIn, c
 
         mempool.PrioritiseTransaction(tx.GetHash(), 0.1*COIN);
         TRY_LOCK(cs_main, lockMain);
-        // FXTC TODO: if(!lockMain || !AcceptToMemoryPool(mempool, validationState, CTransaction(tx), false, NULL, false, true, true)) {
+        // EXOSIS TODO: if(!lockMain || !AcceptToMemoryPool(mempool, validationState, CTransaction(tx), false, NULL, false, true, true)) {
         if(!lockMain || !AcceptToMemoryPool(mempool, validationState, MakeTransactionRef(tx), nullptr, NULL, false, maxTxFee)) {
             LogPrintf("CPrivateSendClient::SendDenominate -- AcceptToMemoryPool() failed! tx=%s", tx.ToString());
             UnlockCoins();
@@ -886,7 +886,7 @@ bool CPrivateSendClient::JoinExistingQueue(CAmount nBalanceNeedsAnonymized, CCon
 
         vecMasternodesUsed.push_back(dsq.vin.prevout);
 
-        // FXTC TODO:
+        // EXOSIS TODO:
         if (connman.ForNode(infoMn.addr, CConnman::AllNodesExceptMasternodes)) {
             LogPrintf("CPrivateSendClient::JoinExistingQueue -- skipping masternode connection, addr=%s\n", infoMn.addr.ToString());
             continue;
@@ -894,10 +894,10 @@ bool CPrivateSendClient::JoinExistingQueue(CAmount nBalanceNeedsAnonymized, CCon
 
         LogPrintf("CPrivateSendClient::JoinExistingQueue -- attempt to connect to masternode from queue, addr=%s\n", infoMn.addr.ToString());
         // connect to Masternode and submit the queue request
-        // FXTC BEGIN
+        // EXOSIS BEGIN
         //CNode* pnode = connman.ConnectNode(CAddress(infoMn.addr, NODE_NETWORK), NULL, false, true);
         CNode *pnode = g_connman->OpenNetworkConnection(CAddress(infoMn.addr, NODE_NETWORK), false, nullptr, NULL, false, false, false, true);
-        // FXTC END
+        // EXOSIS END
         if(pnode) {
             infoMixingMasternode = infoMn;
             nSessionDenom = dsq.nDenom;
@@ -954,7 +954,7 @@ bool CPrivateSendClient::StartNewQueue(CAmount nValueMin, CAmount nBalanceNeedsA
             continue;
         }
 
-        // FXTC TODO:
+        // EXOSIS TODO:
         if (connman.ForNode(infoMn.addr, CConnman::AllNodesExceptMasternodes)) {
             LogPrintf("CPrivateSendClient::StartNewQueue -- skipping masternode connection, addr=%s\n", infoMn.addr.ToString());
             nTries++;
@@ -962,10 +962,10 @@ bool CPrivateSendClient::StartNewQueue(CAmount nValueMin, CAmount nBalanceNeedsA
         }
 
         LogPrintf("CPrivateSendClient::StartNewQueue -- attempt %d connection to Masternode %s\n", nTries, infoMn.addr.ToString());
-        // FXTC BEGIN
+        // EXOSIS BEGIN
         //CNode* pnode = connman.ConnectNode(CAddress(infoMn.addr, NODE_NETWORK), NULL, false, true);
         CNode *pnode = g_connman->OpenNetworkConnection(CAddress(infoMn.addr, NODE_NETWORK), false, nullptr, NULL, false, false, false, true);
-        // FXTC END
+        // EXOSIS END
         if(pnode) {
             LogPrintf("CPrivateSendClient::StartNewQueue -- connected, addr=%s\n", infoMn.addr.ToString());
             infoMixingMasternode = infoMn;

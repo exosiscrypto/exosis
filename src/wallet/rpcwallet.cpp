@@ -1,7 +1,7 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The exosis Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -3736,8 +3736,8 @@ static const CRPCCommand commands[] =
 
     // exosis
     /* Wallet */
-// FXTC TODO:    { "wallet",             "keepass",                &keepass,                {"genkey-init-setpassphrase"} },
-// FXTC TODO:    { "wallet",             "instantsendtoaddress",   &instantsendtoaddress,   {"exosisaddress", "amount", "comment", "comment-to", "subtractfeefromamount"} },
+// EXOSIS TODO:    { "wallet",             "keepass",                &keepass,                {"genkey-init-setpassphrase"} },
+// EXOSIS TODO:    { "wallet",             "instantsendtoaddress",   &instantsendtoaddress,   {"exosisaddress", "amount", "comment", "comment-to", "subtractfeefromamount"} },
     //
 };
 

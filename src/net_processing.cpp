@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -1322,7 +1322,7 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
                     if(pushed)
                         connman->PushMessage(pfrom, msgMaker.Make(inv.GetCommand(), ss));
                 }
-                // FXTC TODO: check if there are MSG_TX messages in Dash processing before removing this code
+                // EXOSIS TODO: check if there are MSG_TX messages in Dash processing before removing this code
                 /*
                 if (!pushed && inv.type == MSG_TX) {
                     CTransaction tx;
@@ -1480,12 +1480,12 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
           }
           //
 
-          // FXTC BEGIN
+          // EXOSIS BEGIN
           // Dash
           if (inv.type == MSG_BLOCK || inv.type == MSG_FILTERED_BLOCK || inv.type == MSG_CMPCT_BLOCK || inv.type == MSG_WITNESS_BLOCK)
               break;
           //
-          // FXTC END
+          // EXOSIS END
         }
     } // release cs_main
 
@@ -1967,7 +1967,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         pfrom->nTimeOffset = nTimeOffset;
         AddTimeData(pfrom->addr, nTimeOffset);
 
-        /* FXTC TODO:
+        /* EXOSIS TODO:
         // If the peer is old enough to have the old alert system, send it the final alert.
         if (pfrom->nVersion <= 70012) {
             CDataStream finalAlert(ParseHex("60010000000000000000000000ffffff7f00000000ffffff7ffeffff7f01ffffff7f00000000ffffff7f00ffffff7f002f555247454e543a20416c657274206b657920636f6d70726f6d697365642c2075706772616465207265717569726564004630440220653febd6410f470f6bae11cad19c48413becb1ac2c17f908fd0fd53bdc3abd5202206d0e9c96fe88d4a0f01ed9dedae2b6f9e00da94cad0fecaae66ecf689bf71b50"), SER_NETWORK, PROTOCOL_VERSION);
@@ -2394,11 +2394,11 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
 
         CInv inv(MSG_TX, tx.GetHash());
 
-        // FXTC TODO: // remove after implementation
+        // EXOSIS TODO: // remove after implementation
         CTxLockRequest txLockRequest;
         CDarksendBroadcastTx dstx;
-        /* FXTC TODO: !!!!!!!!
-        // FXTC TODO: Dash txs
+        /* EXOSIS TODO: !!!!!!!!
+        // EXOSIS TODO: Dash txs
         vector<uint256> vEraseQueue;
         CTransaction tx;
         CTxLockRequest txLockRequest;

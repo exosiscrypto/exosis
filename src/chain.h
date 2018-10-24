@@ -194,7 +194,7 @@ public:
     //! (memory only) Total amount of work (expected number of hashes) in the chain up to and including this block
     arith_uint256 nChainWork;
 
-    // FXTC BEGIN
+    // EXOSIS BEGIN
     //! (memory only) Total amount of work normalized to algorithm efficiency
     arith_uint256 nChainWorkSha256d;
     arith_uint256 nChainWorkScrypt;
@@ -202,7 +202,7 @@ public:
     arith_uint256 nChainWorkLyra2Z;
     arith_uint256 nChainWorkX11;
     arith_uint256 nChainWorkX16R;
-    // FXTC END
+    // EXOSIS END
 
     //! Number of transactions in this block.
     //! Note: in a potential headers-first mode, this number cannot be relied upon
@@ -239,14 +239,14 @@ public:
         nDataPos = 0;
         nUndoPos = 0;
         nChainWork = arith_uint256();
-        // FXTC BEGIN
+        // EXOSIS BEGIN
         nChainWorkSha256d = arith_uint256();
         nChainWorkScrypt = arith_uint256();
         nChainWorkNist5 = arith_uint256();
         nChainWorkLyra2Z = arith_uint256();
         nChainWorkX11 = arith_uint256();
         nChainWorkX16R = arith_uint256();
-        // FXTC END
+        // EXOSIS END
         nTx = 0;
         nChainTx = 0;
         nStatus = 0;

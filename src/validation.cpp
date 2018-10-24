@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -1188,7 +1188,7 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus
     return true;
 }
 
-//FXTC BEGIN
+//EXOSIS BEGIN
 double ConvertBitsToDouble(unsigned int nBits)
 {
     int nShift = (nBits >> 24) & 0xff;
@@ -1208,7 +1208,7 @@ double ConvertBitsToDouble(unsigned int nBits)
 
     return dDiff;
 }
-//FXTC END
+//EXOSIS END
 
 CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
 {
@@ -1223,7 +1223,7 @@ CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Param
         nSubsidy = 200000 * COIN;}
     else
     if (nHeight > 10)   
-	nSubsidy = 5 * COIN;
+	nSubsidy = 0.25 * COIN;
     if (nHeight == 0)
 	nSubsidy = 10;
     
@@ -1240,7 +1240,7 @@ CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Param
     //return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
 }
 
-//FXTC BEGIN
+//EXOSIS BEGIN
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
     // EXOSIS BEGIN
@@ -1250,7 +1250,7 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
     
 }
 
-//FXTC END
+//EXOSIS END
 
 bool IsInitialBlockDownload()
 {
@@ -2088,10 +2088,10 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
                                block.vtx[0]->GetValueOut(), blockReward),
                                REJECT_INVALID, "bad-cb-amount");
 
-    // FXTC BEGIN
+    // EXOSIS BEGIN
    
 
-    // FXTC END
+    // EXOSIS END
 
     // DASH : MODIFIED TO CHECK MASTERNODE PAYMENTS AND SUPERBLOCKS
 
@@ -3467,10 +3467,10 @@ bool CChainState::AcceptBlockHeader(const CBlockHeader& block, CValidationState&
         pindexPrev = (*mi).second;
         if (pindexPrev->nStatus & BLOCK_FAILED_MASK)
             return state.DoS(100, error("%s: prev block invalid", __func__), REJECT_INVALID, "bad-prevblk");
-        // FXTC BEGIN
+        // EXOSIS BEGIN
         if (fCheckpointsEnabled && pindexPrev->nHeight < chainparams.GetConsensus().nlastValidPowHashHeight &&  !Checkpoints::IsExpectedCheckpoint(chainparams.Checkpoints(), pindexPrev->nHeight + 1, block.GetHash()))
             return state.DoS(100, error("%s: Checkpoints::IsExpectedCheckpoint(): invalid checkpoint at height %d", __func__, pindexPrev->nHeight + 1), REJECT_CHECKPOINT, "bad-chackpoint");
-        // FXTC END
+        // EXOSIS END
         if (!ContextualCheckBlockHeader(block, state, chainparams, pindexPrev, GetAdjustedTime()))
             return error("%s: Consensus::ContextualCheckBlockHeader: %s, %s", __func__, hash.ToString(), FormatStateMessage(state));
 

@@ -18,7 +18,7 @@ static const int64_t MAX_BLOCK_SIGOPS_COST = 80000;
 /** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */
 // EXOSIS BEGIN
 //static const int COINBASE_MATURITY = 100;
-static const int COINBASE_MATURITY = 60;
+static const int COINBASE_MATURITY = 100;
 //static const int COINBASE_MATURITY_850k = 100;
 // EXOSIS END
 
