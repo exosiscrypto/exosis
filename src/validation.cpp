@@ -1166,10 +1166,8 @@ bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus:
     }
 
     // Check the header
-    if (!CheckProofOfWork(block.GetHash(), block.nBits, consensusParams)){
-	
+    if (!CheckProofOfWork(block.GetHash(), block.nBits, consensusParams))
         return error("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
-}
 
     return true;
 }
@@ -1788,7 +1786,7 @@ VersionBitsCache versionbitscache;
 
 int32_t ComputeBlockVersion(const CBlockIndex* pindexPrev, const Consensus::Params& params)
 {
-    if (pindexPrev->nHeight+1 < sporkManager.GetSporkValue(SPORK_EXOSIS_01_FXTC_CHAIN_START)) return 4;
+    
 
     LOCK(cs_main);
     int32_t nVersion = VERSIONBITS_TOP_BITS;
@@ -2081,7 +2079,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     LogPrint(BCLog::BENCH, "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs (%.2fms/blk)]\n", (unsigned)block.vtx.size(), MILLI * (nTime3 - nTime2), MILLI * (nTime3 - nTime2) / block.vtx.size(), nInputs <= 1 ? 0 : MILLI * (nTime3 - nTime2) / (nInputs-1), nTimeConnect * MICRO, nTimeConnect * MILLI / nBlocksTotal);
 
     CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, pindex->GetBlockHeader(), chainparams.GetConsensus());
-    if (block.vtx[0]->GetValueOut() > blockReward * (!sporkManager.IsSporkActive(SPORK_FXTC_02_IGNORE_SLIGHTLY_HIGHER_COINBASE) ? 1 : 2))
+    if (block.vtx[0]->GetValueOut() > blockReward)
         return state.DoS(100,
                          error("ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)",
                                block.vtx[0]->GetValueOut(), blockReward),
@@ -2102,11 +2100,11 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     // TODO: resync data (both ways?) and try to reprocess this block later.
     //CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, pindex->GetBlockHeader(), chainparams.GetConsensus());
     std::string strError = "";
-    if (!sporkManager.IsSporkActive(SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_VALUE) && !IsBlockValueValid(block, pindex->nHeight, block.vtx[0]->GetValueOut(), strError)) {
+    if (!IsBlockValueValid(block, pindex->nHeight, block.vtx[0]->GetValueOut(), strError)) {
         return state.DoS(0, error("ConnectBlock(DASH): %s", strError), REJECT_INVALID, "bad-cb-amount");
     }
 
-    if (!sporkManager.IsSporkActive(SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_PAYEE) && !IsBlockPayeeValid(block.vtx[0], pindex->nHeight, block.vtx[0]->GetValueOut(), pindex->GetBlockHeader())) {
+    if (!IsBlockPayeeValid(block.vtx[0], pindex->nHeight, block.vtx[0]->GetValueOut(), pindex->GetBlockHeader())) {
         mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
         return state.DoS(0, error("ConnectBlock(DASH): couldn't find masternode or superblock payments"),
                                 REJECT_INVALID, "bad-cb-payee");
@@ -3170,10 +3168,8 @@ static bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos, 
 static bool CheckBlockHeader(const CBlockHeader& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW = true)
 {
     // Check proof of work matches claimed amount
-    if (fCheckPOW && !CheckProofOfWork(block.GetHash(), block.nBits, consensusParams)){
-	
+    if (fCheckPOW && !CheckProofOfWork(block.GetHash(), block.nBits, consensusParams))
         return state.DoS(50, false, REJECT_INVALID, "high-hash", false, "proof of work failed");
-	}
 
     return true;
 }
@@ -3319,10 +3315,8 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
 
     // Check proof of work
     const Consensus::Params& consensusParams = params.GetConsensus();
-    if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams)){
-	LogPrintf("Incorrect POW: %s", block.GetHash().ToString());
+    if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams))
         return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, "incorrect proof of work");
-	}
 
     // Check against checkpoints
     if (fCheckpointsEnabled) {
@@ -3645,7 +3639,6 @@ bool ProcessNewBlock(const CChainParams& chainparams, const std::shared_ptr<cons
         }
         if (!ret) {
             GetMainSignals().BlockChecked(*pblock, state);
-      
             return error("%s: AcceptBlock FAILED (%s)", __func__, state.GetDebugMessage());
         }
     }

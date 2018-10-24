@@ -14,7 +14,7 @@
 //static const int PROTOCOL_VERSION = 70015;
 // EXOSIS BEGIN
 //static const int PROTOCOL_VERSION = 70208;
-static const int PROTOCOL_VERSION = 85010;
+static const int PROTOCOL_VERSION = 85011;
 // EXOSIS END
 
 //! initial proto version, to be increased after version/verack negotiation
@@ -30,7 +30,7 @@ static const int GETHEADERS_VERSION = 80008;
 //! disconnect from peers older than this proto version
 // EXOSIS BEGIN
 //static const int MIN_PEER_PROTO_VERSION = GETHEADERS_VERSION;
-static const int MIN_PEER_PROTO_VERSION = 85010;
+static const int MIN_PEER_PROTO_VERSION = 85011;
 // EXOSIS END
 
 //! nTime field added to CAddress, starting with this version;

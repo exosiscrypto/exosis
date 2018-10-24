@@ -8,7 +8,7 @@
 #include <tinyformat.h>
 #include <utilstrencodings.h>
 #include <crypto/common.h>
-#include <crypto/scrypt.h> 
+#include <crypto/scrypt.h> // Exosis Scrypt
 #include <crypto/hashblock.h> // Exosis TimeTravel
 
 
