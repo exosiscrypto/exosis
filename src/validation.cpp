@@ -1219,14 +1219,13 @@ CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Param
     // EXOSIS BEGIN
    
 
-    if (nHeight <= 100){
-        nSubsidy = 20000 * COIN;}
+    if (nHeight <= 10){
+        nSubsidy = 200000 * COIN;}
     else
-    if (nHeight > 100 && nHeight <= 1400)    {
-	nSubsidy = 5 * COIN;}
-    else{
-	nSubsidy = 0.25 * COIN;}
-
+    if (nHeight > 10)   
+	nSubsidy = 5 * COIN;
+    if (nHeight == 0)
+	nSubsidy = 10;
     
 
 	//if (!fSuperblockPartOnly)

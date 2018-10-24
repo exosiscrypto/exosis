@@ -102,10 +102,10 @@ public:
         consensus.nGovernanceFilterElements = 20000;
 
         consensus.BIP16Height = 0; // genesis block
-        consensus.BIP34Height = 1; // block 710000
-        consensus.BIP34Hash = uint256S("0x0000024d1a79e05cc2cbd754e63f4368e564f9215080e37190c53093cf9b6656"); // block 710000
-        consensus.BIP65Height = 25; // block 1000000
-        consensus.BIP66Height = 25; // block 1000000
+        consensus.BIP34Height = 1; // block 1
+        consensus.BIP34Hash = uint256S("0x0000024d1a79e05cc2cbd754e63f4368e564f9215080e37190c53093cf9b6656"); // block 
+        consensus.BIP65Height = 25; // block 
+        consensus.BIP66Height = 25; // block 
         consensus.powLimit = uint256S("0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 2.5 * 60; // 2.5 minutes 
 		consensus.nPowTargetSpacing = 2.5 * 60; // 2.5 minutes
@@ -155,14 +155,14 @@ public:
         nPruneAfterHeight = 100000;
 
 	      
-        genesis.nTime = 1540000200;
-	genesis.nNonce = 1298963;
+        genesis.nTime = 1540402662;
+	genesis.nNonce = 2477745;
 
-      
+       
 		
         genesis = CreateGenesisBlock(genesis.nTime, genesis.nNonce, 0x1e0ffff0, 1, 10 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000002d44dc77b8f4b1198a57f9e966974627c4def4caec930a28c0113e25470"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00000b6f3cad68583f2391b63af25851a200cd2973fb08812f881a4048e85a4e"));
         assert(genesis.hashMerkleRoot == uint256S("0x77c074dff95c472dc08ca31132e213660d4b996e0003870b88f3911460b50c8a"));
              
 	    
@@ -177,7 +177,7 @@ public:
         vSeeds.emplace_back("sync1.exosis.org");
 
         // EXOSIS prefix 'e'
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,37);//35
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,33);//35
         // EXOSIS prefix '5'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,4);//75
         // EXOSIS prefix '2'
@@ -315,7 +315,7 @@ public:
         //vSeeds.emplace_back("testnet-seed.exosis.io");
         //vSeeds.emplace_back("testnet-exosis.midnightminer.net");
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,118);
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,92);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,199);
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,231);
         // BIP32 prefixes

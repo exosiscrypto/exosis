@@ -86,10 +86,7 @@ int64_t UpdateTime(CBlock* pblock, const Consensus::Params& consensusParams, con
             if(mnpayments.GetBlockPayee(pindexPrev->nHeight + 1, cMasternodePayee)) {
                 for (auto output : coinbaseTx.vout) {
                     if (output.scriptPubKey == cMasternodePayee) {
-			if (nHeight <= 1400)
-			{
-                             coinbaseTx.vout[0].nValue -= nMasternodePayment;
-                        }
+			
                         output.nValue = nMasternodePayment;
                         break;
                     }
