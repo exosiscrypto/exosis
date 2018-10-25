@@ -1223,7 +1223,7 @@ CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Param
         nSubsidy = 200000 * COIN;}
     else
     if (nHeight > 10)   
-	nSubsidy = 0.25 * COIN;
+	nSubsidy = 5 * COIN;
     if (nHeight == 0)
 	nSubsidy = 10;
     
@@ -1244,7 +1244,7 @@ CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Param
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
     // EXOSIS BEGIN
-    return 4.75;
+    return blockValue * 0.95;
     // EXOSIS END
 
     
@@ -3216,6 +3216,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
     // First transaction must be coinbase, the rest must not be
     if (block.vtx.empty() || !block.vtx[0]->IsCoinBase())
         return state.DoS(100, false, REJECT_INVALID, "bad-cb-missing", false, "first tx is not coinbase");
+    
     for (unsigned int i = 1; i < block.vtx.size(); i++)
         if (block.vtx[i]->IsCoinBase())
             return state.DoS(100, false, REJECT_INVALID, "bad-cb-multiple", false, "more than one coinbase");
@@ -3673,6 +3674,7 @@ bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams,
         return error("%s: Consensus::ContextualCheckBlock: %s", __func__, FormatStateMessage(state));
     if (!g_chainstate.ConnectBlock(block, state, &indexDummy, viewNew, chainparams, true))
         return false;
+   
     assert(state.IsValid());
 
     return true;

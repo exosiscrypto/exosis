@@ -539,7 +539,12 @@ UniValue masternodelist(const JSONRPCRequest& request)
         std::map<COutPoint, CMasternode> mapMasternodes = mnodeman.GetFullMasternodeMap();
         for (auto& mnpair : mapMasternodes) {
             CMasternode mn = mnpair.second;
+           masternode_info_t infoMn;
+           
+	    
             std::string strOutpoint = mnpair.first.ToStringShort();
+            bool fFound = mnodeman.GetMasternodeInfo(mnpair.first, infoMn);
+
             if (strMode == "activeseconds") {
                 if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
                 obj.push_back(Pair(strOutpoint, (int64_t)(mn.lastPing.sigTime - mn.sigTime)));
@@ -598,7 +603,7 @@ UniValue masternodelist(const JSONRPCRequest& request)
                 obj.push_back(Pair(strOutpoint, strJson));
                 UniValue objMN(UniValue::VOBJ);
                 objMN.push_back(Pair("address", mn.addr.ToString()));
-                objMN.push_back(Pair("payee", EncodeDestination(CScriptID(GetScriptForDestination(WitnessV0KeyHash(mn.pubKeyCollateralAddress.GetID()))))));
+                objMN.push_back(Pair("payee", EncodeDestination(mn.pubKeyCollateralAddress.GetID())));
                 objMN.push_back(Pair("status", mn.GetStatus()));
                 objMN.push_back(Pair("protocol", mn.nProtocolVersion));
                 objMN.push_back(Pair("daemonversion", mn.lastPing.nDaemonVersion > DEFAULT_DAEMON_VERSION ? FormatVersion(mn.lastPing.nDaemonVersion) : "Unknown"));
