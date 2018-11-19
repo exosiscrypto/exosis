@@ -1225,11 +1225,11 @@ CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Param
     if (nHeight <= 10){
         nSubsidy = 200000 * COIN;}
     else
-    if (nHeight > 10 && nHeight < 9400)    
+    if (nHeight > 10 && nHeight < 9255)    
 	nSubsidy = 5 * COIN;
     if (nHeight == 0)
 	nSubsidy = 10;
-    if(nHeight >= 9400)
+    if(nHeight >= 9255)
         nSubsidy = 0.25 * COIN;
     
 
@@ -2097,7 +2097,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
                                REJECT_INVALID, "bad-cb-amount");
    
     
-    if (block.vtx[0]->GetValueOut() == blockReward + nFees + masternodePayment)
+    if (block.vtx[0]->GetValueOut() == blockReward + masternodePayment)
     {//Contains mn payment
         if (!IsInitialBlockDownload())
         {
