@@ -6,7 +6,8 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <validation.h>
-
+#include <amount.h>
+#include <coins.h>
 #include <arith_uint256.h>
 #include <base58.h>
 #include <chain.h>
@@ -44,10 +45,12 @@
 #include <warnings.h>
 
 #include <masternodeman.h>
+#include <masternode-sync.h>
 #include <masternode-payments.h>
 
 #include <future>
 #include <sstream>
+
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/join.hpp>
@@ -1222,10 +1225,12 @@ CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Param
     if (nHeight <= 10){
         nSubsidy = 200000 * COIN;}
     else
-    if (nHeight > 10)   
+    if (nHeight > 10 && nHeight < 9400)    
 	nSubsidy = 5 * COIN;
     if (nHeight == 0)
 	nSubsidy = 10;
+    if(nHeight >= 9400)
+        nSubsidy = 0.25 * COIN;
     
 
 	//if (!fSuperblockPartOnly)
@@ -1243,9 +1248,11 @@ CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Param
 //EXOSIS BEGIN
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
+            
     // EXOSIS BEGIN
-    return blockValue * 0.95;
+    return blockValue + (4.5 * COIN);
     // EXOSIS END
+    
 
     
 }
@@ -2080,18 +2087,43 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     }
     int64_t nTime3 = GetTimeMicros(); nTimeConnect += nTime3 - nTime2;
     LogPrint(BCLog::BENCH, "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs (%.2fms/blk)]\n", (unsigned)block.vtx.size(), MILLI * (nTime3 - nTime2), MILLI * (nTime3 - nTime2) / block.vtx.size(), nInputs <= 1 ? 0 : MILLI * (nTime3 - nTime2) / (nInputs-1), nTimeConnect * MICRO, nTimeConnect * MILLI / nBlocksTotal);
-
+    
     CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, pindex->GetBlockHeader(), chainparams.GetConsensus());
-    if (block.vtx[0]->GetValueOut() > blockReward)
+    CAmount masternodePayment = GetMasternodePayment(pindex->nHeight, blockReward);
+    if (block.vtx[0]->GetValueOut() > blockReward + nFees + masternodePayment)
         return state.DoS(100,
                          error("ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)",
                                block.vtx[0]->GetValueOut(), blockReward),
                                REJECT_INVALID, "bad-cb-amount");
-
-    // EXOSIS BEGIN
    
+    
+    if (block.vtx[0]->GetValueOut() == blockReward + nFees + masternodePayment)
+    {//Contains mn payment
+        if (!IsInitialBlockDownload())
+        {
+           //check is valid payee
+            if (!IsBlockPayeeValid(block.vtx[0], pindex->nHeight, block.vtx[0]->GetValueOut(), pindex->GetBlockHeader())) {
+                mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
+                return state.DoS(0, error("ConnectBlock(EXOSIS): couldn't find masternode or superblock payments"),
+                                REJECT_INVALID, "bad-cb-payee");
+            }
+                        
+        }
+        
+    }
+    else if (block.vtx[0]->GetValueOut() > blockReward + nFees)
+    {
+        return state.DoS(100,
+                         error("ConnectBlock(): coinbase pays too much (pow) (actual=%d vs limit=%d)",
+                               block.vtx[0]->GetValueOut(), blockReward),
+                               REJECT_INVALID, "bad-cb-amount-pow");
+    }
+    
+    
+    
+    
 
-    // EXOSIS END
+    
 
     // DASH : MODIFIED TO CHECK MASTERNODE PAYMENTS AND SUPERBLOCKS
 

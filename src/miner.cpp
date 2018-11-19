@@ -83,20 +83,20 @@ int64_t UpdateTime(CBlock* pblock, const Consensus::Params& consensusParams, con
 
             // Update masternode reward to new value
             CScript cMasternodePayee;
-            //if(mnpayments.GetBlockPayee(pindexPrev->nHeight + 1, cMasternodePayee)) {
+            if(mnpayments.GetBlockPayee(pindexPrev->nHeight + 1, cMasternodePayee)) {
                 for (auto output : coinbaseTx.vout) {
                     if (output.scriptPubKey == cMasternodePayee) {
-			coinbaseTx.vout[0].nValue -= nMasternodePayment;
+			//coinbaseTx.vout[0].nValue -= nMasternodePayment;
                         output.nValue = nMasternodePayment;
                         break;
                     }
 		    else
 		    {
-			coinbaseTx.vout[0].nValue -= nMasternodePayment;
+			//coinbaseTx.vout[0].nValue -= nMasternodePayment;
                         break;
 		    }
                 }
-            //}
+            }
 
             pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
         }
@@ -231,7 +231,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     pblocktemplate->vTxFees[0] = -nFees;
 
     LogPrintf("CreateNewBlock(): block weight: %u txs: %u fees: %ld sigops %d\n", GetBlockWeight(*pblock), nBlockTx, nFees, nBlockSigOpsCost);
-    LogPrintf("CreateNewBlock(): block height: %ld pow reward: %ld pos reward: %ld  masternode reward: %ld\n", nHeight, nBlockReward - GetMasternodePayment(nHeight, nFees + nBlockReward), 0,  GetMasternodePayment(nHeight, nFees + nBlockReward));
+    LogPrintf("CreateNewBlock(): block height: %ld pow reward: %ld   masternode reward: %ld\n", nHeight, nBlockReward,   GetMasternodePayment(nHeight, nFees + nBlockReward));
 
     // Fill in header
     pblock->hashPrevBlock  = pindexPrev->GetBlockHash();
