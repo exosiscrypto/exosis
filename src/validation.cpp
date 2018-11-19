@@ -2097,26 +2097,21 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
                                REJECT_INVALID, "bad-cb-amount");
    
     
-    if (block.vtx[0]->GetValueOut() == blockReward + masternodePayment)
-    {//Contains mn payment
-        if (!IsInitialBlockDownload())
-        {
-           //check is valid payee
-            if (!IsBlockPayeeValid(block.vtx[0], pindex->nHeight, block.vtx[0]->GetValueOut(), pindex->GetBlockHeader())) {
+    if (block.vtx[0]->GetValueOut() > blockReward + nFees)
+    {
+
+	if (!IsBlockPayeeValid(block.vtx[0], pindex->nHeight, block.vtx[0]->GetValueOut(), pindex->GetBlockHeader())) {
                 mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
                 return state.DoS(0, error("ConnectBlock(EXOSIS): couldn't find masternode or superblock payments"),
                                 REJECT_INVALID, "bad-cb-payee");
             }
-                        
-        }
-        
-    }
-    else if (block.vtx[0]->GetValueOut() > blockReward + nFees)
-    {
+	else
+	{
         return state.DoS(100,
                          error("ConnectBlock(): coinbase pays too much (pow) (actual=%d vs limit=%d)",
                                block.vtx[0]->GetValueOut(), blockReward),
                                REJECT_INVALID, "bad-cb-amount-pow");
+	}
     }
     
     
