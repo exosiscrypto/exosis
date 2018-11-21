@@ -1250,7 +1250,10 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
             
     // EXOSIS BEGIN
-    return blockValue + (4.5 * COIN);
+    if(nHeight >= 9255)
+        return blockValue + (4.5 * COIN);
+    else
+        return blockValue * 0.95;
     // EXOSIS END
     
 
@@ -2090,22 +2093,33 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     
     CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, pindex->GetBlockHeader(), chainparams.GetConsensus());
     CAmount masternodePayment = GetMasternodePayment(pindex->nHeight, blockReward);
-    if (block.vtx[0]->GetValueOut() > blockReward + nFees + masternodePayment)
+    if (pindex->nHeight >= 9255)
+    {
+        if (block.vtx[0]->GetValueOut() > blockReward + nFees + masternodePayment)
+            return state.DoS(100,
+                             error("ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)",
+                                   block.vtx[0]->GetValueOut(), blockReward),
+                                   REJECT_INVALID, "bad-cb-amount");
+   
+    
+        if (block.vtx[0]->GetValueOut() > blockReward + nFees)
+        {
+
+            if (!IsBlockPayeeValid(block.vtx[0], pindex->nHeight, block.vtx[0]->GetValueOut(), pindex->GetBlockHeader())) {
+                    mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
+                    return state.DoS(0, error("ConnectBlock(EXOSIS): couldn't find masternode or superblock payments"),
+                                    REJECT_INVALID, "bad-cb-payee");
+                }
+
+        }
+    }
+    else
+    {
+        if (block.vtx[0]->GetValueOut() > blockReward)
         return state.DoS(100,
                          error("ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)",
                                block.vtx[0]->GetValueOut(), blockReward),
                                REJECT_INVALID, "bad-cb-amount");
-   
-    
-    if (block.vtx[0]->GetValueOut() > blockReward + nFees)
-    {
-
-	if (!IsBlockPayeeValid(block.vtx[0], pindex->nHeight, block.vtx[0]->GetValueOut(), pindex->GetBlockHeader())) {
-                mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
-                return state.DoS(0, error("ConnectBlock(EXOSIS): couldn't find masternode or superblock payments"),
-                                REJECT_INVALID, "bad-cb-payee");
-            }
-	
     }
     
     
