@@ -2095,6 +2095,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     CAmount masternodePayment = GetMasternodePayment(pindex->nHeight, blockReward);
     if (pindex->nHeight >= 9255)
     {
+        
         if (block.vtx[0]->GetValueOut() > blockReward + nFees + masternodePayment)
             return state.DoS(100,
                              error("ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)",
@@ -2104,7 +2105,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     
         if (block.vtx[0]->GetValueOut() > blockReward + nFees)
         {
-
+           
             if (!IsBlockPayeeValid(block.vtx[0], pindex->nHeight, block.vtx[0]->GetValueOut(), pindex->GetBlockHeader())) {
                     mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
                     return state.DoS(0, error("ConnectBlock(EXOSIS): couldn't find masternode or superblock payments"),
@@ -2123,7 +2124,8 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     }
     
     
-    
+   
+        mnodeman.UpdateLastPaid(pindex);
     
 
     
