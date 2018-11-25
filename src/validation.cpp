@@ -2097,7 +2097,6 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     {
         
         if (block.vtx[0]->GetValueOut() > blockReward + nFees + masternodePayment)
-            mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
             return state.DoS(100,
                              error("ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)",
                                    block.vtx[0]->GetValueOut(), blockReward),
@@ -2117,13 +2116,11 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     }
     else
     {
-        if (block.vtx[0]->GetValueOut() > blockReward){
-            mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
-            return state.DoS(100,
+        if (block.vtx[0]->GetValueOut() > blockReward)
+        return state.DoS(100,
                          error("ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)",
                                block.vtx[0]->GetValueOut(), blockReward),
                                REJECT_INVALID, "bad-cb-amount");
-        }
     }
     
     
@@ -2144,7 +2141,6 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     //CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, pindex->GetBlockHeader(), chainparams.GetConsensus());
     std::string strError = "";
     if (!IsBlockValueValid(block, pindex->nHeight, block.vtx[0]->GetValueOut(), strError)) {
-        mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
         return state.DoS(0, error("ConnectBlock(DASH): %s", strError), REJECT_INVALID, "bad-cb-amount");
     }
 

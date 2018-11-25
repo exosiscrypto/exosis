@@ -149,11 +149,6 @@ bool IsBlockPayeeValid(const CTransactionRef txNew, int nBlockHeight, CAmount bl
             LogPrint(BCLog::MNPAYMENTS, "IsBlockPayeeValid -- Valid masternode payment at height %d: %s", nBlockHeight, txNew->ToString());
             return true;
         }
-        else if (nBlockHeight >= 10500)
-        {
-            LogPrint(BCLog::MNPAYMENTS, "IsBlockPayeeValid -- Invalid masternode payment at height %d: %s", nBlockHeight, txNew->ToString());
-            return false;
-        }
 
         int nOffset = nBlockHeight % consensusParams.nBudgetPaymentsCycleBlocks;
         if(nBlockHeight >= consensusParams.nBudgetPaymentsStartBlock &&
@@ -201,11 +196,7 @@ bool IsBlockPayeeValid(const CTransactionRef txNew, int nBlockHeight, CAmount bl
         LogPrint(BCLog::MNPAYMENTS, "IsBlockPayeeValid -- Valid masternode payment at height %d: %s", nBlockHeight, txNew->ToString());
         return true;
     }
-    else if (nBlockHeight >= 10500)
-        {
-            LogPrint(BCLog::MNPAYMENTS, "IsBlockPayeeValid -- Invalid masternode payment at height %d: %s", nBlockHeight, txNew->ToString());
-            return false;
-        }
+
     
 
     LogPrintf("IsBlockPayeeValid -- WARNING: Masternode payment enforcement is disabled, accepting any payee\n");
