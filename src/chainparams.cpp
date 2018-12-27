@@ -82,9 +82,9 @@ public:
         consensus.nMinimumSubsidy = 0.00100000 * COIN;
 
         consensus.nMasternodeMinimumConfirmations = 15;
-	    consensus.nMasternodePaymentsStartBlock = 50;
-        consensus.nMasternodePaymentsIncreaseBlock = 50;
-        consensus.nMasternodePaymentsIncreasePeriod = 365 * 576; // 1 common year
+	    consensus.nMasternodePaymentsStartBlock = 10;
+        
+        
         consensus.nMasternodeCollateralMinimum = 10000; // starting MN collateral
         consensus.nMasternodeCollateralMaximum = 10000; // MN collateral at infinity
 
@@ -107,8 +107,8 @@ public:
         consensus.BIP65Height = 25; // block 
         consensus.BIP66Height = 25; // block 
         consensus.powLimit = uint256S("0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        consensus.nPowTargetTimespan = 2.5 * 60; // 2.5 minutes 
-		consensus.nPowTargetSpacing = 2.5 * 60; // 2.5 minutes
+        consensus.nPowTargetTimespan = 2 * 60; // 2 minutes 
+        consensus.nPowTargetSpacing = 2 * 60; // 30 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
@@ -246,7 +246,7 @@ public:
 
         consensus.nSuperblockStartBlock = 999 * 365 * 576;
         consensus.nSuperblockCycle = 24;
-
+       
         consensus.nGovernanceMinQuorum = 1;
         consensus.nGovernanceFilterElements = 500;
 

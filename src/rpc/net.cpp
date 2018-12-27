@@ -442,7 +442,8 @@ UniValue getnetworkinfo(const JSONRPCRequest& request)
             "  ],\n"
             "  \"relayfee\": x.xxxxxxxx,                (numeric) minimum relay fee for transactions in " + CURRENCY_UNIT + "/kB\n"
             "  \"incrementalfee\": x.xxxxxxxx,          (numeric) minimum fee increment for mempool limiting or BIP 125 replacement in " + CURRENCY_UNIT + "/kB\n"
-            "  \"localaddresses\": [                    (array) list of local addresses\n"
+            "  \"moneysupply\": x.xxxxxxxx,             (numeric) total circulating supply\n"
+                "  \"localaddresses\": [                    (array) list of local addresses\n"
             "  {\n"
             "    \"address\": \"xxxx\",                 (string) network address\n"
             "    \"port\": xxx,                         (numeric) network port\n"
@@ -473,6 +474,9 @@ UniValue getnetworkinfo(const JSONRPCRequest& request)
     obj.push_back(Pair("networks",      GetNetworksInfo()));
     obj.push_back(Pair("relayfee",      ValueFromAmount(::minRelayTxFee.GetFeePerK())));
     obj.push_back(Pair("incrementalfee", ValueFromAmount(::incrementalRelayFee.GetFeePerK())));
+    CBlockIndex *pBestindex = chainActive.Tip();
+    
+    obj.push_back(Pair("moneysupply", ValueFromAmount(pBestindex->nMoneySupply)));
     UniValue localAddresses(UniValue::VARR);
     {
         LOCK(cs_mapLocalHost);

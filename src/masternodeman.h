@@ -65,13 +65,14 @@ private:
     std::map<uint256, std::vector<CMasternodeBroadcast> > mMnbRecoveryGoodReplies;
     std::list< std::pair<CService, uint256> > listScheduledMnbRequestConnections;
 
-    /// Set when masternodes are added, cleared when CGovernanceManager is notified
+    /// Set when masternodes are added, 
     bool fMasternodesAdded;
 
-    /// Set when masternodes are removed, cleared when CGovernanceManager is notified
+    /// Set when masternodes are removed, 
     bool fMasternodesRemoved;
 
     std::vector<uint256> vecDirtyGovernanceObjectHashes;
+   
 
     int64_t nLastWatchdogVoteTime;
 
@@ -209,7 +210,7 @@ public:
         LOCK(cs);
         vecDirtyGovernanceObjectHashes.push_back(nHash);
     }
-
+    
     std::vector<uint256> GetAndClearDirtyGovernanceObjectHashes()
     {
         LOCK(cs);
@@ -222,7 +223,7 @@ public:
     void UpdateWatchdogVoteTime(const COutPoint& outpoint, uint64_t nVoteTime = 0);
     bool AddGovernanceVote(const COutPoint& outpoint, uint256 nGovernanceObjectHash);
     void RemoveGovernanceObject(uint256 nGovernanceObjectHash);
-
+ 
     void CheckMasternode(const CPubKey& pubKeyMasternode, bool fForce);
 
     bool IsMasternodePingedWithin(const COutPoint& outpoint, int nSeconds, int64_t nTimeToCheckAt = -1);

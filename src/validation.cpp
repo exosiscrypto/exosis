@@ -44,6 +44,7 @@
 #include <validationinterface.h>
 #include <warnings.h>
 
+#include <masternode.h>
 #include <masternodeman.h>
 #include <masternode-sync.h>
 #include <masternode-payments.h>
@@ -1213,36 +1214,22 @@ double ConvertBitsToDouble(unsigned int nBits)
 }
 //EXOSIS END
 
-CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
+CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Params& consensusParams)
 {
     CAmount nSubsidy = 0;
 
-    
-
     // EXOSIS BEGIN
    
-
     if (nHeight <= 10){
-        nSubsidy = 200000 * COIN;}
-    else
-    if (nHeight > 10 && nHeight < 9255)    
-	nSubsidy = 5 * COIN;
-    if (nHeight == 0)
-	nSubsidy = 10;
-    if(nHeight >= 9255)
+        nSubsidy = 31500 * COIN;
+        //nSubsidy = 20000 * COIN;
+    }
+    else{
         nSubsidy = 0.25 * COIN;
+    }
     
-
-	//if (!fSuperblockPartOnly)
-		return nSubsidy;
-   
-
-  
-
-    // Hard fork to reduce the block reward by 10 extra percent (allowing budget/superblocks)
-    //CAmount nSuperblockPart = (nHeight >= consensusParams.nBudgetPaymentsStartBlock) ? nSubsidy/10 : 0;
-
-    //return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
+    return nSubsidy;
+     
 }
 
 //EXOSIS BEGIN
@@ -1250,14 +1237,8 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
             
     // EXOSIS BEGIN
-    if(nHeight >= 9255)
-        return blockValue + (4.5 * COIN);
-    else
-        return blockValue * 0.95;
+    return (0.025 * COIN);
     // EXOSIS END
-    
-
-    
 }
 
 //EXOSIS END
@@ -2093,64 +2074,94 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     
     CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, pindex->GetBlockHeader(), chainparams.GetConsensus());
     CAmount masternodePayment = GetMasternodePayment(pindex->nHeight, blockReward);
-    if (pindex->nHeight >= 9255)
-    {
-        
-        if (block.vtx[0]->GetValueOut() > blockReward + nFees + masternodePayment)
-            return state.DoS(100,
-                             error("ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)",
-                                   block.vtx[0]->GetValueOut(), blockReward),
-                                   REJECT_INVALID, "bad-cb-amount");
-   
     
-        if (block.vtx[0]->GetValueOut() > blockReward + nFees)
-        {
-           
-            if (!IsBlockPayeeValid(block.vtx[0], pindex->nHeight, block.vtx[0]->GetValueOut(), pindex->GetBlockHeader())) {
-                    mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
-                    return state.DoS(0, error("ConnectBlock(EXOSIS): couldn't find masternode or superblock payments"),
-                                    REJECT_INVALID, "bad-cb-payee");
-                }
+    std::map<COutPoint, CMasternode> mapMasternodes = mnodeman.GetFullMasternodeMap();
+            
+    //Check is coinbase
+    int nOutputs = 0;
+    int nMinerOutputs = 0;
+    for (unsigned int i = 0; i < block.vtx.size(); i++)
+    {
+        const CTransaction &tx = *(block.vtx[i]);
 
+        nOutputs += tx.vout.size();
+
+        if (tx.IsCoinBase())
+        {
+            //if is coinbase add sum of outputs to moneysupply
+            pindex->nMoneySupply = (pindex->pprev? pindex->pprev->nMoneySupply : 0) + (tx.GetValueOut() - nFees);
+            for (unsigned int i = 0; i < tx.vout.size(); i++)
+            {
+                LogPrintf("Validating: tx.vout[i].nValue %d i=%s to %s\n",i ,tx.vout[i].nValue, EncodeDestination(tx.vout[i].scriptPubKey));
+                if(tx.vout[i].nValue == masternodePayment)
+                {
+                    for (auto& mnpair : mapMasternodes) {
+                        CMasternode mn = mnpair.second;
+                        masternode_info_t infoMn;	    
+                        std::string strOutpoint = mnpair.first.ToStringShort();
+                        bool fFound = mnodeman.GetMasternodeInfo(mnpair.first, infoMn);          
+                        std::string payee =  EncodeDestination(mn.pubKeyCollateralAddress.GetID()); 
+                        CScript payee1 = GetScriptForDestination(mn.pubKeyCollateralAddress.GetID());
+                        CScript scriptCollateralAddress = GetScriptForDestination(mnpair.second.pubKeyCollateralAddress.GetID());
+                        
+                        if(scriptCollateralAddress == tx.vout[i].scriptPubKey)
+                        {
+                            std::string add = EncodeDestination(tx.vout[i].scriptPubKey);
+                            std::string add2 = EncodeDestination(scriptCollateralAddress);
+                            if(CMasternode::CheckCollateralForPayment(mn.vin.prevout))
+                            {
+                                //passed collateral check
+                                LogPrintf("Validation pass: tx.vout[i].scriptPubKey.ToString() %s %s\n", add, add2);
+                            }
+                            else
+                            {
+                                //failed collateral check
+                                LogPrintf("Validation fail: tx.vout[i].scriptPubKey.ToString() %s %s\n", add, add2);
+                                return state.DoS(100, error("ConnectBlock(): coinbase pays non masternode ",
+                               add),
+                               REJECT_INVALID, "bad-masternode-cb-count");
+                            }                           
+                        }
+                    }
+                    
+                        
+                }
+                if(tx.vout[i].nValue == blockReward)
+                {
+                    nMinerOutputs = nMinerOutputs + 1;
+                    LogPrintf("Validation: nMiner outputs count=%d i=%d nValue=%d blockreward=%d\n", 
+                            nMinerOutputs, i, tx.vout[i].nValue, blockReward);
+                }
+                if(tx.vout[i].nValue > blockReward)
+                {
+                    return state.DoS(100, error("ConnectBlock(): coinbase pays too much"), REJECT_INVALID, "bad-miner-cb-amount");
+        
+                    LogPrintf("Validation: Miner reward too large i=%d nValue=%d blockreward=%d\n", 
+                            nMinerOutputs, i, tx.vout[i].nValue, blockReward);
+                }
+                if(i > 0 && tx.vout[i].nValue > masternodePayment)
+                {
+                    return state.DoS(100, error("ConnectBlock(): mn coinbase pays too much"), REJECT_INVALID, "bad-masternode-cb-amount");
+        
+                    LogPrintf("Validation: Masternode reward too large i=%d nValue=%d masternodePaymennt=%d\n", 
+                            nMinerOutputs, i, tx.vout[i].nValue, masternodePayment);
+                }
+                
+            }
+            LogPrintf("Validation: tx->GetValueOut() %d\n", tx.GetValueOut());
+           
         }
     }
-    else
-    {
-        if (block.vtx[0]->GetValueOut() > blockReward)
-        return state.DoS(100,
-                         error("ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)",
-                               block.vtx[0]->GetValueOut(), blockReward),
-                               REJECT_INVALID, "bad-cb-amount");
+    //if coinbase, check miner reward as vtx[0]-first output only
+    if (nMinerOutputs > 1)
+    {   //validation fail - too many miner outputs
+        return state.DoS(100, error("ConnectBlock(): coinbase pays miner too many times"), REJECT_INVALID, "bad-miner-cb-count");
+        LogPrintf("Validation: nMinerOutput > 1 %d\n", nMinerOutputs);
     }
+    nMinerOutputs = 0;
     
     
-   
-        mnodeman.UpdateLastPaid(pindex);
     
-
-    
-
-    // DASH : MODIFIED TO CHECK MASTERNODE PAYMENTS AND SUPERBLOCKS
-
-    // It's possible that we simply don't have enough data and this could fail
-    // (i.e. block itself could be a correct one and we need to store it),
-    // that's why this is in ConnectBlock. Could be the other way around however -
-    // the peer who sent us this block is missing some data and wasn't able
-    // to recognize that block is actually invalid.
-    // TODO: resync data (both ways?) and try to reprocess this block later.
-    //CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, pindex->GetBlockHeader(), chainparams.GetConsensus());
-    std::string strError = "";
-    if (!IsBlockValueValid(block, pindex->nHeight, block.vtx[0]->GetValueOut(), strError)) {
-        return state.DoS(0, error("ConnectBlock(DASH): %s", strError), REJECT_INVALID, "bad-cb-amount");
-    }
-
-    if (!IsBlockPayeeValid(block.vtx[0], pindex->nHeight, block.vtx[0]->GetValueOut(), pindex->GetBlockHeader())) {
-        mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
-        return state.DoS(0, error("ConnectBlock(DASH): couldn't find masternode or superblock payments"),
-                                REJECT_INVALID, "bad-cb-payee");
-    }
-    // END DASH
-
     if (!control.Wait())
         return state.DoS(100, error("%s: CheckQueue failed", __func__), REJECT_INVALID, "block-validation-failed");
     int64_t nTime4 = GetTimeMicros(); nTimeVerify += nTime4 - nTime2;

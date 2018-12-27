@@ -2706,7 +2706,13 @@ void CWallet::AvailableCoins(std::vector<COutput> &vCoins, bool fOnlySafe, const
                 } else if(nCoinType == ONLY_MASTERNODE_COLLATERAL) {
                     // EXOSIS BEGIN
                     //found = pcoin->tx->vout[i].nValue == 1000*COIN;
+                    if (nDepth > 14){
                     found = CMasternode::CheckCollateral(COutPoint(pcoin->GetHash(),i)) == CMasternode::COLLATERAL_OK;
+                    }
+                    else
+                    {
+                        found = false;
+                    }
                     // EXOSIS END
                 } else if(nCoinType == ONLY_PRIVATESEND_COLLATERAL) {
                     found = CPrivateSend::IsCollateralAmount(pcoin->tx->vout[i].nValue);

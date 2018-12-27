@@ -194,6 +194,8 @@ public:
     //! (memory only) Total amount of work (expected number of hashes) in the chain up to and including this block
     arith_uint256 nChainWork;
 
+    
+    
     // EXOSIS BEGIN
     //! (memory only) Total amount of work normalized to algorithm efficiency
     arith_uint256 nChainWorkSha256d;
@@ -228,6 +230,9 @@ public:
 
     //! (memory only) Maximum nTime in the chain up to and including this block.
     unsigned int nTimeMax;
+    
+    //keeping track of coinbase
+    int64_t nMoneySupply;
 
     void SetNull()
     {
@@ -258,6 +263,7 @@ public:
         nTime          = 0;
         nBits          = 0;
         nNonce         = 0;
+        nMoneySupply = 0;
     }
 
     CBlockIndex()
@@ -274,6 +280,7 @@ public:
         nTime          = block.nTime;
         nBits          = block.nBits;
         nNonce         = block.nNonce;
+        nMoneySupply   = block.nMoneySupply;
     }
 
     CDiskBlockPos GetBlockPos() const {
@@ -304,6 +311,7 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
+        block.nMoneySupply   = nMoneySupply;
         return block;
     }
 
@@ -322,6 +330,11 @@ public:
     int64_t GetBlockTimeMax() const
     {
         return (int64_t)nTimeMax;
+    }
+    
+    int64_t GetMoneySupply() const
+    {
+        return (int64_t) nMoneySupply;
     }
 
     static constexpr int nMedianTimeSpan = 11;
@@ -342,10 +355,11 @@ public:
 
     std::string ToString() const
     {
-        return strprintf("CBlockIndex(pprev=%p, nHeight=%d, merkle=%s, hashBlock=%s)",
+        return strprintf("CBlockIndex(pprev=%p, nHeight=%d, merkle=%s, hashBlock=%s, nMoneySupply=%s)",
             pprev, nHeight,
             hashMerkleRoot.ToString(),
-            GetBlockHash().ToString());
+            GetBlockHash().ToString(),
+            GetMoneySupply());
     }
 
     //! Check whether this block index entry is valid up to the passed validity level.
@@ -425,6 +439,7 @@ public:
         READWRITE(nTime);
         READWRITE(nBits);
         READWRITE(nNonce);
+        READWRITE(nMoneySupply);
     }
 
     uint256 GetBlockHash() const
@@ -436,6 +451,7 @@ public:
         block.nTime           = nTime;
         block.nBits           = nBits;
         block.nNonce          = nNonce;
+        block.nMoneySupply    = nMoneySupply;
         return block.GetHash();
     }
 

@@ -108,6 +108,29 @@ CMasternode::CollateralStatus CMasternode::CheckCollateral(const COutPoint& outp
     return CheckCollateral(outpoint, nHeight);
 }
 
+bool CMasternode::CheckCollateralForPayment(const COutPoint& outpoint)
+{
+    AssertLockHeld(cs_main);
+
+    Coin coin;
+    if(!GetUTXOCoin(outpoint, coin)) {
+        return false;
+    }
+    int nHeightRet;
+    // EXOSIS BEGIN
+    nHeightRet = coin.nHeight;
+
+    CMasternode cm;
+    //if(coin.out.nValue != 1000 * COIN) {
+    if(!cm.CollateralValueCheck(coin.nHeight,coin.out.nValue)) {
+    // EXOSIS END
+        return false;
+    }
+
+    nHeightRet = coin.nHeight;
+    return true;
+}
+
 CMasternode::CollateralStatus CMasternode::CheckCollateral(const COutPoint& outpoint, int& nHeightRet)
 {
     AssertLockHeld(cs_main);
@@ -221,7 +244,7 @@ void CMasternode::Check(bool fForce)
 
     if(fWaitForPing && !fOurMasternode) {
         // ...but if it was already expired before the initial check - return right away
-        if(IsExpired() || IsWatchdogExpired() || IsNewStartRequired()) {
+        if(IsExpired() || IsNewStartRequired()) {
             LogPrint(BCLog::MASTERNODE, "CMasternode::Check -- Masternode %s is in %s state, waiting for ping\n", vin.prevout.ToStringShort(), GetStateString());
             return;
         }
@@ -244,16 +267,10 @@ void CMasternode::Check(bool fForce)
         LogPrint(BCLog::MASTERNODE, "CMasternode::Check -- outpoint=%s, nTimeLastWatchdogVote=%d, GetAdjustedTime()=%d, fWatchdogExpired=%d\n",
                 vin.prevout.ToStringShort(), nTimeLastWatchdogVote, GetAdjustedTime(), fWatchdogExpired);
 
-        if(fWatchdogExpired) {
-            nActiveState = MASTERNODE_WATCHDOG_EXPIRED;
-            if(nActiveStatePrev != nActiveState) {
-                LogPrint(BCLog::MASTERNODE, "CMasternode::Check -- Masternode %s is in %s state now\n", vin.prevout.ToStringShort(), GetStateString());
-            }
-            return;
-        }
 
         if(!IsPingedWithin(MASTERNODE_EXPIRATION_SECONDS)) {
-            nActiveState = MASTERNODE_EXPIRED;
+            //nActiveState = MASTERNODE_EXPIRED;
+            nActiveState = MASTERNODE_ENABLED;
             if(nActiveStatePrev != nActiveState) {
                 LogPrint(BCLog::MASTERNODE, "CMasternode::Check -- Masternode %s is in %s state now\n", vin.prevout.ToStringShort(), GetStateString());
             }
@@ -262,7 +279,7 @@ void CMasternode::Check(bool fForce)
     }
 
     if(lastPing.sigTime - sigTime < MASTERNODE_MIN_MNP_SECONDS) {
-        nActiveState = MASTERNODE_PRE_ENABLED;
+        nActiveState = MASTERNODE_ENABLED;
         if(nActiveStatePrev != nActiveState) {
             LogPrint(BCLog::MASTERNODE, "CMasternode::Check -- Masternode %s is in %s state now\n", vin.prevout.ToStringShort(), GetStateString());
         }
@@ -318,12 +335,10 @@ masternode_info_t CMasternode::GetInfo()
 std::string CMasternode::StateToString(int nStateIn)
 {
     switch(nStateIn) {
-        case MASTERNODE_PRE_ENABLED:            return "PRE_ENABLED";
         case MASTERNODE_ENABLED:                return "ENABLED";
         case MASTERNODE_EXPIRED:                return "EXPIRED";
         case MASTERNODE_OUTPOINT_SPENT:         return "OUTPOINT_SPENT";
         case MASTERNODE_UPDATE_REQUIRED:        return "UPDATE_REQUIRED";
-        case MASTERNODE_WATCHDOG_EXPIRED:       return "WATCHDOG_EXPIRED";
         case MASTERNODE_NEW_START_REQUIRED:     return "NEW_START_REQUIRED";
         case MASTERNODE_POSE_BAN:               return "POSE_BAN";
         default:                                return "UNKNOWN";
@@ -476,7 +491,8 @@ bool CMasternodeBroadcast::SimpleCheck(int& nDos)
     // empty ping or incorrect sigTime/unknown blockhash
     if(lastPing == CMasternodePing() || !lastPing.SimpleCheck(nDos)) {
         // one of us is probably forked or smth, just mark it as expired and check the rest of the rules
-        nActiveState = MASTERNODE_EXPIRED;
+        //nActiveState = MASTERNODE_EXPIRED;
+        nActiveState = MASTERNODE_ENABLED;
     }
 
     if(nProtocolVersion < mnpayments.GetMinMasternodePaymentsProto()) {
@@ -567,6 +583,7 @@ bool CMasternodeBroadcast::Update(CMasternode* pmn, int& nDos, CConnman& connman
 
     return true;
 }
+
 
 bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
 {
@@ -848,7 +865,7 @@ bool CMasternodePing::CheckAndUpdate(CMasternode* pmn, bool fFromNewBroadcast, i
     // force update, ignoring cache
     pmn->Check(true);
     // relay ping for nodes in ENABLED/EXPIRED/WATCHDOG_EXPIRED state only, skip everyone else
-    if (!pmn->IsEnabled() && !pmn->IsExpired() && !pmn->IsWatchdogExpired()) return false;
+    if (!pmn->IsEnabled() && !pmn->IsExpired()) return false;
 
     LogPrint(BCLog::MASTERNODE, "CMasternodePing::CheckAndUpdate -- Masternode ping acceepted and relayed, masternode=%s\n", vin.prevout.ToStringShort());
     Relay(connman);

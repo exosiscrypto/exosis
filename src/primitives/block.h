@@ -28,7 +28,7 @@ public:
     uint32_t nTime;
     uint32_t nBits;
     uint32_t nNonce;
-
+    uint64_t nMoneySupply;
     CBlockHeader()
     {
         SetNull();
@@ -44,6 +44,7 @@ public:
         READWRITE(nTime);
         READWRITE(nBits);
         READWRITE(nNonce);
+        READWRITE(nMoneySupply);
     }
 
     void SetNull()
@@ -54,6 +55,7 @@ public:
         nTime = 0;
         nBits = 0;
         nNonce = 0;
+        nMoneySupply = 0;
     }
 
     bool IsNull() const
@@ -69,6 +71,11 @@ public:
     {
         return (int64_t)nTime;
     }
+    
+    int64_t GetMoneySupply() const
+    {
+        return (int64_t)nMoneySupply;
+    }
 };
 
 
@@ -80,7 +87,6 @@ public:
 
     // memory only
     mutable CTxOut txoutMasternode; // masternode payment
-    mutable std::vector<CTxOut> voutSuperblock; // superblock payment
     mutable bool fChecked;
 
     CBlock()
@@ -107,7 +113,6 @@ public:
         CBlockHeader::SetNull();
         vtx.clear();
         txoutMasternode = CTxOut();
-        voutSuperblock.clear();
         fChecked = false;
     }
 
@@ -120,6 +125,7 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
+        block.nMoneySupply   = nMoneySupply;
         return block;
     }
 

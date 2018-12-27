@@ -79,7 +79,6 @@ int64_t UpdateTime(CBlock* pblock, const Consensus::Params& consensusParams, con
             coinbaseTx.vout[0].nValue = nFees + nBlockReward;
 
             int nHeight = pindexPrev->nHeight + 1;
-            // EXOSIS TODO: add superblocks support
 
             // Update masternode reward to new value
             CScript cMasternodePayee;
@@ -169,9 +168,10 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 
     LOCK2(cs_main, mempool.cs);
     CBlockIndex* pindexPrev = chainActive.Tip();
+    LogPrintf("CreateNewBlock(): chainActive.Tip(): %s\n", chainActive.Tip());
     assert(pindexPrev != nullptr);
     nHeight = pindexPrev->nHeight + 1;
-
+	LogPrintf("CreateNewBlock(): nHeight: %d\n", nHeight);
     pblock->nVersion = ComputeBlockVersion(pindexPrev, chainparams.GetConsensus());
     // -regtest only: allow overriding block.nVersion with
     // -blockversion=N to test forking scenarios
@@ -212,14 +212,20 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
     coinbaseTx.vout[0].nValue = nFees + nBlockReward;
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
+	//LogPrintf("CreateNewBlock(): coinbaseTx.vout[0].scriptPubKey: %s\n", coinbaseTx.vout[0].scriptPubKey);
+	//LogPrintf("CreateNewBlock(): coinbaseTx.vout[0].nValue: %d\n", coinbaseTx.vout[0].nValue);
+	
+
+
 
     // Dash
-    // Update coinbase transaction with additional info about masternode and governance payments,
+    // Update coinbase transaction with additional info about masternode apayments,
     // get some info back to pass to getblocktemplate
     if (nHeight >= chainparams.GetConsensus().nMasternodePaymentsStartBlock)
-    	FillBlockPayments(coinbaseTx, nHeight, nFees + nBlockReward, pblock->txoutMasternode, pblock->voutSuperblock);
-    // LogPrintf("CreateNewBlock -- nBlockHeight %d blockReward %lld txoutMasternode %s txNew %s",
-    //             nHeight, nFees + nBlockReward, pblock->txoutMasternode.ToString(), txNew.ToString());
+    	FillBlockPayments(coinbaseTx, nHeight, nFees + nBlockReward, pblock->txoutMasternode);
+     
+	//LogPrintf("CreateNewBlock -- nBlockHeight %d blockReward %lld txoutMasternode %s coinbaseTx %s",
+        //         nHeight, nFees + nBlockReward, pblock->txoutMasternode.ToString(), coinbaseTx.ToString());
     //
 
   

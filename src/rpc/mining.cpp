@@ -27,7 +27,6 @@
 #include <warnings.h>
 #include <script/standard.h>
 
-#include <governance-classes.h>
 #include <masternode-payments.h>
 #include <masternode-sync.h>
 
@@ -375,16 +374,6 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
             "  },\n"
             "  \"masternode_payments_started\" :  true|false, (boolean) true, if masternode payments started\n"
             "  \"masternode_payments_enforced\" : true|false, (boolean) true, if masternode payments are enforced\n"
-            "  \"superblock\" : [                  (array) required superblock payees that must be included in the next block\n"
-            "      {\n"
-            "         \"payee\" : \"xxxx\",          (string) payee address\n"
-            "         \"script\" : \"xxxx\",         (string) payee scriptPubKey\n"
-            "         \"amount\": n                (numeric) required amount to pay\n"
-            "      }\n"
-            "      ,...\n"
-            "  ],\n"
-            "  \"superblocks_started\" : true|false, (boolean) true, if superblock payments started\n"
-            "  \"superblocks_enabled\" : true|false  (boolean) true, if superblock payments are enabled\n"
             "}\n"
 
             "\nExamples:\n"
@@ -475,10 +464,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
         && !mnpayments.GetBlockPayee(chainActive.Height() + 1, payee))
             throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Exosis is downloading masternode winners...");
 
-    // next bock is a superblock and we need governance info to correctly construct it
-    if (!masternodeSync.IsSynced()
-        && CSuperblock::IsValidBlockHeight(chainActive.Height() + 1))
-            throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Exosis is syncing with network...");
+   
 
     static unsigned int nTransactionsUpdatedLast;
 
@@ -722,21 +708,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     result.push_back(Pair("masternode_payments_started", pindexPrev->nHeight + 1 > consensusParams.nMasternodePaymentsStartBlock));
     result.push_back(Pair("masternode_payments_enforced", true));
 
-    UniValue superblockObjArray(UniValue::VARR);
-    if(pblock->voutSuperblock.size()) {
-        for (const auto& txout : pblock->voutSuperblock) {
-            UniValue entry(UniValue::VOBJ);
-            CTxDestination dest;
-            ExtractDestination(txout.scriptPubKey, dest);
-            entry.push_back(Pair("payee", EncodeDestination(dest).c_str()));
-            entry.push_back(Pair("script", HexStr(txout.scriptPubKey)));
-            entry.push_back(Pair("amount", txout.nValue));
-            superblockObjArray.push_back(entry);
-        }
-    }
-    result.push_back(Pair("superblock", superblockObjArray));
-    result.push_back(Pair("superblocks_started", pindexPrev->nHeight + 1 > consensusParams.nSuperblockStartBlock));
-    result.push_back(Pair("superblocks_enabled", true));
+    
 
     if (!pblocktemplate->vchCoinbaseCommitment.empty() && fSupportsSegwit) {
         result.push_back(Pair("default_witness_commitment", HexStr(pblocktemplate->vchCoinbaseCommitment.begin(), pblocktemplate->vchCoinbaseCommitment.end())));

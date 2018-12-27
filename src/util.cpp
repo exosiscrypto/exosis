@@ -627,7 +627,7 @@ fs::path GetDefaultDataDir()
     // Unix: ~/.exosis
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Exosis";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "Exosis-018";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -637,10 +637,10 @@ fs::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/Exosis";
+    return pathRet / "Library/Application Support/Exosis-018";
 #else
     // Unix
-    return pathRet / ".exosis";
+    return pathRet / ".exosis-018";
 #endif
 #endif
 }
@@ -687,6 +687,8 @@ const fs::path &GetDataDir(bool fNetSpecific)
 
     fs::path &path = fNetSpecific ? pathCachedNetSpecific : pathCached;
 
+    ClearDatadirCache();
+    
     // This can be called during exceptions by LogPrintf(), so we cache the
     // value so we don't have to do memory allocations after that.
     if (!path.empty())

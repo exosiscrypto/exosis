@@ -484,7 +484,7 @@ void ThreadCheckPrivateSend(CConnman& connman)
 
             if(nTick % (60 * 5) == 0) {
                 governance.DoMaintenance(connman);
-            }
         }
     }
+}
 }

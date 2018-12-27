@@ -1010,7 +1010,7 @@ void CMasternodeMan::CheckSameAddr()
 
         for (auto* pmn : vSortedByAddr) {
             // check only (pre)enabled masternodes
-            if(!pmn->IsEnabled() && !pmn->IsPreEnabled()) continue;
+            if(!pmn->IsEnabled()) continue;
             // initial step
             if(!pprevMasternode) {
                 pprevMasternode = pmn;
@@ -1456,10 +1456,10 @@ void CMasternodeMan::UpdateLastPaid(const CBlockIndex* pindex)
 
     if(fLiteMode || !masternodeSync.IsWinnersListSynced() || mapMasternodes.empty()) return;
 
-    
+    static bool IsFirstRun = true;
     // Do full scan on first run or if we are not a masternode
     // (MNs should update this info on every block, so limited scan should be enough for them)
-    int nMaxBlocksToScanBack = 5;
+    int nMaxBlocksToScanBack = 10;//(IsFirstRun || !fMasterNode) ? mnpayments.GetStorageLimit() : LAST_PAID_SCAN_BLOCKS;
 
     // LogPrint("mnpayments", "CMasternodeMan::UpdateLastPaid -- nHeight=%d, nMaxBlocksToScanBack=%d, IsFirstRun=%s\n",
     //                         nCachedBlockHeight, nMaxBlocksToScanBack, IsFirstRun ? "true" : "false");
@@ -1468,9 +1468,8 @@ void CMasternodeMan::UpdateLastPaid(const CBlockIndex* pindex)
         mnpair.second.UpdateLastPaid(pindex, nMaxBlocksToScanBack);
     }
 
-   
+    IsFirstRun = false;
 }
-
 
 void CMasternodeMan::UpdateWatchdogVoteTime(const COutPoint& outpoint, uint64_t nVoteTime)
 {
@@ -1581,8 +1580,9 @@ void CMasternodeMan::NotifyMasternodeUpdates(CConnman& connman)
     if(fMasternodesRemovedLocal) {
         governance.UpdateCachesAndClean();
     }
-
+   
     LOCK(cs);
     fMasternodesAdded = false;
     fMasternodesRemoved = false;
 }
+

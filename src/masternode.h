@@ -140,12 +140,10 @@ private:
 
 public:
     enum state {
-        MASTERNODE_PRE_ENABLED,
         MASTERNODE_ENABLED,
         MASTERNODE_EXPIRED,
         MASTERNODE_OUTPOINT_SPENT,
         MASTERNODE_UPDATE_REQUIRED,
-        MASTERNODE_WATCHDOG_EXPIRED,
         MASTERNODE_NEW_START_REQUIRED,
         MASTERNODE_POSE_BAN
     };
@@ -169,6 +167,7 @@ public:
 
     // KEEP TRACK OF GOVERNANCE ITEMS EACH MASTERNODE HAS VOTE UPON FOR RECALCULATION
     std::map<uint256, int> mapGovernanceObjectsVotedOn;
+
 
     CMasternode();
     CMasternode(const CMasternode& other);
@@ -209,7 +208,7 @@ public:
 
     static CollateralStatus CheckCollateral(const COutPoint& outpoint);
     static CollateralStatus CheckCollateral(const COutPoint& outpoint, int& nHeightRet);
-
+    static bool CheckCollateralForPayment(const COutPoint& outpoint);
     // EXOSIS BEGIN
     bool CollateralValueCheck(int nHeight, CAmount TxValue);
     CAmount CollateralValue(int nHeight);
@@ -230,22 +229,18 @@ public:
     }
 
     bool IsEnabled() { return nActiveState == MASTERNODE_ENABLED; }
-    bool IsPreEnabled() { return nActiveState == MASTERNODE_PRE_ENABLED; }
     bool IsPoSeBanned() { return nActiveState == MASTERNODE_POSE_BAN; }
     // NOTE: this one relies on nPoSeBanScore, not on nActiveState as everything else here
     bool IsPoSeVerified() { return nPoSeBanScore <= -MASTERNODE_POSE_BAN_MAX_SCORE; }
     bool IsExpired() { return nActiveState == MASTERNODE_EXPIRED; }
     bool IsOutpointSpent() { return nActiveState == MASTERNODE_OUTPOINT_SPENT; }
     bool IsUpdateRequired() { return nActiveState == MASTERNODE_UPDATE_REQUIRED; }
-    bool IsWatchdogExpired() { return nActiveState == MASTERNODE_WATCHDOG_EXPIRED; }
     bool IsNewStartRequired() { return nActiveState == MASTERNODE_NEW_START_REQUIRED; }
 
     static bool IsValidStateForAutoStart(int nActiveStateIn)
     {
         return  nActiveStateIn == MASTERNODE_ENABLED ||
-                nActiveStateIn == MASTERNODE_PRE_ENABLED ||
-                nActiveStateIn == MASTERNODE_EXPIRED ||
-                nActiveStateIn == MASTERNODE_WATCHDOG_EXPIRED;
+                nActiveStateIn == MASTERNODE_EXPIRED;
     }
 
     bool IsValidForPayment()
@@ -253,10 +248,7 @@ public:
         if(nActiveState == MASTERNODE_ENABLED) {
             return true;
         }
-        if(!sporkManager.IsSporkActive(SPORK_14_REQUIRE_SENTINEL_FLAG) &&
-           (nActiveState == MASTERNODE_WATCHDOG_EXPIRED)) {
-            return true;
-        }
+        
 
         return false;
     }
@@ -285,7 +277,7 @@ public:
     void AddGovernanceVote(uint256 nGovernanceObjectHash);
     // RECALCULATE CACHED STATUS FLAGS FOR ALL AFFECTED OBJECTS
     void FlagGovernanceItemsAsDirty();
-
+  
     void RemoveGovernanceObject(uint256 nGovernanceObjectHash);
 
     void UpdateWatchdogVoteTime(uint64_t nVoteTime = 0);
@@ -361,7 +353,7 @@ public:
     bool SimpleCheck(int& nDos);
     bool Update(CMasternode* pmn, int& nDos, CConnman& connman);
     bool CheckOutpoint(int& nDos);
-
+    
     bool Sign(const CKey& keyCollateralAddress);
     bool CheckSignature(int& nDos);
     void Relay(CConnman& connman);

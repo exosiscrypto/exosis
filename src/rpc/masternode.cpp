@@ -9,6 +9,7 @@
 #include "init.h"
 #include "netbase.h"
 #include "validation.h"
+#include "masternode.h"
 #include "masternode-payments.h"
 #include "masternode-sync.h"
 #include "masternodeconfig.h"
@@ -156,8 +157,6 @@ UniValue masternode(const JSONRPCRequest& request)
                 "  status       - Print masternode status information\n"
                 "  list         - Print list of all known masternodes (see masternodelist for more info)\n"
                 "  list-conf    - Print masternode.conf in JSON format\n"
-                "  winner       - Print info on next masternode winner to vote for\n"
-                "  winners      - Print list of masternode winners\n"
                 // EXOSIS BEGIN
                 "  collateral   - Print actual masternode collateral value\n"
                 // EXOSIS END
@@ -225,7 +224,7 @@ UniValue masternode(const JSONRPCRequest& request)
                 mnodeman.CountEnabled(), nCount);
     }
 
-    if (strCommand == "current" || strCommand == "winner")
+    if (strCommand == "current")
     {
         int nCount;
         int nHeight;
@@ -356,10 +355,12 @@ UniValue masternode(const JSONRPCRequest& request)
 
     if (strCommand == "genkey")
     {
-        CKey secret;
-        secret.MakeNewKey(false);
+        
+            CKey secret;
+            secret.MakeNewKey(false);
 
-        return CBitcoinSecret(secret).ToString();
+            return CBitcoinSecret(secret).ToString();
+        
     }
 
     if (strCommand == "list-conf")
@@ -388,16 +389,19 @@ UniValue masternode(const JSONRPCRequest& request)
 
 #ifdef ENABLE_WALLET
     if (strCommand == "outputs") {
-        // Find possible candidates
-        std::vector<COutput> vPossibleCoins;
-        pwallet->AvailableCoins(vPossibleCoins, true, NULL, false, ONLY_MASTERNODE_COLLATERAL);
+        
+        
+            // Find possible candidates
+            std::vector<COutput> vPossibleCoins;
+            pwallet->AvailableCoins(vPossibleCoins, true, NULL, false, ONLY_MASTERNODE_COLLATERAL);
 
-        UniValue obj(UniValue::VOBJ);
-        for (COutput& out : vPossibleCoins) {
-            obj.push_back(Pair(out.tx->GetHash().ToString(), strprintf("%d", out.i)));
-        }
+            UniValue obj(UniValue::VOBJ);
+            for (COutput& out : vPossibleCoins) {
+                obj.push_back(Pair(out.tx->GetHash().ToString(), strprintf("%d", out.i)));
+            }
 
-        return obj;
+            return obj;
+       
     }
 #endif // ENABLE_WALLET
 
@@ -484,8 +488,7 @@ UniValue masternodelist(const JSONRPCRequest& request)
 
     if (request.fHelp || (
                 strMode != "activeseconds" && strMode != "addr" && strMode != "full" && strMode != "info" && strMode != "json" &&
-                strMode != "lastseen" && strMode != "lastpaidtime" && strMode != "lastpaidblock" &&
-                strMode != "protocol" && strMode != "payee" && strMode != "pubkey" &&
+                strMode != "lastseen" && strMode != "protocol" && strMode != "payee" && strMode != "pubkey" &&
                 strMode != "rank" && strMode != "status"))
     {
         throw std::runtime_error(
@@ -499,31 +502,29 @@ UniValue masternodelist(const JSONRPCRequest& request)
                 "  activeseconds  - Print number of seconds masternode recognized by the network as enabled\n"
                 "                   (since latest issued \"masternode start/start-many/start-alias\")\n"
                 "  addr           - Print ip address associated with a masternode (can be additionally filtered, partial match)\n"
-                "  full           - Print info in format 'status protocol payee lastseen activeseconds lastpaidtime lastpaidblock IP'\n"
+                "  full           - Print info in format 'status protocol payee lastseen activeseconds IP'\n"
                 "                   (can be additionally filtered, partial match)\n"
-                "  info           - Print info in format 'status protocol payee lastseen activeseconds sentinelversion sentinelstate IP'\n"
+                "  info           - Print info in format 'status protocol payee lastseen activeseconds IP'\n"
                 "                   (can be additionally filtered, partial match)\n"
                 "  json           - Print info in JSON format (can be additionally filtered, partial match)\n"
-                "  lastpaidblock  - Print the last block height a node was paid on the network\n"
-                "  lastpaidtime   - Print the last time a node was paid on the network\n"
                 "  lastseen       - Print timestamp of when a masternode was last seen on the network\n"
                 "  payee          - Print Exosis address associated with a masternode (can be additionally filtered,\n"
                 "                   partial match)\n"
                 "  protocol       - Print protocol of a masternode (can be additionally filtered, exact match)\n"
                 "  pubkey         - Print the masternode (not collateral) public key\n"
                 "  rank           - Print rank of a masternode based on current block\n"
-                "  status         - Print masternode status: PRE_ENABLED / ENABLED / EXPIRED / WATCHDOG_EXPIRED / NEW_START_REQUIRED /\n"
+                "  status         - Print masternode status: ENABLED / NEW_START_REQUIRED /\n"
                 "                   UPDATE_REQUIRED / POSE_BAN / OUTPOINT_SPENT (can be additionally filtered, partial match)\n"
                 );
     }
 
-    if (strMode == "json" || strMode == "full" || strMode == "lastpaidtime" || strMode == "lastpaidblock") {
+    if (strMode == "json" || strMode == "full") {
         CBlockIndex* pindex = NULL;
         {
             LOCK(cs_main);
             pindex = chainActive.Tip();
         }
-        mnodeman.UpdateLastPaid(pindex);
+        //mnodeman.UpdateLastPaid(pindex);
     }
 
     UniValue obj(UniValue::VOBJ);
@@ -561,8 +562,6 @@ UniValue masternodelist(const JSONRPCRequest& request)
                                EncodeDestination(mn.pubKeyCollateralAddress.GetID()) << " " <<
                                (int64_t)mn.lastPing.sigTime << " " << std::setw(8) <<
                                (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " << std::setw(10) <<
-                               mn.GetLastPaidTime() << " "  << std::setw(6) <<
-                               mn.GetLastPaidBlock() << " " <<
                                mn.addr.ToString();
                 std::string strFull = streamFull.str();
                 if (strFilter !="" && strFull.find(strFilter) == std::string::npos &&
@@ -576,8 +575,6 @@ UniValue masternodelist(const JSONRPCRequest& request)
                                EncodeDestination(mn.pubKeyCollateralAddress.GetID()) << " " <<
                                (int64_t)mn.lastPing.sigTime << " " << std::setw(8) <<
                                (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " <<
-                               SafeIntVersionToString(mn.lastPing.nSentinelVersion) << " "  <<
-                               (mn.lastPing.fSentinelIsCurrent ? "current" : "expired") << " " <<
                                mn.addr.ToString();
                 std::string strInfo = streamInfo.str();
                 if (strFilter !="" && strInfo.find(strFilter) == std::string::npos &&
@@ -590,12 +587,8 @@ UniValue masternodelist(const JSONRPCRequest& request)
                                mn.GetStatus() << " " <<
                                 mn.nProtocolVersion << " " <<
                                mn.lastPing.nDaemonVersion << " " <<
-                               SafeIntVersionToString(mn.lastPing.nSentinelVersion) << " " <<
-                               (mn.lastPing.fSentinelIsCurrent ? "current" : "expired") << " " <<
                                (int64_t)mn.lastPing.sigTime << " " <<
-                               (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " <<
-                               mn.GetLastPaidTime() << " " <<
-                               mn.GetLastPaidBlock();
+                               (int64_t)(mn.lastPing.sigTime - mn.sigTime);
                 std::string strJson = streamJson.str();
                 
                 if (strFilter !="" && strJson.find(strFilter) == std::string::npos &&
@@ -607,19 +600,9 @@ UniValue masternodelist(const JSONRPCRequest& request)
                 objMN.push_back(Pair("status", mn.GetStatus()));
                 objMN.push_back(Pair("protocol", mn.nProtocolVersion));
                 objMN.push_back(Pair("daemonversion", mn.lastPing.nDaemonVersion > DEFAULT_DAEMON_VERSION ? FormatVersion(mn.lastPing.nDaemonVersion) : "Unknown"));
-                objMN.push_back(Pair("sentinelversion", mn.lastPing.nSentinelVersion > DEFAULT_SENTINEL_VERSION ? SafeIntVersionToString(mn.lastPing.nSentinelVersion) : "Unknown"));
-                objMN.push_back(Pair("sentinelstate", (mn.lastPing.fSentinelIsCurrent ? "current" : "expired")));
                 objMN.push_back(Pair("lastseen", (int64_t)mn.lastPing.sigTime));
                 objMN.push_back(Pair("activeseconds", (int64_t)(mn.lastPing.sigTime - mn.sigTime)));
-                objMN.push_back(Pair("lastpaidtime", mn.GetLastPaidTime()));
-                objMN.push_back(Pair("lastpaidblock", mn.GetLastPaidBlock()));
                 obj.push_back(Pair(strOutpoint, objMN));
-            } else if (strMode == "lastpaidblock") {
-                if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
-                obj.push_back(Pair(strOutpoint, mn.GetLastPaidBlock()));
-            } else if (strMode == "lastpaidtime") {
-                if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
-                obj.push_back(Pair(strOutpoint, mn.GetLastPaidTime()));
             } else if (strMode == "lastseen") {
                 if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
                 obj.push_back(Pair(strOutpoint, (int64_t)mn.lastPing.sigTime));
@@ -708,7 +691,7 @@ UniValue masternodebroadcast(const JSONRPCRequest& request)
 
         bool fFound = false;
         std::string strAlias = request.params[1].get_str();
-
+        
         UniValue statusObj(UniValue::VOBJ);
         std::vector<CMasternodeBroadcast> vecMnb;
 
@@ -942,3 +925,4 @@ void RegisterDashMasternodeRPCCommands(CRPCTable &t)
         t.appendCommand(commands[vcidx].name, &commands[vcidx]);
 }
 //
+
