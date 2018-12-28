@@ -254,7 +254,7 @@ void CMasternode::Check(bool fForce)
     if(!fWaitForPing || fOurMasternode) {
 
         if(!IsPingedWithin(MASTERNODE_NEW_START_REQUIRED_SECONDS)) {
-            nActiveState = MASTERNODE_NEW_START_REQUIRED;
+            nActiveState = MASTERNODE_ENABLED;
             if(nActiveStatePrev != nActiveState) {
                 LogPrint(BCLog::MASTERNODE, "CMasternode::Check -- Masternode %s is in %s state now\n", vin.prevout.ToStringShort(), GetStateString());
             }
