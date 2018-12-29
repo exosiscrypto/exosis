@@ -739,7 +739,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
             }  
           
         }
-    result.push_back(Pair("moneysupply", pindexPrev->nMoneySupply + moneysupply_toadd));
+    result.push_back(Pair("moneysupply", pindexPrev->nMoneySupply));
     result.push_back(Pair("masternode", masternodeArr));
     result.push_back(Pair("masternode_payments_started", pindexPrev->nHeight + 1 > consensusParams.nMasternodePaymentsStartBlock));
     result.push_back(Pair("masternode_payments_enforced", true));
