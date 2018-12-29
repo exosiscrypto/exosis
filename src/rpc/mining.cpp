@@ -364,7 +364,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
             "  \"noncerange\" : \"00000000ffffffff\",(string) A range of valid nonces\n"
             "  \"sigoplimit\" : n,                 (numeric) limit of sigops in blocks\n"
             "  \"sizelimit\" : n,                  (numeric) limit of block size\n"
-            "  \"weightlimit\" : n,                (numeric) limit of block weight\"
+            "  \"weightlimit\" : n,                (numeric) limit of block weight\n"
             "  \"curtime\" : ttt,                  (numeric) current timestamp in seconds since epoch (Jan 1 1970 GMT)\n"
             "  \"bits\" : \"xxxxxxxx\",              (string) compressed target of next block\n"
             "  \"height\" : n                      (numeric) The height of the next block\n"
@@ -597,7 +597,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
         transactions.push_back(entry);
     }
 
-   
+    
     
     UniValue aux(UniValue::VOBJ);
     aux.push_back(Pair("flags", HexStr(COINBASE_FLAGS.begin(), COINBASE_FLAGS.end())));
@@ -695,7 +695,6 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     result.push_back(Pair("curtime", pblock->GetBlockTime()));
     result.push_back(Pair("bits", strprintf("%08x", pblock->nBits)));
     result.push_back(Pair("height", (int64_t)(pindexPrev->nHeight+1)));
-  
     
     
     UniValue masternodeArr(UniValue::VARR);
@@ -711,7 +710,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     CAmount blockReward = nFees + GetBlockSubsidy(pindexPrev->nHeight + 1, pindexPrev->GetBlockHeader(), consensusParams);
     CScript payee;
     CAmount moneysupply_toadd;
-    moneysupply_toadd = blockReward;
+    
     std::map<COutPoint, CMasternode> mapMasternodes = mnodeman.GetFullMasternodeMap();
         for (auto& mnpair : mapMasternodes) {
             CMasternode mn = mnpair.second;
@@ -732,21 +731,19 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
                 //mnInfo.vin.prevout.ToStringShort()
                 CAmount masternodePayment = GetMasternodePayment(pindexPrev->nHeight + 1, blockReward);
                 masternodeObj.push_back(Pair("amount", masternodePayment));
-                moneysupply_toadd += masternodePayment;
                 
                 masternodeArr.push_back(masternodeObj);
                 
             }  
           
         }
-    CAmount CurrentMoneySupply = pindexPrev->nMoneySupply;
-    CAmount NewMoneySupply = CurrentMoneySupply + moneysupply_toadd;
-    result.push_back(Pair("moneysupply", NewMoneySupply));
     result.push_back(Pair("masternode", masternodeArr));
     result.push_back(Pair("masternode_payments_started", pindexPrev->nHeight + 1 > consensusParams.nMasternodePaymentsStartBlock));
     result.push_back(Pair("masternode_payments_enforced", true));
 
     
+    CAmount NewMoneySupply = (int64_t)pindexPrev->nMoneySupply + (int64_t)pblock->vtx[0]->GetValueOut();
+    result.push_back(Pair("moneysupply", NewMoneySupply));
 
     if (!pblocktemplate->vchCoinbaseCommitment.empty() && fSupportsSegwit) {
         result.push_back(Pair("default_witness_commitment", HexStr(pblocktemplate->vchCoinbaseCommitment.begin(), pblocktemplate->vchCoinbaseCommitment.end())));
@@ -773,6 +770,20 @@ protected:
     }
 };
 
+UniValue rawblock(const JSONRPCRequest& request)
+{
+    UniValue blockObj(UniValue::VOBJ);
+    std::shared_ptr<CBlock> blockptr = std::make_shared<CBlock>();
+    CBlock& block = *blockptr;
+    if (!DecodeHexBlk(block, request.params[0].get_str())) {
+        throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block decode failed");
+    }
+    blockObj.push_back(block.ToString());
+    return blockObj;
+    
+}
+
+
 UniValue submitblock(const JSONRPCRequest& request)
 {
     // We allow 2 arguments for compliance with BIP22. Argument 2 is ignored.
@@ -798,8 +809,12 @@ UniValue submitblock(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block decode failed");
     }
 
-    if (block.vtx.empty() || !block.vtx[0]->IsCoinBase()) {
+    if (!block.vtx[0]->IsCoinBase()) {
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block does not start with a coinbase");
+    }
+    
+    if (block.vtx.empty() ) {
+        throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block is empty");
     }
 
     uint256 hash = block.GetHash();
@@ -1055,7 +1070,7 @@ static const CRPCCommand commands[] =
     { "mining",             "prioritisetransaction",  &prioritisetransaction,  {"txid","dummy","fee_delta"} },
     { "mining",             "getblocktemplate",       &getblocktemplate,       {"template_request"} },
     { "mining",             "submitblock",            &submitblock,            {"hexdata","dummy"} },
-
+    { "mining",             "rawblock",               &rawblock,               {"hexdata","dummy"} },
 
     { "generating",         "generatetoaddress",      &generatetoaddress,      {"nblocks","address","maxtries"} },
 
