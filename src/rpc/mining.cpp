@@ -368,7 +368,6 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
             "  \"curtime\" : ttt,                  (numeric) current timestamp in seconds since epoch (Jan 1 1970 GMT)\n"
             "  \"bits\" : \"xxxxxxxx\",              (string) compressed target of next block\n"
             "  \"height\" : n                      (numeric) The height of the next block\n"
-            "  \"moneysupply\" : n,                (numeric) total coinbase in chain\n"
             "  \"masternode\" : {                  (json object) required masternode payee that must be included in the next block\n"
             "      \"payee\" : \"xxxx\",             (string) payee address\n"
             "      \"script\" : \"xxxx\",            (string) payee scriptPubKey\n"
@@ -376,6 +375,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
             "  },\n"
             "  \"masternode_payments_started\" :  true|false, (boolean) true, if masternode payments started\n"
             "  \"masternode_payments_enforced\" : true|false, (boolean) true, if masternode payments are enforced\n"
+            "  \"moneysupply\" : n,                (numeric) total coinbase in chain\n"
             "}\n"
 
             "\nExamples:\n"
@@ -732,14 +732,16 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
                 //mnInfo.vin.prevout.ToStringShort()
                 CAmount masternodePayment = GetMasternodePayment(pindexPrev->nHeight + 1, blockReward);
                 masternodeObj.push_back(Pair("amount", masternodePayment));
-                moneysupply_toadd = moneysupply_toadd + masternodePayment;
+                moneysupply_toadd += masternodePayment;
                 
                 masternodeArr.push_back(masternodeObj);
                 
             }  
           
         }
-    result.push_back(Pair("moneysupply", pindexPrev->nMoneySupply));
+    CAmount CurrentMoneySupply = pindexPrev->nMoneySupply;
+    CAmount NewMoneySupply = CurrentMoneySupply + moneysupply_toadd;
+    result.push_back(Pair("moneysupply", NewMoneySupply));
     result.push_back(Pair("masternode", masternodeArr));
     result.push_back(Pair("masternode_payments_started", pindexPrev->nHeight + 1 > consensusParams.nMasternodePaymentsStartBlock));
     result.push_back(Pair("masternode_payments_enforced", true));
