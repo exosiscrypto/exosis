@@ -364,10 +364,11 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
             "  \"noncerange\" : \"00000000ffffffff\",(string) A range of valid nonces\n"
             "  \"sigoplimit\" : n,                 (numeric) limit of sigops in blocks\n"
             "  \"sizelimit\" : n,                  (numeric) limit of block size\n"
-            "  \"weightlimit\" : n,                (numeric) limit of block weight\n"
+            "  \"weightlimit\" : n,                (numeric) limit of block weight\"
             "  \"curtime\" : ttt,                  (numeric) current timestamp in seconds since epoch (Jan 1 1970 GMT)\n"
             "  \"bits\" : \"xxxxxxxx\",              (string) compressed target of next block\n"
             "  \"height\" : n                      (numeric) The height of the next block\n"
+            "  \"moneysupply\" : n,                (numeric) total coinbase in chain\n"
             "  \"masternode\" : {                  (json object) required masternode payee that must be included in the next block\n"
             "      \"payee\" : \"xxxx\",             (string) payee address\n"
             "      \"script\" : \"xxxx\",            (string) payee scriptPubKey\n"
@@ -596,6 +597,8 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
         transactions.push_back(entry);
     }
 
+   
+    
     UniValue aux(UniValue::VOBJ);
     aux.push_back(Pair("flags", HexStr(COINBASE_FLAGS.begin(), COINBASE_FLAGS.end())));
 
@@ -693,6 +696,8 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     result.push_back(Pair("bits", strprintf("%08x", pblock->nBits)));
     result.push_back(Pair("height", (int64_t)(pindexPrev->nHeight+1)));
   
+    result.push_back(Pair("moneysupply", pindexPrev->nMoneySupply));
+    
     UniValue masternodeArr(UniValue::VARR);
     UniValue masternodeObj(UniValue::VOBJ);
     //if(pblock->txoutMasternode != CTxOut()) {
