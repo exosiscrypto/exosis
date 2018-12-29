@@ -29,6 +29,7 @@
 
 #include <masternode-payments.h>
 #include <masternode-sync.h>
+#include <masternodeman.h>
 
 #include <memory>
 #include <stdint.h>
@@ -458,12 +459,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     if (IsInitialBlockDownload())
         throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Exosis is downloading blocks...");
   
-    // when enforcement is on we need information about a masternode payee or otherwise our block is going to be orphaned by the network
-    CScript payee;
-    if (!masternodeSync.IsWinnersListSynced()
-        && !mnpayments.GetBlockPayee(chainActive.Height() + 1, payee))
-            throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Exosis is downloading masternode winners...");
-
+    
    
 
     static unsigned int nTransactionsUpdatedLast;
@@ -560,7 +556,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     const bool fPreSegWit = (THRESHOLD_ACTIVE != VersionBitsState(pindexPrev, consensusParams, Consensus::DEPLOYMENT_SEGWIT, versionbitscache));
 
     UniValue aCaps(UniValue::VARR); aCaps.push_back("proposal");
-
+    CAmount nFees;
     UniValue transactions(UniValue::VARR);
     std::map<uint256, int64_t> setTxIndex;
     int i = 0;
@@ -588,6 +584,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
 
         int index_in_template = i - 1;
         entry.push_back(Pair("fee", pblocktemplate->vTxFees[index_in_template]));
+        nFees = pblocktemplate->vTxFees[index_in_template];
         int64_t nTxSigOps = pblocktemplate->vTxSigOpsCost[index_in_template];
         if (fPreSegWit) {
             assert(nTxSigOps % WITNESS_SCALE_FACTOR == 0);
@@ -696,15 +693,45 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     result.push_back(Pair("bits", strprintf("%08x", pblock->nBits)));
     result.push_back(Pair("height", (int64_t)(pindexPrev->nHeight+1)));
   
+    UniValue masternodeArr(UniValue::VARR);
     UniValue masternodeObj(UniValue::VOBJ);
-    if(pblock->txoutMasternode != CTxOut()) {
-        CTxDestination dest;
-        ExtractDestination(pblock->txoutMasternode.scriptPubKey, dest);
-        masternodeObj.push_back(Pair("payee", EncodeDestination(dest).c_str()));
-        masternodeObj.push_back(Pair("script", HexStr(pblock->txoutMasternode.scriptPubKey)));
-        masternodeObj.push_back(Pair("amount", pblock->txoutMasternode.nValue));
-    }
-    result.push_back(Pair("masternode", masternodeObj));
+    //if(pblock->txoutMasternode != CTxOut()) {
+    //    CTxDestination dest;
+    //    ExtractDestination(pblock->txoutMasternode.scriptPubKey, dest);
+    //    masternodeObj.push_back(Pair("payee", EncodeDestination(dest).c_str()));
+    //    masternodeObj.push_back(Pair("script", HexStr(pblock->txoutMasternode.scriptPubKey)));
+    //    masternodeObj.push_back(Pair("amount", pblock->txoutMasternode.nValue));
+    //}
+    
+    CAmount blockReward = nFees + GetBlockSubsidy(pindexPrev->nHeight + 1, pindexPrev->GetBlockHeader(), consensusParams);
+    CScript payee;
+    std::map<COutPoint, CMasternode> mapMasternodes = mnodeman.GetFullMasternodeMap();
+        for (auto& mnpair : mapMasternodes) {
+            CMasternode mn = mnpair.second;
+            masternode_info_t infoMn;
+         
+            bool fFound = mnodeman.GetMasternodeInfo(mnpair.first, infoMn);
+
+            if(CMasternode::CheckCollateralForPayment(mn.vin.prevout))
+            {
+                payee = GetScriptForDestination(infoMn.pubKeyCollateralAddress.GetID());
+                CTxDestination address1;
+                ExtractDestination(payee, address1);
+                std::string address2 = EncodeDestination(address1);
+                masternodeObj.push_back(Pair("payee", address2));
+                //txoutMasternodeRet = CTxOut(masternodePayment, payee);
+                //txNew.vout.push_back(txoutMasternodeRet);
+                masternodeObj.push_back(Pair("script", mn.vin.prevout.ToStringShort()));
+                //mnInfo.vin.prevout.ToStringShort()
+                CAmount masternodePayment = GetMasternodePayment(pindexPrev->nHeight + 1, blockReward);
+                masternodeObj.push_back(Pair("amount", masternodePayment));
+                
+                masternodeArr.push_back(masternodeObj);
+                
+            }  
+          
+        }
+    result.push_back(Pair("masternode", masternodeArr));
     result.push_back(Pair("masternode_payments_started", pindexPrev->nHeight + 1 > consensusParams.nMasternodePaymentsStartBlock));
     result.push_back(Pair("masternode_payments_enforced", true));
 
