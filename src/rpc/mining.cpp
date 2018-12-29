@@ -696,7 +696,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     result.push_back(Pair("bits", strprintf("%08x", pblock->nBits)));
     result.push_back(Pair("height", (int64_t)(pindexPrev->nHeight+1)));
   
-    result.push_back(Pair("moneysupply", pindexPrev->nMoneySupply));
+    
     
     UniValue masternodeArr(UniValue::VARR);
     UniValue masternodeObj(UniValue::VOBJ);
@@ -710,6 +710,8 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     
     CAmount blockReward = nFees + GetBlockSubsidy(pindexPrev->nHeight + 1, pindexPrev->GetBlockHeader(), consensusParams);
     CScript payee;
+    CAmount moneysupply_toadd;
+    moneysupply_toadd = blockReward;
     std::map<COutPoint, CMasternode> mapMasternodes = mnodeman.GetFullMasternodeMap();
         for (auto& mnpair : mapMasternodes) {
             CMasternode mn = mnpair.second;
@@ -730,12 +732,14 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
                 //mnInfo.vin.prevout.ToStringShort()
                 CAmount masternodePayment = GetMasternodePayment(pindexPrev->nHeight + 1, blockReward);
                 masternodeObj.push_back(Pair("amount", masternodePayment));
+                moneysupply_toadd = moneysupply_toadd + masternodePayment;
                 
                 masternodeArr.push_back(masternodeObj);
                 
             }  
           
         }
+    result.push_back(Pair("moneysupply", pindexPrev->nMoneySupply + moneysupply_toadd));
     result.push_back(Pair("masternode", masternodeArr));
     result.push_back(Pair("masternode_payments_started", pindexPrev->nHeight + 1 > consensusParams.nMasternodePaymentsStartBlock));
     result.push_back(Pair("masternode_payments_enforced", true));
