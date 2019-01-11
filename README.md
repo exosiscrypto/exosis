@@ -7,19 +7,19 @@ https://www.exosis.org
 - Default RPC Port: 12331
 
 ## Exosis Platforms:
-- https://explorer.exosis.org/
-- https://www.exosis.live/
-- https://forum.exosis.org/
-- more coming soon.
+- [Explorer](https://explorer.exosis.org/)
+- [Virtual Masternode](https://www.exosis.live/)
+- [Forum](https://forum.exosis.org/)
+more coming soon.
 
 ## Explorer:
-- https://explorer.exosis.org/
-- https://www.blockexperts.com/exo
+- [Exosis Explorer](https://explorer.exosis.org/)
+- [Blockexperts Explorer](https://www.blockexperts.com/exo)
 
 ## Community:
-- https://t.me/exosis
-- https://discordapp.com/invite/YEkbtGu
-- https://twitter.com/Exosiscrypto
-- https://www.facebook.com/exosiscrypto
-- https://bitcointalk.org/index.php?topic=5040959
-- https://forum.exosis.org/
+- [Telegram](https://t.me/exosis)
+- [Discord](https://discordapp.com/invite/YEkbtGu)
+- [Twitter](https://twitter.com/Exosiscrypto)
+- [Facebook](https://www.facebook.com/exosiscrypto)
+- [Bitcointalk](https://bitcointalk.org/index.php?topic=5040959)
+- [Forum](https://forum.exosis.org/)
