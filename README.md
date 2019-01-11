@@ -10,7 +10,7 @@ https://www.exosis.org
 - [Explorer](https://explorer.exosis.org/)
 - [Virtual Masternode](https://www.exosis.live/)
 - [Forum](https://forum.exosis.org/)
-more coming soon.
+> more coming soon.
 
 ## Explorer:
 - [Exosis Explorer](https://explorer.exosis.org/)
