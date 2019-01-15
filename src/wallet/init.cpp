@@ -59,7 +59,7 @@ bool WalletParameterInteraction()
 {
     if (gArgs.GetBoolArg("-disablewallet", DEFAULT_DISABLE_WALLET)) {
         for (const std::string& wallet : gArgs.GetArgs("-wallet")) {
-            LogPrintf("%s: parameter interaction: -disablewallet -> ignoring -wallet=%s\n", __func__, wallet);
+            LogPrint(BCLog::ALL, "%s: parameter interaction: -disablewallet -> ignoring -wallet=%s\n", __func__, wallet);
         }
 
         return true;
@@ -69,7 +69,7 @@ bool WalletParameterInteraction()
     const bool is_multiwallet = gArgs.GetArgs("-wallet").size() > 1;
 
     if (gArgs.GetBoolArg("-blocksonly", DEFAULT_BLOCKSONLY) && gArgs.SoftSetBoolArg("-walletbroadcast", false)) {
-        LogPrintf("%s: parameter interaction: -blocksonly=1 -> setting -walletbroadcast=0\n", __func__);
+        LogPrint(BCLog::ALL, "%s: parameter interaction: -blocksonly=1 -> setting -walletbroadcast=0\n", __func__);
     }
 
     if (gArgs.GetBoolArg("-salvagewallet", false)) {
@@ -78,14 +78,14 @@ bool WalletParameterInteraction()
         }
         // Rewrite just private keys: rescan to find transactions
         if (gArgs.SoftSetBoolArg("-rescan", true)) {
-            LogPrintf("%s: parameter interaction: -salvagewallet=1 -> setting -rescan=1\n", __func__);
+            LogPrint(BCLog::ALL, "%s: parameter interaction: -salvagewallet=1 -> setting -rescan=1\n", __func__);
         }
     }
 
     bool zapwallettxes = gArgs.GetBoolArg("-zapwallettxes", false);
     // -zapwallettxes implies dropping the mempool on startup
     if (zapwallettxes && gArgs.SoftSetBoolArg("-persistmempool", false)) {
-        LogPrintf("%s: parameter interaction: -zapwallettxes enabled -> setting -persistmempool=0\n", __func__);
+        LogPrint(BCLog::ALL, "%s: parameter interaction: -zapwallettxes enabled -> setting -persistmempool=0\n", __func__);
     }
 
     // -zapwallettxes implies a rescan
@@ -94,7 +94,7 @@ bool WalletParameterInteraction()
             return InitError(strprintf("%s is only allowed with a single wallet file", "-zapwallettxes"));
         }
         if (gArgs.SoftSetBoolArg("-rescan", true)) {
-            LogPrintf("%s: parameter interaction: -zapwallettxes enabled -> setting -rescan=1\n", __func__);
+            LogPrint(BCLog::ALL, "%s: parameter interaction: -zapwallettxes enabled -> setting -rescan=1\n", __func__);
         }
     }
 
@@ -218,7 +218,7 @@ bool VerifyWallets()
         }
     }
 
-    LogPrintf("Using wallet directory %s\n", GetWalletDir().string());
+    LogPrint(BCLog::ALL, "Using wallet directory %s\n", GetWalletDir().string());
 
     uiInterface.InitMessage(_("Verifying wallet(s)..."));
 
@@ -275,7 +275,7 @@ bool VerifyWallets()
 bool OpenWallets()
 {
     if (gArgs.GetBoolArg("-disablewallet", DEFAULT_DISABLE_WALLET)) {
-        LogPrintf("Wallet disabled!\n");
+        LogPrint(BCLog::ALL, "Wallet disabled!\n");
         return true;
     }
 

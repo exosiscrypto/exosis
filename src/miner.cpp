@@ -168,10 +168,10 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 
     LOCK2(cs_main, mempool.cs);
     CBlockIndex* pindexPrev = chainActive.Tip();
-    LogPrintf("CreateNewBlock(): chainActive.Tip(): %s\n", chainActive.Tip());
+    LogPrint(BCLog::ALL, "CreateNewBlock(): chainActive.Tip(): %s\n", chainActive.Tip());
     assert(pindexPrev != nullptr);
     nHeight = pindexPrev->nHeight + 1;
-	LogPrintf("CreateNewBlock(): nHeight: %d\n", nHeight);
+	LogPrint(BCLog::ALL, "CreateNewBlock(): nHeight: %d\n", nHeight);
     pblock->nVersion = ComputeBlockVersion(pindexPrev, chainparams.GetConsensus());
     // -regtest only: allow overriding block.nVersion with
     // -blockversion=N to test forking scenarios
@@ -212,8 +212,8 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
     coinbaseTx.vout[0].nValue = nFees + nBlockReward;
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
-	//LogPrintf("CreateNewBlock(): coinbaseTx.vout[0].scriptPubKey: %s\n", coinbaseTx.vout[0].scriptPubKey);
-	//LogPrintf("CreateNewBlock(): coinbaseTx.vout[0].nValue: %d\n", coinbaseTx.vout[0].nValue);
+	//LogPrint(BCLog::ALL, "CreateNewBlock(): coinbaseTx.vout[0].scriptPubKey: %s\n", coinbaseTx.vout[0].scriptPubKey);
+	//LogPrint(BCLog::ALL, "CreateNewBlock(): coinbaseTx.vout[0].nValue: %d\n", coinbaseTx.vout[0].nValue);
 	
 
 
@@ -224,7 +224,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     if (nHeight >= chainparams.GetConsensus().nMasternodePaymentsStartBlock)
     	FillBlockPayments(coinbaseTx, nHeight, nFees + nBlockReward, pblock->txoutMasternode);
      
-	//LogPrintf("CreateNewBlock -- nBlockHeight %d blockReward %lld txoutMasternode %s coinbaseTx %s",
+	//LogPrint(BCLog::ALL, "CreateNewBlock -- nBlockHeight %d blockReward %lld txoutMasternode %s coinbaseTx %s",
         //         nHeight, nFees + nBlockReward, pblock->txoutMasternode.ToString(), coinbaseTx.ToString());
     //
 
@@ -236,8 +236,8 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     pblocktemplate->vchCoinbaseCommitment = GenerateCoinbaseCommitment(*pblock, pindexPrev, chainparams.GetConsensus());
     pblocktemplate->vTxFees[0] = -nFees;
 
-    LogPrintf("CreateNewBlock(): block weight: %u txs: %u fees: %ld sigops %d\n", GetBlockWeight(*pblock), nBlockTx, nFees, nBlockSigOpsCost);
-    LogPrintf("CreateNewBlock(): block height: %ld pow reward: %ld   masternode reward: %ld\n", nHeight, nBlockReward,   GetMasternodePayment(nHeight, nFees + nBlockReward));
+    LogPrint(BCLog::ALL, "CreateNewBlock(): block weight: %u txs: %u fees: %ld sigops %d\n", GetBlockWeight(*pblock), nBlockTx, nFees, nBlockSigOpsCost);
+    LogPrint(BCLog::ALL, "CreateNewBlock(): block height: %ld pow reward: %ld   masternode reward: %ld\n", nHeight, nBlockReward,   GetMasternodePayment(nHeight, nFees + nBlockReward));
 
     // Fill in header
     pblock->hashPrevBlock  = pindexPrev->GetBlockHash();
@@ -308,7 +308,7 @@ void BlockAssembler::AddToBlock(CTxMemPool::txiter iter)
 
     bool fPrintPriority = gArgs.GetBoolArg("-printpriority", DEFAULT_PRINTPRIORITY);
     if (fPrintPriority) {
-        LogPrintf("fee %s txid %s\n",
+        LogPrint(BCLog::ALL, "fee %s txid %s\n",
                   CFeeRate(iter->GetModifiedFee(), iter->GetTxSize()).ToString(),
                   iter->GetTx().GetHash().ToString());
     }

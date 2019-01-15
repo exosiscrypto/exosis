@@ -816,6 +816,7 @@ UniValue submitblock(const JSONRPCRequest& request)
     if (block.vtx.empty() ) {
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block is empty");
     }
+    
 
     uint256 hash = block.GetHash();
     bool fBlockPresent = false;

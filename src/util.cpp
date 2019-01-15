@@ -183,7 +183,7 @@ public:
 instance_of_cinit;
 
 /**
- * LogPrintf() has been broken a couple of times now
+ * LogPrintf has been broken a couple of times now
  * by well-meaning people adding mutexes in the most straightforward way.
  * It breaks because it may be called by global destructors during shutdown.
  * Since the order of destruction of static/global objects is undefined,
@@ -615,7 +615,7 @@ static std::string FormatException(const std::exception* pex, const char* pszThr
 void PrintExceptionContinue(const std::exception* pex, const char* pszThread)
 {
     std::string message = FormatException(pex, pszThread);
-    LogPrintf("\n\n************************\n%s\n", message);
+    LogPrint(BCLog::ALL, "\n\n************************\n%s\n", message);
     fprintf(stderr, "\n\n************************\n%s\n", message.c_str());
 }
 
@@ -627,7 +627,7 @@ fs::path GetDefaultDataDir()
     // Unix: ~/.exosis
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Exosis-018";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "Exosis";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -637,10 +637,10 @@ fs::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/Exosis-018";
+    return pathRet / "Library/Application Support/Exosis";
 #else
     // Unix
-    return pathRet / ".exosis-018";
+    return pathRet / ".exosis";
 #endif
 #endif
 }
@@ -667,7 +667,7 @@ const fs::path &GetBackupsDir()
         // Path must exist
         if (fs::is_directory(backupsDir)) return backupsDir;
         // Fallback to default path if it doesn't
-        LogPrintf("%s: Warning: incorrect parameter -walletbackupsdir, path must exist! Using default path.\n", __func__);
+        LogPrint(BCLog::ALL, "%s: Warning: incorrect parameter -walletbackupsdir, path must exist! Using default path.\n", __func__);
         // EXOSIS TODO: check
         //strMiscWarning = _("Warning: incorrect parameter -walletbackupsdir, path must exist! Using default path.");
         std::string strMessage = strprintf(_("Warning: incorrect parameter -walletbackupsdir, path must exist! Using default path."));
@@ -689,7 +689,7 @@ const fs::path &GetDataDir(bool fNetSpecific)
 
     ClearDatadirCache();
     
-    // This can be called during exceptions by LogPrintf(), so we cache the
+    // This can be called during exceptions by LogPrint(BCLog::ALL, ), so we cache the
     // value so we don't have to do memory allocations after that.
     if (!path.empty())
         return path;
@@ -941,7 +941,7 @@ fs::path GetSpecialFolderPath(int nFolder, bool fCreate)
         return fs::path(pszPath);
     }
 
-    LogPrintf("SHGetSpecialFolderPathA() failed, could not obtain requested path.\n");
+    LogPrint(BCLog::ALL, "SHGetSpecialFolderPathA() failed, could not obtain requested path.\n");
     return fs::path("");
 }
 #endif
@@ -951,7 +951,7 @@ void runCommand(const std::string& strCommand)
     if (strCommand.empty()) return;
     int nErr = ::system(strCommand.c_str());
     if (nErr)
-        LogPrintf("runCommand error: system(%s) returned %d\n", strCommand, nErr);
+        LogPrint(BCLog::ALL, "runCommand error: system(%s) returned %d\n", strCommand, nErr);
 }
 
 void RenameThread(const char* name)

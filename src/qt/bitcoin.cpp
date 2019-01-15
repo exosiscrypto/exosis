@@ -90,7 +90,7 @@ Q_DECLARE_METATYPE(CAmount)
 
 static void InitMessage(const std::string &message)
 {
-    LogPrintf("init message: %s\n", message);
+    LogPrint(BCLog::ALL, "init message: %s\n", message);
 }
 
 /*
@@ -161,7 +161,7 @@ void DebugMessageHandler(QtMsgType type, const char *msg)
     if (type == QtDebugMsg) {
         LogPrint(BCLog::QT, "GUI: %s\n", msg);
     } else {
-        LogPrintf("GUI: %s\n", msg);
+        LogPrint(BCLog::ALL, "GUI: %s\n", msg);
     }
 }
 #else
@@ -171,7 +171,7 @@ void DebugMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
     if (type == QtDebugMsg) {
         LogPrint(BCLog::QT, "GUI: %s\n", msg.toStdString());
     } else {
-        LogPrintf("GUI: %s\n", msg.toStdString());
+        LogPrint(BCLog::QT, "GUI: %s\n", msg.toStdString());
     }
 }
 #endif

@@ -234,7 +234,7 @@ public:
         if (!status.ok()) {
             if (status.IsNotFound())
                 return false;
-            LogPrintf("LevelDB read failure: %s\n", status.ToString());
+            LogPrint(BCLog::DB,"LevelDB read failure: %s\n", status.ToString());
             dbwrapper_private::HandleError(status);
         }
         try {
@@ -268,7 +268,7 @@ public:
         if (!status.ok()) {
             if (status.IsNotFound())
                 return false;
-            LogPrintf("LevelDB read failure: %s\n", status.ToString());
+            LogPrint(BCLog::DB,"LevelDB read failure: %s\n", status.ToString());
             dbwrapper_private::HandleError(status);
         }
         return true;

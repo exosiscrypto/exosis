@@ -45,7 +45,7 @@ bool CDarksendQueue::Sign()
     std::string strMessage = vin.ToString() + boost::lexical_cast<std::string>(nDenom) + boost::lexical_cast<std::string>(nTime) + boost::lexical_cast<std::string>(fReady);
 
     if(!CMessageSigner::SignMessage(strMessage, vchSig, activeMasternode.keyMasternode)) {
-        LogPrintf("CDarksendQueue::Sign -- SignMessage() failed, %s\n", ToString());
+        LogPrint(BCLog::PRIVATESEND, "CDarksendQueue::Sign -- SignMessage() failed, %s\n", ToString());
         return false;
     }
 
@@ -58,7 +58,7 @@ bool CDarksendQueue::CheckSignature(const CPubKey& pubKeyMasternode)
     std::string strError = "";
 
     if(!CMessageSigner::VerifyMessage(pubKeyMasternode, vchSig, strMessage, strError)) {
-        LogPrintf("CDarksendQueue::CheckSignature -- Got bad Masternode queue signature: %s; error: %s\n", ToString(), strError);
+        LogPrint(BCLog::PRIVATESEND, "CDarksendQueue::CheckSignature -- Got bad Masternode queue signature: %s; error: %s\n", ToString(), strError);
         return false;
     }
 
@@ -83,7 +83,7 @@ bool CDarksendBroadcastTx::Sign()
     std::string strMessage = tx.GetHash().ToString() + boost::lexical_cast<std::string>(sigTime);
 
     if(!CMessageSigner::SignMessage(strMessage, vchSig, activeMasternode.keyMasternode)) {
-        LogPrintf("CDarksendBroadcastTx::Sign -- SignMessage() failed\n");
+        LogPrint(BCLog::PRIVATESEND, "CDarksendBroadcastTx::Sign -- SignMessage() failed\n");
         return false;
     }
 
@@ -96,7 +96,7 @@ bool CDarksendBroadcastTx::CheckSignature(const CPubKey& pubKeyMasternode)
     std::string strError = "";
 
     if(!CMessageSigner::VerifyMessage(pubKeyMasternode, vchSig, strMessage, strError)) {
-        LogPrintf("CDarksendBroadcastTx::CheckSignature -- Got bad dstx signature, error: %s\n", strError);
+        LogPrint(BCLog::PRIVATESEND, "CDarksendBroadcastTx::CheckSignature -- Got bad dstx signature, error: %s\n", strError);
         return false;
     }
 

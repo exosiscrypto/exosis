@@ -34,7 +34,7 @@ static bool noui_ThreadSafeMessageBox(const std::string& message, const std::str
     }
 
     if (!fSecure)
-        LogPrintf("%s: %s\n", strCaption, message);
+        LogPrint(BCLog::QT, "%s: %s\n", strCaption, message);
     fprintf(stderr, "%s: %s\n", strCaption.c_str(), message.c_str());
     return false;
 }
@@ -46,7 +46,7 @@ static bool noui_ThreadSafeQuestion(const std::string& /* ignored interactive me
 
 static void noui_InitMessage(const std::string& message)
 {
-    LogPrintf("init message: %s\n", message);
+    LogPrint(BCLog::ALL, "init message: %s\n", message);
 }
 
 void noui_connect()

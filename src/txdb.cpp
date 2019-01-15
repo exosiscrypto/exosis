@@ -125,7 +125,7 @@ bool CCoinsViewDB::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock) {
             if (crash_simulate) {
                 static FastRandomContext rng;
                 if (rng.randrange(crash_simulate) == 0) {
-                    LogPrintf("Simulating a crash. Goodbye.\n");
+                    LogPrint(BCLog::COINDB, "Simulating a crash. Goodbye.\n");
                     _Exit(0);
                 }
             }
@@ -370,8 +370,8 @@ bool CCoinsViewDB::Upgrade() {
     }
 
     int64_t count = 0;
-    LogPrintf("Upgrading utxo-set database...\n");
-    LogPrintf("[0%%]...");
+    LogPrint(BCLog::COINDB, "Upgrading utxo-set database...\n");
+    LogPrint(BCLog::COINDB, "[0%%]...");
     uiInterface.ShowProgress(_("Upgrading UTXO database"), 0, true);
     size_t batch_size = 1 << 24;
     CDBBatch batch(db);
@@ -390,7 +390,7 @@ bool CCoinsViewDB::Upgrade() {
                 uiInterface.ShowProgress(_("Upgrading UTXO database"), percentageDone, true);
                 if (reportDone < percentageDone/10) {
                     // report max. every 10% step
-                    LogPrintf("[%d%%]...", percentageDone);
+                    LogPrint(BCLog::COINDB, "[%d%%]...", percentageDone);
                     reportDone = percentageDone/10;
                 }
             }
@@ -422,6 +422,6 @@ bool CCoinsViewDB::Upgrade() {
     db.WriteBatch(batch);
     db.CompactRange({DB_COINS, uint256()}, key);
     uiInterface.ShowProgress("", 100, false);
-    LogPrintf("[%s].\n", ShutdownRequested() ? "CANCELLED" : "DONE");
+    LogPrint(BCLog::COINDB, "[%s].\n", ShutdownRequested() ? "CANCELLED" : "DONE");
     return !ShutdownRequested();
 }

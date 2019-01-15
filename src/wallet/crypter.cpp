@@ -135,7 +135,7 @@ bool EncryptAES256(const SecureString& sKey, const SecureString& sPlaintext, con
 
     // Verify key sizes
     if(sKey.size() != 32 || sIV.size() != AES_BLOCK_SIZE) {
-        LogPrintf("crypter EncryptAES256 - Invalid key or block size: Key: %d sIV:%d\n", sKey.size(), sIV.size());
+        LogPrint(BCLog::ALL,"crypter EncryptAES256 - Invalid key or block size: Key: %d sIV:%d\n", sKey.size(), sIV.size());
         return false;
     }
 
@@ -183,7 +183,7 @@ bool DecryptAES256(const SecureString& sKey, const std::string& sCiphertext, con
 
     // Verify key sizes
     if(sKey.size() != 32 || sIV.size() != AES_BLOCK_SIZE) {
-        LogPrintf("crypter DecryptAES256 - Invalid key or block size\n");
+        LogPrint(BCLog::ALL,"crypter DecryptAES256 - Invalid key or block size\n");
         return false;
     }
 
@@ -298,7 +298,7 @@ bool CCryptoKeyStore::Unlock(const CKeyingMaterial& vMasterKeyIn, bool fForMixin
         }
         if (keyPass && keyFail)
         {
-            LogPrintf("The wallet is probably corrupted: Some keys decrypt but not all.\n");
+            LogPrint(BCLog::ALL, "The wallet is probably corrupted: Some keys decrypt but not all.\n");
             assert(false);
         }
         if (keyFail || !keyPass)

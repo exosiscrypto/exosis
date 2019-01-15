@@ -133,6 +133,8 @@ namespace BCLog {
         QT          = (1 << 19),
         LEVELDB     = (1 << 20),
         ALL         = ~(uint32_t)0,
+       
+        
 
         // dash log flags //
         PRIVATESEND = (1 << 23),
@@ -361,13 +363,13 @@ template <typename Callable> void TraceThread(const char* name,  Callable func)
     RenameThread(s.c_str());
     try
     {
-        LogPrintf("%s thread start\n", name);
+        LogPrint(BCLog::ALL, "%s thread start\n", name);
         func();
-        LogPrintf("%s thread exit\n", name);
+        LogPrint(BCLog::ALL, "%s thread exit\n", name);
     }
     catch (const boost::thread_interrupted&)
     {
-        LogPrintf("%s thread interrupt\n", name);
+        LogPrint(BCLog::ALL, "%s thread interrupt\n", name);
         throw;
     }
     catch (const std::exception& e) {

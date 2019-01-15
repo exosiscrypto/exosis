@@ -43,14 +43,14 @@ void CSporkManager::ProcessSpork(CNode* pfrom, const std::string& strCommand, CD
                 LogPrint(BCLog::SPORK, "%s seen\n", strLogMsg);
                 return;
             } else {
-                LogPrintf("%s updated\n", strLogMsg);
+                LogPrint(BCLog::SPORK, "%s updated\n", strLogMsg);
             }
         } else {
-            LogPrintf("%s new\n", strLogMsg);
+            LogPrint(BCLog::SPORK, "%s new\n", strLogMsg);
         }
 
         if(!spork.CheckSignature()) {
-            LogPrintf("CSporkManager::ProcessSpork -- invalid signature\n");
+            LogPrint(BCLog::SPORK, "CSporkManager::ProcessSpork -- invalid signature\n");
             Misbehaving(pfrom->GetId(), 100);
             return;
         }
@@ -91,12 +91,12 @@ void CSporkManager::ExecuteSpork(int nSporkID, int nValue)
         }
 
         if(nValue > nMaxBlocks) {
-            LogPrintf("CSporkManager::ExecuteSpork -- ERROR: Trying to reconsider too many blocks %d/%d\n", nValue, nMaxBlocks);
+            LogPrint(BCLog::SPORK, "CSporkManager::ExecuteSpork -- ERROR: Trying to reconsider too many blocks %d/%d\n", nValue, nMaxBlocks);
             return;
         }
 
 
-        LogPrintf("CSporkManager::ExecuteSpork -- Reconsider Last %d Blocks\n", nValue);
+        LogPrint(BCLog::SPORK, "CSporkManager::ExecuteSpork -- Reconsider Last %d Blocks\n", nValue);
 
         ReprocessBlocks(nValue);
         nTimeExecuted = GetTime();
@@ -208,7 +208,7 @@ bool CSporkManager::SetPrivKey(std::string strPrivKey)
 
     if(spork.CheckSignature()){
         // Test signing successful, proceed
-        LogPrintf("CSporkManager::SetPrivKey -- Successfully initialized as spork signer\n");
+        LogPrint(BCLog::SPORK, "CSporkManager::SetPrivKey -- Successfully initialized as spork signer\n");
         strMasterPrivKey = strPrivKey;
         return true;
     } else {
@@ -224,17 +224,17 @@ bool CSporkMessage::Sign(std::string strSignKey)
     std::string strMessage = boost::lexical_cast<std::string>(nSporkID) + boost::lexical_cast<std::string>(nValue) + boost::lexical_cast<std::string>(nTimeSigned);
 
     if(!CMessageSigner::GetKeysFromSecret(strSignKey, key, pubkey)) {
-        LogPrintf("CSporkMessage::Sign -- GetKeysFromSecret() failed, invalid spork key %s\n", strSignKey);
+        LogPrint(BCLog::SPORK, "CSporkMessage::Sign -- GetKeysFromSecret() failed, invalid spork key %s\n", strSignKey);
         return false;
     }
 
     if(!CMessageSigner::SignMessage(strMessage, vchSig, key)) {
-        LogPrintf("CSporkMessage::Sign -- SignMessage() failed\n");
+        LogPrint(BCLog::SPORK, "CSporkMessage::Sign -- SignMessage() failed\n");
         return false;
     }
 
     if(!CMessageSigner::VerifyMessage(pubkey, vchSig, strMessage, strError)) {
-        LogPrintf("CSporkMessage::Sign -- VerifyMessage() failed, error: %s\n", strError);
+        LogPrint(BCLog::SPORK, "CSporkMessage::Sign -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }
 
@@ -249,7 +249,7 @@ bool CSporkMessage::CheckSignature()
     CPubKey pubkey(ParseHex(Params().SporkPubKey()));
 
     if(!CMessageSigner::VerifyMessage(pubkey, vchSig, strMessage, strError)) {
-        LogPrintf("CSporkMessage::CheckSignature -- VerifyMessage() failed, error: %s\n", strError);
+        LogPrint(BCLog::SPORK, "CSporkMessage::CheckSignature -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }
 

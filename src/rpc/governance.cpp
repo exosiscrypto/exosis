@@ -260,13 +260,13 @@ UniValue gobject(const JSONRPCRequest& request)
                 govobj.Sign(activeMasternode.keyMasternode, activeMasternode.pubKeyMasternode);
             }
             else {
-                LogPrintf("gobject(submit) -- Object submission rejected because node is not a masternode\n");
+                //LogPrint(BCLog::GOBJECT, "gobject(submit) -- Object submission rejected because node is not a masternode\n");
                 throw JSONRPCError(RPC_INVALID_PARAMETER, "Only valid masternodes can submit this type of object");
             }
         }
         else {
             if(request.params.size() != 6) {
-                LogPrintf("gobject(submit) -- Object submission rejected because fee tx not provided\n");
+                //LogPrint(BCLog::GOBJECT, "gobject(submit) -- Object submission rejected because fee tx not provided\n");
                 throw JSONRPCError(RPC_INVALID_PARAMETER, "The fee-txid parameter must be included to submit this type of object");
             }
         }
@@ -279,7 +279,7 @@ UniValue gobject(const JSONRPCRequest& request)
         {
             LOCK(cs_main);
             if(!govobj.IsValidLocally(strError, fMissingMasternode, fMissingConfirmations, true) && !fMissingConfirmations) {
-                LogPrintf("gobject(submit) -- Object submission rejected because object is not valid - hash = %s, strError = %s\n", strHash, strError);
+                //LogPrint(BCLog::GOBJECT, "gobject(submit) -- Object submission rejected because object is not valid - hash = %s, strError = %s\n", strHash, strError);
                 throw JSONRPCError(RPC_INTERNAL_ERROR, "Governance object is not valid - " + strHash + " - " + strError);
             }
         }
@@ -287,11 +287,11 @@ UniValue gobject(const JSONRPCRequest& request)
         // RELAY THIS OBJECT
         // Reject if rate check fails but don't update buffer
         if(!governance.MasternodeRateCheck(govobj)) {
-            LogPrintf("gobject(submit) -- Object submission rejected because of rate check failure - hash = %s\n", strHash);
+            //LogPrint(BCLog::GOBJECT, "gobject(submit) -- Object submission rejected because of rate check failure - hash = %s\n", strHash);
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Object creation rate limit exceeded");
         }
 
-        LogPrintf("gobject(submit) -- Adding locally created governance object - %s\n", strHash);
+        //LogPrint(BCLog::GOBJECT, "gobject(submit) -- Adding locally created governance object - %s\n", strHash);
 
         if(fMissingConfirmations) {
             governance.AddPostponedObject(govobj);
