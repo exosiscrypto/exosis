@@ -809,14 +809,15 @@ UniValue submitblock(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block decode failed");
     }
 
-    if (!block.vtx[0]->IsCoinBase()) {
-        throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block does not start with a coinbase");
-    }
-    
     if (block.vtx.empty() ) {
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block is empty");
     }
     
+    if (!block.vtx[0]->IsCoinBase()) {
+        throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block does not start with a coinbase");
+    }
+    
+       
 
     uint256 hash = block.GetHash();
     bool fBlockPresent = false;
@@ -1086,3 +1087,4 @@ void RegisterMiningRPCCommands(CRPCTable &t)
     for (unsigned int vcidx = 0; vcidx < ARRAYLEN(commands); vcidx++)
         t.appendCommand(commands[vcidx].name, &commands[vcidx]);
 }
+

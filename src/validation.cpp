@@ -2141,7 +2141,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
                     LogPrint(BCLog::ALL, "Validation: Miner reward too large i=%d nValue=%d blockreward=%d\n", 
                             nMinerOutputs, i, tx.vout[i].nValue, blockReward);
                 }
-                if(i > 0 && tx.vout[i].nValue > masternodePayment)
+                if(i > 0 && tx.vout[i].nValue != masternodePayment)
                 {
                     return state.DoS(100, error("ConnectBlock(): mn coinbase pays too much"), REJECT_INVALID, "bad-masternode-cb-amount");
         
@@ -4980,3 +4980,4 @@ public:
         mapBlockIndex.clear();
     }
 } instance_of_cmaincleanup;
+
