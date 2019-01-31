@@ -304,14 +304,14 @@ public:
         nPruneAfterHeight = 100000;
 
 	      
-        genesis.nTime = 1540402662;
-	genesis.nNonce = 2477745;
+        genesis.nTime = 1548944406;
+	genesis.nNonce = 463245;
 
-       
+     
 		
         genesis = CreateGenesisBlock(genesis.nTime, genesis.nNonce, 0x1e0ffff0, 1, 10 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00000b6f3cad68583f2391b63af25851a200cd2973fb08812f881a4048e85a4e"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00000a097ac93e9acb1a74e22ad7faab04b52358c536b305c11a9ed2d5bb7a66"));
         assert(genesis.hashMerkleRoot == uint256S("0x77c074dff95c472dc08ca31132e213660d4b996e0003870b88f3911460b50c8a"));
              
 	    
