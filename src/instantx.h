@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #ifndef INSTANTX_H
@@ -120,7 +120,7 @@ public:
     std::string ToString();
 };
 
-class CTxLockRequest : public CMutableTransaction
+class CTxLockRequest : public CTransaction
 {
 private:
     static const CAmount MIN_FEE            = 0.0001 * COIN;
@@ -129,10 +129,7 @@ public:
     static const int WARN_MANY_INPUTS       = 100;
 
     CTxLockRequest() = default;
-    CTxLockRequest(const CMutableTransaction& tx) : CMutableTransaction(tx) {};
-
-    // EXOSIS TODO: not sure if the right way
-    //CTxLockRequest& operator=(const CTxLockRequest& tx);
+    CTxLockRequest(const CTransaction& tx) : CTransaction(tx) {};
 
     bool IsValid() const;
     CAmount GetMinFee() const;

@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2017 The Bitcoin Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
 // Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
@@ -10,6 +10,10 @@
 #include <amount.h>
 
 #include <QAbstractListModel>
+
+namespace interfaces {
+class Node;
+}
 
 QT_BEGIN_NAMESPACE
 class QNetworkProxy;
@@ -29,7 +33,7 @@ class OptionsModel : public QAbstractListModel
     Q_OBJECT
 
 public:
-    explicit OptionsModel(QObject *parent = 0, bool resetSettings = false);
+    explicit OptionsModel(interfaces::Node& node, QObject *parent = 0, bool resetSettings = false);
 
     enum OptionID {
         StartAtStartup,         // bool
@@ -48,6 +52,8 @@ public:
         Language,               // QString
         CoinControlFeatures,    // bool
         ThreadsScriptVerif,     // int
+        Prune,                  // bool
+        PruneSize,              // int
         DatabaseCache,          // int
         SpendZeroConfChange,    // bool
         // Dash
@@ -80,7 +86,10 @@ public:
     void setRestartRequired(bool fRequired);
     bool isRestartRequired() const;
 
+    interfaces::Node& node() const { return m_node; }
+
 private:
+    interfaces::Node& m_node;
     /* Qt-only settings */
     bool fHideTrayIcon;
     bool fMinimizeToTray;

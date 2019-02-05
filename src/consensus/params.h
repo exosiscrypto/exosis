@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
 // Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
@@ -23,7 +23,7 @@ enum DeploymentPos
     DEPLOYMENT_SEGWIT, // Deployment of BIP141, BIP143, and BIP147.
 
     // Dash
-    DEPLOYMENT_DIP0001, // Deployment of DIP0001 and lower transaction fees.
+    //DEPLOYMENT_DIP0001, // Deployment of DIP0001 and lower transaction fees.
     //
 
     // NOTE: Also add new deployments to VersionBitsDeploymentInfo in versionbits.cpp
@@ -81,14 +81,13 @@ struct Params {
 
     int nSuperblockStartBlock;
     int nSuperblockCycle; // in blocks
-  
 
     int nGovernanceMinQuorum; // Min absolute vote count to trigger an action
     int nGovernanceFilterElements;
 
     CAmount nMinimumSubsidy;
-    /** Block height at which BIP16 becomes active */
-    int BIP16Height;
+    /* Block hash that is excepted from BIP16 enforcement */
+    uint256 BIP16Exception;
     /** Block height and hash at which BIP34 becomes active */
     int BIP34Height;
     uint256 BIP34Hash;
@@ -109,13 +108,18 @@ struct Params {
     bool fPowAllowMinDifficultyBlocks;
     bool fPowNoRetargeting;
     int64_t nPowTargetSpacing;
+    int64_t nPowTargetSpacingFix;
     int64_t nPowTargetTimespan;
-    int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
+    int64_t nPowTargetTimespanFix;
+    int nPowTargetTimespanFixHeight;
+    int64_t PowTargetSpacing(int nHeight) const { return (nHeight < nPowTargetTimespanFixHeight) ? (nPowTargetSpacing) : (nPowTargetSpacingFix); }
+    int64_t PowTargetTimespan(int nHeight) const { return (nHeight < nPowTargetTimespanFixHeight) ? (nPowTargetTimespan) : (nPowTargetTimespanFix); }
+    int64_t DifficultyAdjustmentInterval(int nHeight) const { return (nHeight < nPowTargetTimespanFixHeight) ? (nPowTargetTimespan / nPowTargetSpacing) : (nPowTargetTimespanFix / nPowTargetSpacingFix); }
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
-   
+    // EXOSIS BEGIN
     int nlastValidPowHashHeight;
-  
+    // EXOSIS END
 };
 } // namespace Consensus
 
