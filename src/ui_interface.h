@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2012-2017 The Bitcoin Core developers
+// Copyright (c) 2012-2018 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
 // Copyright (c) 2018 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
@@ -8,6 +8,7 @@
 #ifndef BITCOIN_UI_INTERFACE_H
 #define BITCOIN_UI_INTERFACE_H
 
+#include <memory>
 #include <stdint.h>
 #include <string>
 
@@ -97,7 +98,7 @@ public:
     boost::signals2::signal<void ()> NotifyAlertChanged;
 
     /** A wallet has been loaded. */
-    boost::signals2::signal<void (CWallet* wallet)> LoadWallet;
+    boost::signals2::signal<void (std::shared_ptr<CWallet> wallet)> LoadWallet;
 
     /**
      * Show progress e.g. for verifychain.

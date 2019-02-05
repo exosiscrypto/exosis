@@ -5,7 +5,7 @@ Upstart: exosisd.conf
 OpenRC:  exosisd.openrc
          exosisd.openrcconf
 CentOS:  exosisd.init
-OS X:    org.exosis.exosisd.plist
+macOS:    org.exosis.exosisd.plist
 ```
 have been made available to assist packagers in creating node packages here.
 

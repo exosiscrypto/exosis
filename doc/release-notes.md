@@ -1,9 +1,9 @@
-Exosis Core version 0.16.x is now available from:
+Exosis Core version 0.17.x is now available from:
 
   <https://github.com/exosiscrypto/exosis/releases/>
 
-This is a new minor version release, with various bugfixes
-as well as updated translations.
+This is a new major version release, including new features, various bugfixes
+and performance improvements, as well as updated translations.
 
 Please report bugs using the issue tracker at GitHub:
 
@@ -17,6 +17,10 @@ If you are running an older version, shut it down. Wait until it has completely
 shut down (which might take a few minutes for older versions), then run the
 installer (on Windows) or just copy over `/Applications/Exosis-Qt` (on Mac)
 or `exosisd`/`exosis-qt` (on Linux).
+
+If your node has a txindex, the txindex db will be migrated the first time you
+run 0.17.0 or newer, which may take up to a few hours. Your node will not be
+functional until this migration completes.
 
 The first time you run version 0.15.0 or newer, your chainstate database will be converted to a
 new format, which will take anywhere from a few minutes to half an hour,
@@ -38,29 +42,28 @@ Compatibility
 ==============
 
 Exosis Core is extensively tested on multiple operating systems using
-the Linux kernel, macOS 10.8+, and Windows Vista and later. Windows XP is not supported.
+the Linux kernel, macOS 10.10+, and Windows 7 and newer (Windows XP is not supported).
 
 Exosis Core should also work on most other Unix-like systems but is not
 frequently tested on them.
 
+From 0.17.0 onwards macOS <10.10 is no longer supported. 0.17.0 is built using Qt 5.9.x, which doesn't
+support versions of macOS older than 10.10.
+
 Notable changes
 ===============
 
-(to be filled in)
+(todo)
 
-0.16.x change log
-------------------
+0.17.x change log
+=================
 
-(to be filled in)
+(todo)
 
 Credits
 =======
 
 Thanks to everyone who directly contributed to this release:
 
-(to be filled in)
-
-And to those that reported security issues:
-
-(to be filled in)
+(todo)
 
