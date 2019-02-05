@@ -4,8 +4,8 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "activemasternode.h"
-#include "base58.h"
 #include "init.h"
+#include "key_io.h"
 #include "netbase.h"
 #include "masternode.h"
 #include "masternode-payments.h"
@@ -13,6 +13,9 @@
 #include "masternodeman.h"
 #include "messagesigner.h"
 #include "script/standard.h"
+// EXOSIS BEGIN
+#include <shutdown.h>
+// EXOSIS END
 #include "util.h"
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
@@ -419,7 +422,8 @@ bool CMasternodeBroadcast::Create(std::string strService, std::string strKeyMast
         return Log(strprintf("Invalid masternode key %s", strKeyMasternode));
 
     // EXOSIS TODO: always using first wallet with MN
-    CWallet * const pwallet = ::vpwallets[0];
+    std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
+    CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
     if (!pwallet->GetMasternodeOutpointAndKeys(outpoint, pubKeyCollateralAddressNew, keyCollateralAddressNew, strTxHash, strOutputIndex))
         return Log(strprintf("Could not allocate outpoint %s:%s for masternode %s", strTxHash, strOutputIndex, strService));
 
