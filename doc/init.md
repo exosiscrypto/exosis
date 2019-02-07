@@ -15,7 +15,7 @@ Service User
 
 All three Linux startup configurations assume the existence of a "exosis" user
 and group.  They must be created before attempting to use these scripts.
-The OS X configuration assumes exosisd will be set up for the current user.
+The macOS configuration assumes exosisd will be set up for the current user.
 
 Configuration
 ---------------------------------
@@ -44,7 +44,7 @@ This allows for running exosisd without having to do any manual configuration.
 relative to the data directory. `wallet` *only* supports relative paths.
 
 For an example configuration file that describes the configuration settings,
-see `contrib/debian/examples/exosis.conf`.
+see `share/examples/exosis.conf`.
 
 Paths
 ---------------------------------
@@ -65,7 +65,7 @@ reasons to make the configuration file and data directory only readable by the
 exosis user and group.  Access to exosis-cli and other exosisd rpc clients
 can then be controlled by group membership.
 
-### Mac OS X
+### macOS
 
 Binary:              `/usr/local/bin/exosisd`  
 Configuration file:  `~/Library/Application Support/Exosis/exosis.conf`  
@@ -84,6 +84,8 @@ Installing this .service file consists of just copying it to
 To test, run `systemctl start exosisd` and to enable for system startup run
 `systemctl enable exosisd`
 
+NOTE: When installing for systemd in Debian/Ubuntu the .service file needs to be copied to the /lib/systemd/system directory instead.
+
 ### OpenRC
 
 Rename exosisd.openrc to exosisd and drop it in /etc/init.d.  Double
@@ -92,6 +94,8 @@ check ownership and permissions and make it executable.  Test it with
 `rc-update add exosisd`
 
 ### Upstart (for Debian/Ubuntu based distributions)
+
+Upstart is the default init system for Debian/Ubuntu versions older than 15.04. If you are using version 15.04 or newer and haven't manually configured upstart you should follow the systemd instructions instead.
 
 Drop exosisd.conf in /etc/init.  Test by running `service exosisd start`
 it will automatically start on reboot.
@@ -107,7 +111,7 @@ Using this script, you can adjust the path and flags to the exosisd program by
 setting the EXOSISD and FLAGS environment variables in the file
 /etc/sysconfig/exosisd. You can also use the DAEMONOPTS environment variable here.
 
-### Mac OS X
+### macOS
 
 Copy org.exosis.exosisd.plist into ~/Library/LaunchAgents. Load the launch agent by
 running `launchctl load ~/Library/LaunchAgents/org.exosis.exosisd.plist`.

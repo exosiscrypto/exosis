@@ -16,6 +16,9 @@
 #include "netmessagemaker.h"
 #include "reverse_iterator.h"
 #include "script/sign.h"
+// EXOSIS BEGIN
+#include "shutdown.h"
+// EXOSIS END
 #include "txmempool.h"
 #include "util.h"
 #include "utilmoneystr.h"

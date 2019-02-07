@@ -12,6 +12,9 @@
 #include "masternodeman.h"
 #include "netmessagemaker.h"
 #include "script/interpreter.h"
+// EXOSIS BEGIN
+#include "shutdown.h"
+// EXOSIS END
 #include "txmempool.h"
 #include "util.h"
 #include "utilmoneystr.h"

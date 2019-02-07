@@ -31,7 +31,8 @@
 
 UniValue gobject(const JSONRPCRequest& request)
 {
-    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    CWallet* const pwallet = wallet.get();
 
     std::string strCommand;
     if (request.params.size() >= 1)
@@ -176,8 +177,8 @@ UniValue gobject(const JSONRPCRequest& request)
                 throw JSONRPCError(RPC_INTERNAL_ERROR, "Governance object is not valid - " + govobj.GetHash().ToString() + " - " + strError);
         }
 
-        CWalletTx wtx;
-        if(!pwallet->GetBudgetSystemCollateralTX(wtx, govobj.GetHash(), govobj.GetMinCollateralFee(), false)) {
+        CTransactionRef tx_new;
+        if(!pwallet->GetBudgetSystemCollateralTX(tx_new, govobj.GetHash(), govobj.GetMinCollateralFee(), false)) {
             throw JSONRPCError(RPC_INTERNAL_ERROR, "Error making collateral transaction for governance object. Please check your wallet balance and make sure your wallet is unlocked.");
         }
 
@@ -185,15 +186,16 @@ UniValue gobject(const JSONRPCRequest& request)
         CReserveKey reservekey(pwallet);
         // -- send the tx to the network
         CValidationState state;
-        pwallet->CommitTransaction(wtx, reservekey, g_connman.get(), state, NetMsgType::TX);
+        mapValue_t mapValue;
+        pwallet->CommitTransaction(tx_new, std::move(mapValue), {} /* orderForm */, {} /* fromAccount */, reservekey, g_connman.get(), state, NetMsgType::TX);
 
         DBG( cout << "gobject: prepare "
              << " strData = " << govobj.GetDataAsString()
              << ", hash = " << govobj.GetHash().GetHex()
-             << ", txidFee = " << wtx.GetHash().GetHex()
+             << ", txidFee = " << tx_new->GetHash().GetHex()
              << endl; );
 
-        return wtx.GetHash().ToString();
+        return tx_new->GetHash().ToString();
     }
 #endif // ENABLE_WALLET
 

@@ -1,5 +1,6 @@
-﻿// Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Exosis Core developers
+// Copyright (c) 2009-2010 Satoshi Nakamoto
+// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2018-2019 The Exosis Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,13 +12,10 @@
 #include <crypto/scrypt.h> // Exosis Scrypt
 #include <crypto/hashblock.h> // Exosis TimeTravel
 
-
-
 uint256 CBlockHeader::GetHash() const
 {
     return HashTimeTravel(BEGIN(nVersion), END(nNonce), GetBlockTime()); //TimeTravel
 }
-
 
 std::string CBlock::ToString() const
 {

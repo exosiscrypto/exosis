@@ -69,7 +69,8 @@ void CInstantSend::ProcessMessage(CNode* pfrom, const std::string& strCommand, C
 
         LOCK(cs_main);
 #ifdef ENABLE_WALLET
-        CWallet * const pwallet = ::vpwallets[0];
+        std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
+        CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
         if (pwallet)
             LOCK(pwallet->cs_wallet);
 #endif
@@ -297,7 +298,8 @@ bool CInstantSend::ProcessTxLockVote(CNode* pfrom, CTxLockVote& vote, CConnman& 
     // cs_main, cs_wallet and cs_instantsend should be already locked
     AssertLockHeld(cs_main);
 #ifdef ENABLE_WALLET
-    CWallet * const pwallet = ::vpwallets[0];
+    std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
+    CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
     if (pwallet)
         AssertLockHeld(pwallet->cs_wallet);
 #endif
@@ -427,7 +429,8 @@ void CInstantSend::ProcessOrphanTxLockVotes(CConnman& connman)
 {
     LOCK(cs_main);
 #ifdef ENABLE_WALLET
-    CWallet * const pwallet = ::vpwallets[0];
+    std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
+    CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
     if (pwallet)
         LOCK(pwallet->cs_wallet);
 #endif
@@ -480,7 +483,8 @@ void CInstantSend::TryToFinalizeLockCandidate(const CTxLockCandidate& txLockCand
 
     LOCK(cs_main);
 #ifdef ENABLE_WALLET
-    CWallet * const pwallet = ::vpwallets[0];
+    std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
+    CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
     if (pwallet)
         LOCK(pwallet->cs_wallet);
 #endif
@@ -501,7 +505,8 @@ void CInstantSend::UpdateLockedTransaction(const CTxLockCandidate& txLockCandida
 {
     // cs_wallet and cs_instantsend should be already locked
 #ifdef ENABLE_WALLET
-    CWallet * const pwallet = ::vpwallets[0];
+    std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
+    CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
     if (pwallet)
         AssertLockHeld(pwallet->cs_wallet);
 #endif
