@@ -259,7 +259,7 @@ public:
         consensus.nPowTargetSpacing = 2 * 60; // 2 minutes
         consensus.nPowTargetTimespanFix = 30 * 60; // 30 minutes
         consensus.nPowTargetSpacingFix = 2.5 * 60; // 2 minutes
-        consensus.nPowTargetTimespanFixHeight = 30000; // block 30000
+        consensus.nPowTargetTimespanFixHeight = 100; // block 100 for testnet
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
