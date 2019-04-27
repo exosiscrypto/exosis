@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2017 The exosis Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -25,6 +25,9 @@
 #include "utilmoneystr.h"
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
+// EXOSIS BEGIN
+#include "wallet/rpcwallet.h"
+// EXOSIS END
 #endif // ENABLE_WALLET
 
 #include <boost/lexical_cast.hpp>
