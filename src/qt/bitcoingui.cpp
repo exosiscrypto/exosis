@@ -766,7 +766,6 @@ void BitcoinGUI::createTrayIconMenu()
         trayIconMenu->addAction(openRPCConsoleAction);
     }
     trayIconMenu->addAction(optionsAction);
-    trayIconMenu->addAction(openRPCConsoleAction);
 
     // Dash
     // EXOSIS TODO: menu items

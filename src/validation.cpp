@@ -2248,13 +2248,13 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         LogPrint(BCLog::ALL, "Validation: nMinerOutput > 1 %d\n", nMinerOutputs);
     }
     
-    int nNoMasternodes = 0;
-    for (auto& mnpair : mapMasternodes) {
-        nNoMasternodes + nNoMasternodes + 1;
-                       	    
-    }
-    if(pindex->nHeight >= 3000)
+    if (!IsInitialBlockDownload() && masternodeSync.IsSynced())
     {
+        int nNoMasternodes = 0;
+        for (auto& mnpair : mapMasternodes) {
+            nNoMasternodes++;
+        }
+
         if ((nMasternodeOutputs < nNoMasternodes))
         {
             return state.DoS(100, error("ConnectBlock(): coinbase pays no masternodes"), REJECT_INVALID, "bad-miner-mn-count");

@@ -20,6 +20,9 @@
 #include "rpc/server.h"
 #include "util.h"
 #include "utilmoneystr.h"
+// EXOSIS BEGIN
+#include "wallet/rpcwallet.h"
+// EXOSIS END
 
 #include <fstream>
 #include <iomanip>
