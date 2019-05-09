@@ -572,7 +572,7 @@ void SetupServerArgs()
 std::string LicenseInfo()
 {
     const std::string URL_SOURCE_CODE = "<https://github.com/exosis/exosis>";
-    const std::string URL_WEBSITE = "<https://fixedtradecoin.org>";
+    const std::string URL_WEBSITE = "<https://exosis.org>";
 
     return CopyrightHolders(strprintf(_("Copyright (C) %i-%i"), 2009, COPYRIGHT_YEAR) + " ") + "\n" +
            "\n" +
