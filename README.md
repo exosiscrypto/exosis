@@ -7,13 +7,15 @@ https://www.exosis.org
 - Default RPC Port: 12331
 
 ## Exosis Platforms:
-- [Explorer](https://explorer.exosis.org/)
+- [Explorer](https://www.exosis.io/)
 - [Virtual Masternode](https://www.exosis.live/)
 - [Forum](https://forum.exosis.org/)
+- [Exchange](https://www.exosis.exchange/)
 > more coming soon.
 
 ## Explorer:
-- [Exosis Explorer](https://explorer.exosis.org/)
+- [Exosis Explorer](https://www.exosis.io/)
+- [CryptoID](https://chainz.cryptoid.info/exo/)
 - [Blockexperts Explorer](https://www.blockexperts.com/exo)
 
 ## Community:
