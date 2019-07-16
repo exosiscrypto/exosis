@@ -1,6 +1,6 @@
 # Copyright (c) 2013-2016 The Bitcoin Core developers
 # Copyright (c) 2014-2017 The Dash Core developers
-# Copyright (c) 2018 FXTC developers
+# Copyright (c) 2019 EXOSIS developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -44,6 +44,7 @@ LIBBITCOINCONSENSUS=libbitcoinconsensus.la
 endif
 if ENABLE_WALLET
 LIBBITCOIN_WALLET=libbitcoin_wallet.a
+LIBBITCOIN_WALLET_TOOL=libbitcoin_wallet_tool.a
 endif
 
 LIBBITCOIN_CRYPTO= $(LIBBITCOIN_CRYPTO_BASE)
@@ -73,6 +74,7 @@ EXTRA_LIBRARIES += \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_CLI) \
   $(LIBBITCOIN_WALLET) \
+  $(LIBBITCOIN_WALLET_TOOL) \
   $(LIBBITCOIN_ZMQ)
 
 lib_LTLIBRARIES = $(LIBBITCOINCONSENSUS)
@@ -86,19 +88,30 @@ if BUILD_BITCOIND
   bin_PROGRAMS += exosisd
 endif
 
-if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += exosis-cli exosis-tx
+if BUILD_BITCOIN_CLI
+  bin_PROGRAMS += exosis-cli
+endif
+if BUILD_BITCOIN_TX
+  bin_PROGRAMS += exosis-tx
+endif
+if ENABLE_WALLET
+if BUILD_BITCOIN_WALLET
+  bin_PROGRAMS += exosis-wallet
+endif
 endif
 
 .PHONY: FORCE check-symbols check-security
-# bitcoin core #
+# exosis core #
 BITCOIN_CORE_H = \
   addrdb.h \
   addrman.h \
+  attributes.h \
+  banman.h \
   base58.h \
   bech32.h \
   bloom.h \
   blockencodings.h \
+  blockfilter.h \
   chain.h \
   chainparams.h \
   chainparamsbase.h \
@@ -108,6 +121,7 @@ BITCOIN_CORE_H = \
   clientversion.h \
   coins.h \
   compat.h \
+  compat/assumptions.h \
   compat/byteswap.h \
   compat/endian.h \
   compat/sanity.h \
@@ -124,6 +138,7 @@ BITCOIN_CORE_H = \
   index/txindex.h \
   indirectmap.h \
   init.h \
+  interfaces/chain.h \
   interfaces/handler.h \
   interfaces/node.h \
   interfaces/wallet.h \
@@ -141,7 +156,9 @@ BITCOIN_CORE_H = \
   netaddress.h \
   netbase.h \
   netmessagemaker.h \
+  node/transaction.h \
   noui.h \
+  optional.h \
   outputtype.h \
   policy/feerate.h \
   policy/fees.h \
@@ -149,6 +166,7 @@ BITCOIN_CORE_H = \
   policy/rbf.h \
   pow.h \
   protocol.h \
+  psbt.h \
   random.h \
   reverse_iterator.h \
   reverselock.h \
@@ -182,22 +200,27 @@ BITCOIN_CORE_H = \
   txmempool.h \
   ui_interface.h \
   undo.h \
-  util.h \
-  utilmemory.h \
-  utilmoneystr.h \
-  utiltime.h \
+  util/bip32.h \
+  util/bytevectorhash.h \
+  util/system.h \
+  util/memory.h \
+  util/moneystr.h \
+  util/time.h \
   validation.h \
   validationinterface.h \
   versionbits.h \
+  versionbitsinfo.h \
   walletinitinterface.h \
   wallet/coincontrol.h \
   wallet/crypter.h \
   wallet/db.h \
   wallet/feebumper.h \
   wallet/fees.h \
+  wallet/psbtwallet.h \
   wallet/rpcwallet.h \
   wallet/wallet.h \
   wallet/walletdb.h \
+  wallet/wallettool.h \
   wallet/walletutil.h \
   wallet/coinselection.h \
   warnings.h \
@@ -213,7 +236,7 @@ BITCOIN_CORE_H += \
   cachemap.h \
   cachemultimap.h \
   dsnotificationinterface.h \
-  flatdatabase.h \
+  flat-database.h \
   governance.h \
   governance-classes.h \
   governance-exceptions.h \
@@ -235,7 +258,8 @@ BITCOIN_CORE_H += \
   privatesend-client.h \
   privatesend-server.h \
   privatesend-util.h \
-  spork.h
+  spork.h \
+  sporkdb.h
 
 
 obj/build.h: FORCE
@@ -244,14 +268,16 @@ obj/build.h: FORCE
 	  "$(abs_top_srcdir)"
 libbitcoin_util_a-clientversion.$(OBJEXT): obj/build.h
 
-# server: shared between bitcoind and bitcoin-qt
+# server: shared between exosisd and exosis-qt
 libbitcoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libbitcoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_server_a_SOURCES = \
   addrdb.cpp \
   addrman.cpp \
+  banman.cpp \
   bloom.cpp \
   blockencodings.cpp \
+  blockfilter.cpp \
   chain.cpp \
   checkpoints.cpp \
   consensus/tx_verify.cpp \
@@ -259,12 +285,16 @@ libbitcoin_server_a_SOURCES = \
   httpserver.cpp \
   index/base.cpp \
   index/txindex.cpp \
+  interfaces/chain.cpp \
+  interfaces/handler.cpp \
+  interfaces/node.cpp \
   init.cpp \
   dbwrapper.cpp \
   merkleblock.cpp \
   miner.cpp \
   net.cpp \
   net_processing.cpp \
+  node/transaction.cpp \
   noui.cpp \
   outputtype.cpp \
   policy/fees.cpp \
@@ -313,8 +343,13 @@ libbitcoin_server_a_SOURCES += \
   privatesend-server.cpp \
   rpc/governance.cpp \
   rpc/masternode.cpp \
-  spork.cpp
+  spork.cpp \
+  sporkdb.cpp
+#
 
+if !ENABLE_WALLET
+libbitcoin_server_a_SOURCES += dummywallet.cpp
+endif
 
 if ENABLE_ZMQ
 libbitcoin_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(ZMQ_CFLAGS)
@@ -327,7 +362,7 @@ libbitcoin_zmq_a_SOURCES = \
 endif
 
 
-# wallet: shared between bitcoind and bitcoin-qt, but only linked
+# wallet: shared between exosisd and exosis-qt, but only linked
 # when wallet enabled
 libbitcoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
@@ -339,6 +374,7 @@ libbitcoin_wallet_a_SOURCES = \
   wallet/feebumper.cpp \
   wallet/fees.cpp \
   wallet/init.cpp \
+  wallet/psbtwallet.cpp \
   wallet/rpcdump.cpp \
   wallet/rpcwallet.cpp \
   wallet/wallet.cpp \
@@ -352,6 +388,13 @@ libbitcoin_wallet_a_SOURCES += \
   keepass.cpp \
   privatesend-client.cpp \
   privatesend-util.cpp
+#
+
+libbitcoin_wallet_tool_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libbitcoin_wallet_tool_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libbitcoin_wallet_tool_a_SOURCES = \
+  wallet/wallettool.cpp \
+  $(BITCOIN_CORE_H)
 
 # crypto primitives library
 ## EXOSIS BEGIN
@@ -377,9 +420,12 @@ crypto_libbitcoin_crypto_base_a_SOURCES = \
   crypto/sha256.cpp \
   crypto/sha256.h \
   crypto/sha512.cpp \
-  crypto/sha512.h
+  crypto/sha512.h \
+  crypto/siphash.cpp \
+  crypto/siphash.h
 
-# crypto algo libraries
+## EXOSIS BEGIN
+# crypto multi-algo libraries
 crypto_libbitcoin_crypto_base_a_SOURCES += \
   crypto/aes_helper.c \
   crypto/blake.c \
@@ -390,10 +436,10 @@ crypto_libbitcoin_crypto_base_a_SOURCES += \
   crypto/jh.c \
   crypto/keccak.c \
   crypto/luffa.c \
-  crypto/Lyra2.c \
-  crypto/Lyra2.h \
-  crypto/Lyra2Z.c \
-  crypto/Lyra2Z.h \
+  crypto/lyra2.c \
+  crypto/lyra2.h \
+  crypto/lyra2z.c \
+  crypto/lyra2z.h \
   crypto/nist5.h \
   crypto/scrypt-sse2.cpp \
   crypto/scrypt.cpp \
@@ -425,10 +471,11 @@ crypto_libbitcoin_crypto_base_a_SOURCES += \
   crypto/sph_types.h \
   crypto/sph_whirlpool.c \
   crypto/sph_whirlpool.h \
-  crypto/Sponge.c \
-  crypto/Sponge.h \
+  crypto/sponge.c \
+  crypto/sponge.h \
   crypto/x11.h \
   crypto/x16r.h
+## EXOSIS END
 
 
 if USE_ASM
@@ -485,11 +532,11 @@ libbitcoin_consensus_a_SOURCES = \
   tinyformat.h \
   uint256.cpp \
   uint256.h \
-  utilstrencodings.cpp \
-  utilstrencodings.h \
+  util/strencodings.cpp \
+  util/strencodings.h \
   version.h
 
-# common: shared between bitcoind, and bitcoin-qt and non-server tools
+# common: shared between exosisd, and exosis-qt and non-server tools
 libbitcoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_common_a_SOURCES = \
@@ -506,12 +553,14 @@ libbitcoin_common_a_SOURCES = \
   netaddress.cpp \
   netbase.cpp \
   policy/feerate.cpp \
+  psbt.cpp \
   protocol.cpp \
   scheduler.cpp \
   script/descriptor.cpp \
   script/ismine.cpp \
   script/sign.cpp \
   script/standard.cpp \
+  versionbitsinfo.cpp \
   warnings.cpp \
   $(BITCOIN_CORE_H)
 
@@ -528,18 +577,18 @@ libbitcoin_util_a_SOURCES = \
   compat/glibcxx_sanity.cpp \
   compat/strnlen.cpp \
   fs.cpp \
-  interfaces/handler.cpp \
-  interfaces/node.cpp \
   logging.cpp \
   random.cpp \
   rpc/protocol.cpp \
   support/cleanse.cpp \
   sync.cpp \
   threadinterrupt.cpp \
-  util.cpp \
-  utilmoneystr.cpp \
-  utilstrencodings.cpp \
-  utiltime.cpp \
+  util/bip32.cpp \
+  util/bytevectorhash.cpp \
+  util/system.cpp \
+  util/moneystr.cpp \
+  util/strencodings.cpp \
+  util/time.cpp \
   $(BITCOIN_CORE_H)
 
 if GLIBC_BACK_COMPAT
@@ -547,7 +596,7 @@ libbitcoin_util_a_SOURCES += compat/glibc_compat.cpp
 AM_LDFLAGS += $(COMPAT_LDFLAGS)
 endif
 
-# cli: shared between bitcoin-cli and bitcoin-qt
+# cli: shared between exosis-cli and exosis-qt
 libbitcoin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_cli_a_SOURCES = \
@@ -557,7 +606,7 @@ libbitcoin_cli_a_SOURCES = \
 nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
-# bitcoind binary #
+# exosisd binary #
 exosisd_SOURCES = bitcoind.cpp
 exosisd_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 exosisd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
@@ -570,6 +619,7 @@ endif
 exosisd_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_WALLET) \
+  $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_COMMON) \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
@@ -581,9 +631,9 @@ exosisd_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-exosisd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
+exosisd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
 
-# bitcoin-cli binary #
+# exosis-cli binary #
 exosis_cli_SOURCES = bitcoin-cli.cpp
 exosis_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
 exosis_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
@@ -599,10 +649,10 @@ exosis_cli_LDADD = \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO)
 
-exosis_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
+exosis_cli_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
 
-# bitcoin-tx binary #
+# exosis-tx binary #
 exosis_tx_SOURCES = bitcoin-tx.cpp
 exosis_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 exosis_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
@@ -621,6 +671,38 @@ exosis_tx_LDADD = \
   $(LIBSECP256K1)
 
 exosis_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+#
+
+# exosis-wallet binary #
+exosis_wallet_SOURCES = bitcoin-wallet.cpp
+exosis_wallet_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+exosis_wallet_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+exosis_wallet_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+
+if TARGET_WINDOWS
+exosis_wallet_SOURCES += bitcoin-wallet-res.rc
+endif
+
+exosis_wallet_LDADD = \
+  $(LIBBITCOIN_WALLET_TOOL) \
+  $(LIBBITCOIN_SERVER) \
+  $(LIBBITCOIN_WALLET) \
+  $(LIBBITCOIN_SERVER) \
+  $(LIBBITCOIN_COMMON) \
+  $(LIBBITCOIN_CONSENSUS) \
+  $(LIBUNIVALUE) \
+  $(LIBBITCOIN_UTIL) \
+  $(LIBBITCOIN_CRYPTO) \
+  $(LIBLEVELDB) \
+  $(LIBLEVELDB_SSE42) \
+  $(LIBMEMENV) \
+  $(LIBSECP256K1)
+
+exosis_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
+
+if ENABLE_ZMQ
+exosis_wallet_LDADD += $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
+endif
 #
 
 # bitcoinconsensus library #
@@ -663,6 +745,7 @@ CLEANFILES += zmq/*.gcda zmq/*.gcno
 CLEANFILES += obj/build.h
 
 EXTRA_DIST = $(CTAES_DIST)
+EXTRA_DIST += crypto/md_helper.c
 
 
 config/bitcoin-config.h: config/stamp-h1
@@ -696,9 +779,11 @@ if HARDEN
 	$(AM_V_at) READELF=$(READELF) OBJDUMP=$(OBJDUMP) $(top_srcdir)/contrib/devtools/security-check.py < $(bin_PROGRAMS)
 endif
 
+if ENABLE_BIP70
 %.pb.cc %.pb.h: %.proto
 	@test -f $(PROTOC)
 	$(AM_V_GEN) $(PROTOC) --cpp_out=$(@D) --proto_path=$(<D) $<
+endif
 
 if EMBEDDED_LEVELDB
 include Makefile.leveldb.include

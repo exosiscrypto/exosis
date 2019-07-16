@@ -1,34 +1,12 @@
 // Copyright (c) 2016-2018 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <versionbits.h>
 #include <consensus/params.h>
-
-const struct VBDeploymentInfo VersionBitsDeploymentInfo[Consensus::MAX_VERSION_BITS_DEPLOYMENTS] = {
-    {
-        /*.name =*/ "testdummy",
-        /*.gbt_force =*/ true,
-        /*.check_mn_protocol =*/ false,
-    },
-    {
-        /*.name =*/ "csv",
-        /*.gbt_force =*/ true,
-        /*.check_mn_protocol =*/ false,
-    },
-    {
-        /*.name =*/ "segwit",
-        /*.gbt_force =*/ true,
-        /*.check_mn_protocol =*/ false,
-//    },
-//    {
-//        /*.name =*/ "dip0001",
-//        /*.gbt_force =*/ true,
-//        /*.check_mn_protocol =*/ true,
-    }
-};
 
 ThresholdState AbstractThresholdConditionChecker::GetStateFor(const CBlockIndex* pindexPrev, const Consensus::Params& params, ThresholdConditionCache& cache) const
 {
@@ -201,7 +179,7 @@ protected:
 
     bool Condition(const CBlockIndex* pindex, const Consensus::Params& params) const override
     {
-        return (((pindex->nVersion & VERSIONBITS_TOP_MASK) == VERSIONBITS_TOP_BITS) && (pindex->nVersion & Mask(params)) != 0);
+        return (((pindex->nVersion & VERSIONBITS_TOP_MASK) == VERSIONBITS_TOP_BITS) && (pindex->nVersion & Mask(params) & ~ALGO_VERSION_MASK) != 0);
     }
 
 public:

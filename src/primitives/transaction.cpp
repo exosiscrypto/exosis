@@ -1,7 +1,8 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018-2019 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -9,7 +10,7 @@
 
 #include <hash.h>
 #include <tinyformat.h>
-#include <utilstrencodings.h>
+#include <util/strencodings.h>
 
 std::string COutPoint::ToString() const
 {
@@ -35,6 +36,7 @@ CTxIn::CTxIn(uint256 hashPrevTx, uint32_t nOut, CScript scriptSigIn, uint32_t nS
     nSequence = nSequenceIn;
 }
 
+// Dash
 std::string CTxIn::ToString() const
 {
     std::string str;
@@ -49,6 +51,7 @@ std::string CTxIn::ToString() const
     str += ")";
     return str;
 }
+//
 
 CTxOut::CTxOut(const CAmount& nValueIn, CScript scriptPubKeyIn)
 {
@@ -57,9 +60,23 @@ CTxOut::CTxOut(const CAmount& nValueIn, CScript scriptPubKeyIn)
     nRounds = -10;
 }
 
+// EXOSIS BEGIN
+CTxOut::CTxOut(const CAmount& nValueIn, CScript scriptPubKeyIn, std::string masternodeIPIn, CPubKey pubKeyMNIn)
+{
+    nValue = nValueIn;
+    scriptPubKey = scriptPubKeyIn;
+    masternodeIP = masternodeIPIn;
+    pubKeyMN = pubKeyMNIn;
+    nRounds = -10;
+}
+// EXOSIS END
+
 std::string CTxOut::ToString() const
 {
-    return strprintf("CTxOut(nValue=%d.%08d, scriptPubKey=%s)", nValue / COIN, nValue % COIN, HexStr(scriptPubKey).substr(0, 30));
+    // EXOSIS BEGIN
+    //return strprintf("CTxOut(nValue=%d.%08d, scriptPubKey=%s)", nValue / COIN, nValue % COIN, HexStr(scriptPubKey).substr(0, 30));
+    return strprintf("CTxOut(nValue=%d.%08d, scriptPubKey=%s, masternodeIP=%s, pubKeyMN=%s)", nValue / COIN, nValue % COIN, HexStr(scriptPubKey).substr(0, 30), masternodeIP, HexStr(pubKeyMN));
+    // EXOSIS END
 }
 
 CMutableTransaction::CMutableTransaction() : nVersion(CTransaction::CURRENT_VERSION), nLockTime(0) {}
@@ -70,6 +87,7 @@ uint256 CMutableTransaction::GetHash() const
     return SerializeHash(*this, SER_GETHASH, SERIALIZE_TRANSACTION_NO_WITNESS);
 }
 
+// Dash
 std::string CMutableTransaction::ToString() const
 {
     std::string str;
@@ -85,7 +103,7 @@ std::string CMutableTransaction::ToString() const
         str += "    " + vout[i].ToString() + "\n";
     return str;
 }
-
+//
 
 uint256 CTransaction::ComputeHash() const
 {
@@ -133,7 +151,10 @@ unsigned int CTransaction::CalculateModifiedSize(unsigned int nTxSize) const
     // Providing any more cleanup incentive than making additional inputs free would
     // risk encouraging people to create junk outputs to redeem later.
     if (nTxSize == 0)
-        nTxSize = ::GetSerializeSize(*this, SER_NETWORK, PROTOCOL_VERSION);
+        // EXOSIS BEGIN
+        //nTxSize = ::GetSerializeSize(*this, SER_NETWORK, PROTOCOL_VERSION);
+        nTxSize = ::GetSerializeSize(*this, PROTOCOL_VERSION);
+        // EXOSIS END
     for (std::vector<CTxIn>::const_iterator it(vin.begin()); it != vin.end(); ++it)
     {
         unsigned int offset = 41U + std::min(110U, (unsigned int)it->scriptSig.size());
@@ -146,7 +167,7 @@ unsigned int CTransaction::CalculateModifiedSize(unsigned int nTxSize) const
 
 unsigned int CTransaction::GetTotalSize() const
 {
-    return ::GetSerializeSize(*this, SER_NETWORK, PROTOCOL_VERSION);
+    return ::GetSerializeSize(*this, PROTOCOL_VERSION);
 }
 
 std::string CTransaction::ToString() const

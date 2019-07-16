@@ -169,8 +169,8 @@ Exportar los datos en la pestaña actual a un archivo</translation>
         <translation>Confirmar el cifrado de la billetera</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSISS&lt;/b&gt;!</source>
-        <translation>Advertencia: si encriptas tu billetera y pierdes tu contraseña &lt;b&gt; PIERDES TODOS TUS EXOSISS &lt;/b&gt; !</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSIS&lt;/b&gt;!</source>
+        <translation>Advertencia: si encriptas tu billetera y pierdes tu contraseña &lt;b&gt; PIERDES TODOS TUS EXOSIS &lt;/b&gt; !</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -243,10 +243,6 @@ Exportar los datos en la pestaña actual a un archivo</translation>
         <translation>&amp;Visión de conjunto</translation>
     </message>
     <message>
-        <source>Node</source>
-        <translation>Nodo</translation>
-    </message>
-    <message>
         <source>Show general overview of wallet</source>
         <translation>Mostrar vista general de la billetera</translation>
     </message>
@@ -289,14 +285,6 @@ Exportar los datos en la pestaña actual a un archivo</translation>
     <message>
         <source>&amp;Change Passphrase...</source>
         <translation>&amp;Cambiar contraseña...</translation>
-    </message>
-    <message>
-        <source>&amp;Sending addresses...</source>
-        <translation>&amp;Enviando Direcciones...</translation>
-    </message>
-    <message>
-        <source>&amp;Receiving addresses...</source>
-        <translation>&amp;Recibiendo Direcciones...</translation>
     </message>
     <message>
         <source>Open &amp;URI...</source>
@@ -347,10 +335,6 @@ Exportar los datos en la pestaña actual a un archivo</translation>
         <translation>Exosis</translation>
     </message>
     <message>
-        <source>Wallet</source>
-        <translation>Billetera</translation>
-    </message>
-    <message>
         <source>&amp;Send</source>
         <translation>&amp;Enviar</translation>
     </message>
@@ -395,8 +379,8 @@ Exportar los datos en la pestaña actual a un archivo</translation>
         <translation>Barra de herramientas de pestañas</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and Exosis: URIs)</source>
-        <translation>Solicitar pagos (genera códigos QR y Exosis: URIs)</translation>
+        <source>Request payments (generates QR codes and exosis: URIs)</source>
+        <translation>Solicitar pagos (genera códigos QR y exosis: URIs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -407,8 +391,8 @@ Exportar los datos en la pestaña actual a un archivo</translation>
         <translation>Mostrar la lista de direcciones y etiquetas de recepción usadas</translation>
     </message>
     <message>
-        <source>Open a Exosis: URI or payment request</source>
-        <translation>Abra un Exosis: URI o solicitud de pago</translation>
+        <source>Open a exosis: URI or payment request</source>
+        <translation>Abra un exosis: URI o solicitud de pago</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -441,6 +425,10 @@ Exportar los datos en la pestaña actual a un archivo</translation>
     <message>
         <source>Up to date</source>
         <translation>A hoy</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>Ventana</translation>
     </message>
     <message>
         <source>Connecting to peers...</source>
@@ -741,12 +729,12 @@ Exportar los datos en la pestaña actual a un archivo</translation>
         <translation>Formar</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Exosis network, as detailed below.</source>
-        <translation>Es posible que las transacciones recientes aún no estén visibles y, por lo tanto, el saldo de su billetera podría ser incorrecto. Esta información será correcta una vez que su billetera haya terminado de sincronizarse con la red Exosis, como se detalla a continuación.</translation>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the exosis network, as detailed below.</source>
+        <translation>Es posible que las transacciones recientes aún no estén visibles y, por lo tanto, el saldo de su billetera podría ser incorrecto. Esta información será correcta una vez que su billetera haya terminado de sincronizarse con la red exosis, como se detalla a continuación.</translation>
     </message>
     <message>
-        <source>Attempting to spend Exosiss that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation>La red no aceptará intentar gastar Exosiss que se vean afectados por transacciones aún no mostradas</translation>
+        <source>Attempting to spend exosis that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>La red no aceptará intentar gastar exosis que se vean afectados por transacciones aún no mostradas</translation>
     </message>
     <message>
         <source>Number of blocks left</source>
@@ -819,10 +807,6 @@ Exportar los datos en la pestaña actual a un archivo</translation>
         <translation>Tamaño de la memoria caché de la base de datos</translation>
     </message>
     <message>
-        <source>MB</source>
-        <translation>MB</translation>
-    </message>
-    <message>
         <source>Number of script &amp;verification threads</source>
         <translation>Cantidad de secuencias de comandos y verificación</translation>
     </message>
@@ -849,10 +833,6 @@ Exportar los datos en la pestaña actual a un archivo</translation>
     <message>
         <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Exit in the menu.</source>
         <translation>Minimice en lugar de salir de la aplicación cuando la ventana esté cerrada. Cuando esta opción está habilitada, la aplicación se cerrará solo después de seleccionar Salir en el menú.</translation>
-    </message>
-    <message>
-        <source>Active command-line options that override above options:</source>
-        <translation>Opciones de línea de comando activas que anulan las opciones anteriores:</translation>
     </message>
     <message>
         <source>Open Configuration File</source>
@@ -1121,7 +1101,7 @@ Exportar los datos en la pestaña actual a un archivo</translation>
         <translation>Error de solicitud de pago</translation>
     </message>
     <message>
-        <source>Cannot start Exosis: click-to-pay handler</source>
+        <source>Cannot start exosis: click-to-pay handler</source>
         <translation>No se puede iniciar Exosis: controlador de clic para pagar</translation>
     </message>
     <message>
@@ -1879,6 +1859,9 @@ Tarifa de copia</translation>
     <name>UnitDisplayStatusBarControl</name>
     </context>
 <context>
+    <name>WalletController</name>
+    </context>
+<context>
     <name>WalletFrame</name>
     </context>
 <context>
@@ -1897,10 +1880,6 @@ Exportar los datos en la pestaña actual a un archivo</translation>
     <message>
         <source>Exosis Core</source>
         <translation>Exosis Core</translation>
-    </message>
-    <message>
-        <source>This is the transaction fee you may discard if change is smaller than dust at this level</source>
-        <translation>Esta es la cuota de transacción que puede descartar si el cambio es más pequeño que el polvo a este nivel.</translation>
     </message>
     <message>
         <source>This is the transaction fee you may discard if change is smaller than dust at this level</source>

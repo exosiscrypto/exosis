@@ -172,7 +172,7 @@
         <translation>Пацвердзіце шыфраванне гаманца</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSISS&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSIS&lt;/b&gt;!</source>
         <translation>Увага: калі вы зашыфруеце свой гаманец і страціце парольную фразу, то &lt;b&gt;СТРАЦІЦЕ ЎСЕ СВАЕ БІТКОЙНЫ&lt;/b&gt;!</translation>
     </message>
     <message>
@@ -238,10 +238,6 @@
         <translation>Агляд</translation>
     </message>
     <message>
-        <source>Node</source>
-        <translation>Вузел</translation>
-    </message>
-    <message>
         <source>Show general overview of wallet</source>
         <translation>Паказвае агульныя звесткі аб гаманцы</translation>
     </message>
@@ -286,14 +282,6 @@
         <translation>&amp;Change Passphrase...</translation>
     </message>
     <message>
-        <source>&amp;Sending addresses...</source>
-        <translation>Адрасы дасылання...</translation>
-    </message>
-    <message>
-        <source>&amp;Receiving addresses...</source>
-        <translation>Адрасы прымання...</translation>
-    </message>
-    <message>
         <source>Open &amp;URI...</source>
         <translation>Адчыниць &amp;URI...</translation>
     </message>
@@ -328,10 +316,6 @@
     <message>
         <source>Exosis</source>
         <translation>Біткойн</translation>
-    </message>
-    <message>
-        <source>Wallet</source>
-        <translation>Гаманец</translation>
     </message>
     <message>
         <source>&amp;Send</source>
@@ -374,7 +358,7 @@
         <translation>Дапамога</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and Exosis: URIs)</source>
+        <source>Request payments (generates QR codes and exosis: URIs)</source>
         <translation>Запатрабаваць плацёж (генеруецца QR-код для біткойн URI)</translation>
     </message>
     <message>
@@ -386,7 +370,7 @@
         <translation>Паказаць спіс адрасоў і метак для прымання</translation>
     </message>
     <message>
-        <source>Open a Exosis: URI or payment request</source>
+        <source>Open a exosis: URI or payment request</source>
         <translation>Адкрыць біткойн: URI ці запыт плацяжу</translation>
     </message>
     <message>
@@ -686,10 +670,6 @@
     <message>
         <source>Options</source>
         <translation>Опцыі</translation>
-    </message>
-    <message>
-        <source>MB</source>
-        <translation>Мб</translation>
     </message>
     <message>
         <source>W&amp;allet</source>
@@ -1201,6 +1181,9 @@
 </context>
 <context>
     <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletController</name>
     </context>
 <context>
     <name>WalletFrame</name>

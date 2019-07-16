@@ -1,5 +1,6 @@
 // Copyright (c) 2014-2018 The Bitcoin Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -16,9 +17,9 @@ BOOST_FIXTURE_TEST_SUITE(main_tests, TestingSetup)
 
 static void TestBlockSubsidyHalvings(const Consensus::Params& consensusParams)
 {
-    // FXTC BEGIN
+    // EXOSIS BEGIN
     // Can not be tested this way because subsidy is based on block difficulty
-    // FXTC END
+    // EXOSIS END
 
     //int maxHalvings = 64;
     //CAmount nInitialSubsidy = 50 * COIN;

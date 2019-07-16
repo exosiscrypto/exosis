@@ -1,7 +1,8 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -15,12 +16,12 @@
 #include <reverse_iterator.h>
 #include <serialize.h>
 #include <sync.h>
-#include <util.h>
-#include <utiltime.h>
-#include <validation.h> // For CheckTransaction
+#include <util/system.h>
+#include <util/time.h>
 #include <wallet/wallet.h>
 
 #include <atomic>
+#include <string>
 
 #include <boost/thread.hpp>
 
@@ -60,9 +61,14 @@ bool WalletBatch::EraseTx(uint256 hash)
     return EraseIC(std::make_pair(std::string("tx"), hash));
 }
 
+bool WalletBatch::WriteKeyMetadata(const CKeyMetadata& meta, const CPubKey& pubkey, const bool overwrite)
+{
+    return WriteIC(std::make_pair(std::string("keymeta"), pubkey), meta, overwrite);
+}
+
 bool WalletBatch::WriteKey(const CPubKey& vchPubKey, const CPrivKey& vchPrivKey, const CKeyMetadata& keyMeta)
 {
-    if (!WriteIC(std::make_pair(std::string("keymeta"), vchPubKey), keyMeta, false)) {
+    if (!WriteKeyMetadata(keyMeta, vchPubKey, false)) {
         return false;
     }
 
@@ -79,7 +85,7 @@ bool WalletBatch::WriteCryptedKey(const CPubKey& vchPubKey,
                                 const std::vector<unsigned char>& vchCryptedSecret,
                                 const CKeyMetadata &keyMeta)
 {
-    if (!WriteIC(std::make_pair(std::string("keymeta"), vchPubKey), keyMeta)) {
+    if (!WriteKeyMetadata(keyMeta, vchPubKey, true)) {
         return false;
     }
 
@@ -154,99 +160,19 @@ bool WalletBatch::WriteMinVersion(int nVersion)
     return WriteIC(std::string("minversion"), nVersion);
 }
 
-bool WalletBatch::ReadAccount(const std::string& strAccount, CAccount& account)
-{
-    account.SetNull();
-    return m_batch.Read(std::make_pair(std::string("acc"), strAccount), account);
-}
-
-bool WalletBatch::WriteAccount(const std::string& strAccount, const CAccount& account)
-{
-    return WriteIC(std::make_pair(std::string("acc"), strAccount), account);
-}
-
-bool WalletBatch::EraseAccount(const std::string& strAccount)
-{
-    return EraseIC(std::make_pair(std::string("acc"), strAccount));
-}
-
-bool WalletBatch::WriteAccountingEntry(const uint64_t nAccEntryNum, const CAccountingEntry& acentry)
-{
-    return WriteIC(std::make_pair(std::string("acentry"), std::make_pair(acentry.strAccount, nAccEntryNum)), acentry);
-}
-
-CAmount WalletBatch::GetAccountCreditDebit(const std::string& strAccount)
-{
-    std::list<CAccountingEntry> entries;
-    ListAccountCreditDebit(strAccount, entries);
-
-    CAmount nCreditDebit = 0;
-    for (const CAccountingEntry& entry : entries)
-        nCreditDebit += entry.nCreditDebit;
-
-    return nCreditDebit;
-}
-
-void WalletBatch::ListAccountCreditDebit(const std::string& strAccount, std::list<CAccountingEntry>& entries)
-{
-    bool fAllAccounts = (strAccount == "*");
-
-    Dbc* pcursor = m_batch.GetCursor();
-    if (!pcursor)
-        throw std::runtime_error(std::string(__func__) + ": cannot create DB cursor");
-    bool setRange = true;
-    while (true)
-    {
-        // Read next record
-        CDataStream ssKey(SER_DISK, CLIENT_VERSION);
-        if (setRange)
-            ssKey << std::make_pair(std::string("acentry"), std::make_pair((fAllAccounts ? std::string("") : strAccount), uint64_t(0)));
-        CDataStream ssValue(SER_DISK, CLIENT_VERSION);
-        int ret = m_batch.ReadAtCursor(pcursor, ssKey, ssValue, setRange);
-        setRange = false;
-        if (ret == DB_NOTFOUND)
-            break;
-        else if (ret != 0)
-        {
-            pcursor->close();
-            throw std::runtime_error(std::string(__func__) + ": error scanning DB");
-        }
-
-        // Unserialize
-        std::string strType;
-        ssKey >> strType;
-        if (strType != "acentry")
-            break;
-        CAccountingEntry acentry;
-        ssKey >> acentry.strAccount;
-        if (!fAllAccounts && acentry.strAccount != strAccount)
-            break;
-
-        ssValue >> acentry;
-        ssKey >> acentry.nEntryNo;
-        entries.push_back(acentry);
-    }
-
-    pcursor->close();
-}
-
 class CWalletScanState {
 public:
-    unsigned int nKeys;
-    unsigned int nCKeys;
-    unsigned int nWatchKeys;
-    unsigned int nKeyMeta;
-    unsigned int m_unknown_records;
-    bool fIsEncrypted;
-    bool fAnyUnordered;
-    int nFileVersion;
+    unsigned int nKeys{0};
+    unsigned int nCKeys{0};
+    unsigned int nWatchKeys{0};
+    unsigned int nKeyMeta{0};
+    unsigned int m_unknown_records{0};
+    bool fIsEncrypted{false};
+    bool fAnyUnordered{false};
+    int nFileVersion{0};
     std::vector<uint256> vWalletUpgrade;
 
     CWalletScanState() {
-        nKeys = nCKeys = nWatchKeys = nKeyMeta = m_unknown_records = 0;
-        fIsEncrypted = false;
-        fAnyUnordered = false;
-        nFileVersion = 0;
     }
 };
 
@@ -288,9 +214,10 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
                 {
                     char fTmp;
                     char fUnused;
-                    ssValue >> fTmp >> fUnused >> wtx.strFromAccount;
-                    strErr = strprintf("LoadWallet() upgrading tx ver=%d %d '%s' %s",
-                                       wtx.fTimeReceivedIsTxTime, fTmp, wtx.strFromAccount, hash.ToString());
+                    std::string unused_string;
+                    ssValue >> fTmp >> fUnused >> unused_string;
+                    strErr = strprintf("LoadWallet() upgrading tx ver=%d %d %s",
+                                       wtx.fTimeReceivedIsTxTime, fTmp, hash.ToString());
                     wtx.fTimeReceivedIsTxTime = fTmp;
                 }
                 else
@@ -305,24 +232,6 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
                 wss.fAnyUnordered = true;
 
             pwallet->LoadToWallet(wtx);
-        }
-        else if (strType == "acentry")
-        {
-            std::string strAccount;
-            ssKey >> strAccount;
-            uint64_t nNumber;
-            ssKey >> nNumber;
-            if (nNumber > pwallet->nAccountingEntryNumber) {
-                pwallet->nAccountingEntryNumber = nNumber;
-            }
-
-            if (!wss.fAnyUnordered)
-            {
-                CAccountingEntry acentry;
-                ssValue >> acentry;
-                if (acentry.nOrderPos == -1)
-                    wss.fAnyUnordered = true;
-            }
         }
         else if (strType == "watchs")
         {
@@ -513,7 +422,8 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
                 strErr = "Error reading wallet database: Unknown non-tolerable wallet flags found";
                 return false;
             }
-        } else if (strType != "bestblock" && strType != "bestblock_nomerkle") {
+        } else if (strType != "bestblock" && strType != "bestblock_nomerkle" &&
+                strType != "minversion" && strType != "acentry") {
             wss.m_unknown_records++;
         }
     } catch (...)
@@ -615,7 +525,7 @@ DBErrors WalletBatch::LoadWallet(CWallet* pwallet)
     if ((wss.nKeys + wss.nCKeys + wss.nWatchKeys) != wss.nKeyMeta)
         pwallet->UpdateTimeFirstKey(1);
 
-    for (uint256 hash : wss.vWalletUpgrade)
+    for (const uint256& hash : wss.vWalletUpgrade)
         WriteTx(pwallet->mapWallet.at(hash));
 
     // Rewrite encrypted wallets of versions 0.4.0 and 0.5.0rc:
@@ -628,10 +538,12 @@ DBErrors WalletBatch::LoadWallet(CWallet* pwallet)
     if (wss.fAnyUnordered)
         result = pwallet->ReorderTransactions();
 
-    pwallet->laccentries.clear();
-    ListAccountCreditDebit("*", pwallet->laccentries);
-    for (CAccountingEntry& entry : pwallet->laccentries) {
-        pwallet->wtxOrdered.insert(make_pair(entry.nOrderPos, CWallet::TxPair(nullptr, &entry)));
+    // Upgrade all of the wallet keymetadata to have the hd master key id
+    // This operation is not atomic, but if it fails, updated entries are still backwards compatible with older software
+    try {
+        pwallet->UpgradeKeyMetadata();
+    } catch (...) {
+        result = DBErrors::CORRUPT;
     }
 
     return result;
@@ -653,7 +565,7 @@ DBErrors WalletBatch::FindWalletTx(std::vector<uint256>& vTxHash, std::vector<CW
         Dbc* pcursor = m_batch.GetCursor();
         if (!pcursor)
         {
-            LogPrint(BCLog::ALL, "Error getting wallet database cursor\n");
+            LogPrintf("Error getting wallet database cursor\n");
             return DBErrors::CORRUPT;
         }
 
@@ -667,7 +579,7 @@ DBErrors WalletBatch::FindWalletTx(std::vector<uint256>& vTxHash, std::vector<CW
                 break;
             else if (ret != 0)
             {
-                LogPrint(BCLog::ALL, "Error reading next record from wallet database\n");
+                LogPrintf("Error reading next record from wallet database\n");
                 return DBErrors::CORRUPT;
             }
 
@@ -712,7 +624,7 @@ DBErrors WalletBatch::ZapSelectTx(std::vector<uint256>& vTxHashIn, std::vector<u
     // erase each matching wallet TX
     bool delerror = false;
     std::vector<uint256>::iterator it = vTxHashIn.begin();
-    for (uint256 hash : vTxHash) {
+    for (const uint256& hash : vTxHash) {
         while (it < vTxHashIn.end() && (*it) < hash) {
             it++;
         }
@@ -743,7 +655,7 @@ DBErrors WalletBatch::ZapWalletTx(std::vector<CWalletTx>& vWtx)
         return err;
 
     // erase each wallet TX
-    for (uint256& hash : vTxHash) {
+    for (const uint256& hash : vTxHash) {
         if (!EraseTx(hash))
             return DBErrors::CORRUPT;
     }
@@ -782,7 +694,7 @@ void MaybeCompactWalletDB()
 }
 
 // Dash
-// FXTC TODO: convert to multi-wallet backup
+// EXOSIS TODO: convert to multi-wallet backup
 /*
 bool BackupWallet(const CWallet& wallet, const std::string& strDest)
 {
@@ -811,10 +723,10 @@ bool BackupWallet(const CWallet& wallet, const std::string& strDest)
 #else
                     fs::copy_file(pathSrc, pathDest);
 #endif
-                    LogPrint(BCLog::ALL, "copied wallet.dat to %s\n", pathDest.string());
+                    LogPrintf("copied wallet.dat to %s\n", pathDest.string());
                     return true;
                 } catch (const fs::filesystem_error& e) {
-                    LogPrint(BCLog::ALL, "error copying wallet.dat to %s - %s\n", pathDest.string(), e.what());
+                    LogPrintf("error copying wallet.dat to %s - %s\n", pathDest.string(), e.what());
                     return false;
                 }
             }
@@ -839,11 +751,11 @@ bool AutoBackupWallet (CWallet* wallet, std::string strWalletFile, std::string& 
         if (!fs::exists(backupsDir))
         {
             // Always create backup folder to not confuse the operating system's file browser
-            LogPrint(BCLog::ALL, "Creating backup folder %s\n", backupsDir.string());
+            LogPrintf("Creating backup folder %s\n", backupsDir.string());
             if(!fs::create_directories(backupsDir)) {
                 // smth is wrong, we shouldn't continue until it's resolved
                 strBackupError = strprintf(_("Wasn't able to create wallet backup folder %s!"), backupsDir.string());
-                LogPrint(BCLog::ALL, "%s\n", strBackupError);
+                LogPrintf("%s\n", strBackupError);
                 nWalletBackups = -1;
                 return false;
             }
@@ -862,16 +774,16 @@ bool AutoBackupWallet (CWallet* wallet, std::string strWalletFile, std::string& 
             fs::path backupFile = backupsDir / (strWalletFile + dateTimeStr);
             if(!BackupWallet(*wallet, backupFile.string())) {
                 strBackupWarning = strprintf(_("Failed to create backup %s!"), backupFile.string());
-                LogPrint(BCLog::ALL, "%s\n", strBackupWarning);
+                LogPrintf("%s\n", strBackupWarning);
                 nWalletBackups = -1;
                 return false;
             }
             // Update nKeysLeftSinceAutoBackup using current external keypool size
             wallet->nKeysLeftSinceAutoBackup = wallet->KeypoolCountExternalKeys();
-            LogPrint(BCLog::ALL, "nKeysLeftSinceAutoBackup: %d\n", wallet->nKeysLeftSinceAutoBackup);
+            LogPrintf("nKeysLeftSinceAutoBackup: %d\n", wallet->nKeysLeftSinceAutoBackup);
             if(wallet->IsLocked(true)) {
                 strBackupWarning = _("Wallet is locked, can't replenish keypool! Automatic backups and mixing are disabled, please unlock your wallet to replenish keypool.");
-                LogPrint(BCLog::ALL, "%s\n", strBackupWarning);
+                LogPrintf("%s\n", strBackupWarning);
                 nWalletBackups = -2;
                 return false;
             }
@@ -884,16 +796,16 @@ bool AutoBackupWallet (CWallet* wallet, std::string strWalletFile, std::string& 
             if (fs::exists(backupFile))
             {
                 strBackupWarning = _("Failed to create backup, file already exists! This could happen if you restarted wallet in less than 60 seconds. You can continue if you are ok with this.");
-                LogPrint(BCLog::ALL, "%s\n", strBackupWarning);
+                LogPrintf("%s\n", strBackupWarning);
                 return false;
             }
             if(fs::exists(sourceFile)) {
                 try {
                     fs::copy_file(sourceFile, backupFile);
-                    LogPrint(BCLog::ALL, "Creating backup of %s -> %s\n", sourceFile.string(), backupFile.string());
+                    LogPrintf("Creating backup of %s -> %s\n", sourceFile.string(), backupFile.string());
                 } catch(fs::filesystem_error &error) {
                     strBackupWarning = strprintf(_("Failed to create backup, error: %s"), error.what());
-                    LogPrint(BCLog::ALL, "%s\n", strBackupWarning);
+                    LogPrintf("%s\n", strBackupWarning);
                     nWalletBackups = -1;
                     return false;
                 }
@@ -931,10 +843,10 @@ bool AutoBackupWallet (CWallet* wallet, std::string strWalletFile, std::string& 
                 // More than nWalletBackups backups: delete oldest one(s)
                 try {
                     fs::remove(file.second);
-                    LogPrint(BCLog::ALL, "Old backup deleted: %s\n", file.second);
+                    LogPrintf("Old backup deleted: %s\n", file.second);
                 } catch(fs::filesystem_error &error) {
                     strBackupWarning = strprintf(_("Failed to delete backup, error: %s"), error.what());
-                    LogPrint(BCLog::ALL, "%s\n", strBackupWarning);
+                    LogPrintf("%s\n", strBackupWarning);
                     return false;
                 }
             }
@@ -942,7 +854,7 @@ bool AutoBackupWallet (CWallet* wallet, std::string strWalletFile, std::string& 
         return true;
     }
 
-    LogPrint(BCLog::ALL, "Automatic wallet backups are disabled!\n");
+    LogPrintf("Automatic wallet backups are disabled!\n");
     return false;
 }*/
 //
@@ -978,7 +890,7 @@ bool WalletBatch::RecoverKeysOnlyFilter(void *callbackData, CDataStream ssKey, C
         return false;
     if (!fReadOK)
     {
-        LogPrint(BCLog::ALL, "WARNING: WalletBatch::Recover skipping %s: %s\n", strType, strErr);
+        LogPrintf("WARNING: WalletBatch::Recover skipping %s: %s\n", strType, strErr);
         return false;
     }
 

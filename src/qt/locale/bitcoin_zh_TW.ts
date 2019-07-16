@@ -176,7 +176,7 @@
         <translation>確認錢包加密</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSISS&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSIS&lt;/b&gt;!</source>
         <translation>警告: 如果把錢包加密後又忘記密碼，你就會從此&lt;b&gt;失去其中所有的 Exosis 了&lt;/b&gt;！</translation>
     </message>
     <message>
@@ -188,8 +188,8 @@
         <translation>錢包已加密</translation>
     </message>
     <message>
-        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your Exosiss from being stolen by malware infecting your computer.</source>
-        <translation>%1 現在要關閉，好完成加密程序。請注意，加密錢包不能完全防止入侵你的電腦的惡意程式偷取錢幣。</translation>
+        <source>Your wallet is now encrypted. Remember that encrypting your wallet cannot fully protect your exosis from being stolen by malware infecting your computer.</source>
+        <translation>錢包已經加密了。請注意，加密錢包不能完全防止入侵你的電腦的惡意程式偷取錢幣。</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
@@ -254,10 +254,6 @@
         <translation>總覽(&amp;O)</translation>
     </message>
     <message>
-        <source>Node</source>
-        <translation>節點</translation>
-    </message>
-    <message>
         <source>Show general overview of wallet</source>
         <translation>顯示錢包一般總覽</translation>
     </message>
@@ -314,24 +310,12 @@
         <translation>改變密碼(&amp;C)...</translation>
     </message>
     <message>
-        <source>&amp;Sending addresses...</source>
-        <translation>付款位址(&amp;S)...</translation>
-    </message>
-    <message>
-        <source>&amp;Receiving addresses...</source>
-        <translation>收款位址(&amp;R)...</translation>
-    </message>
-    <message>
         <source>Open &amp;URI...</source>
         <translation>開啓 &amp;URI...</translation>
     </message>
     <message>
         <source>Wallet:</source>
         <translation>錢包:</translation>
-    </message>
-    <message>
-        <source>default wallet</source>
-        <translation>預設錢包</translation>
     </message>
     <message>
         <source>Click to disable network activity.</source>
@@ -386,10 +370,6 @@
         <translation>Exosis</translation>
     </message>
     <message>
-        <source>Wallet</source>
-        <translation>錢包</translation>
-    </message>
-    <message>
         <source>&amp;Send</source>
         <translation>付款(&amp;S)</translation>
     </message>
@@ -434,8 +414,8 @@
         <translation>分頁工具列</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and Exosis: URIs)</source>
-        <translation>要求付款(產生 QR Code 和 Exosis 付款協議的資源識別碼: URI)</translation>
+        <source>Request payments (generates QR codes and exosis: URIs)</source>
+        <translation>要求付款(產生 QR Code 和 exosis 付款協議的資源識別碼: URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -446,8 +426,8 @@
         <translation>顯示已使用過的收款位址和標記的清單</translation>
     </message>
     <message>
-        <source>Open a Exosis: URI or payment request</source>
-        <translation>開啓 Exosis 協議的資源識別碼(URI)或付款要求</translation>
+        <source>Open a exosis: URI or payment request</source>
+        <translation>開啓 exosis 協議的資源識別碼(URI)或付款要求</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -498,8 +478,52 @@
         <translation>最新狀態</translation>
     </message>
     <message>
+        <source>&amp;Sending addresses</source>
+        <translation>付款位址(&amp;S)</translation>
+    </message>
+    <message>
+        <source>&amp;Receiving addresses</source>
+        <translation>收款位址(&amp;R)</translation>
+    </message>
+    <message>
+        <source>Open Wallet</source>
+        <translation>打開錢包</translation>
+    </message>
+    <message>
+        <source>Open a wallet</source>
+        <translation>打開一個錢包檔</translation>
+    </message>
+    <message>
+        <source>Close Wallet...</source>
+        <translation>關上錢包...</translation>
+    </message>
+    <message>
+        <source>Close wallet</source>
+        <translation>關上錢包</translation>
+    </message>
+    <message>
         <source>Show the %1 help message to get a list with possible Exosis command-line options</source>
         <translation>顯示 %1 的說明訊息，來取得可用命令列選項的列表</translation>
+    </message>
+    <message>
+        <source>default wallet</source>
+        <translation>預設錢包</translation>
+    </message>
+    <message>
+        <source>Opening Wallet &lt;b&gt;%1&lt;/b&gt;...</source>
+        <translation>正在開啟錢包檔&lt;b&gt;%1&lt;/b&gt;中...</translation>
+    </message>
+    <message>
+        <source>Open Wallet Failed</source>
+        <translation>打開錢包失敗了</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>視窗(&amp;W)</translation>
+    </message>
+    <message>
+        <source>Minimize</source>
+        <translation>縮小</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -904,12 +928,12 @@
         <translation>表單</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Exosis network, as detailed below.</source>
-        <translation>最近的交易可能還看不到，因此錢包餘額可能不正確。在錢包軟體完成跟 Exosis 網路的同步後，這裡的資訊就會正確。詳情請見下面。</translation>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the exosis network, as detailed below.</source>
+        <translation>最近的交易可能還看不到，因此錢包餘額可能不正確。在錢包軟體完成跟 exosis 網路的同步後，這裡的資訊就會正確。詳情請見下面。</translation>
     </message>
     <message>
-        <source>Attempting to spend Exosiss that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation>使用還沒顯示出來的交易所影響到的 Exosis 可能會不被網路所接受。</translation>
+        <source>Attempting to spend exosis that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>使用還沒顯示出來的交易所影響到的 exosis 可能會不被網路所接受。</translation>
     </message>
     <message>
         <source>Number of blocks left</source>
@@ -944,8 +968,8 @@
         <translation>隱藏</translation>
     </message>
     <message>
-        <source>Unknown. Syncing Headers (%1)...</source>
-        <translation>不明。正在同步前導資料(%1)中...</translation>
+        <source>Unknown. Syncing Headers (%1, %2%)...</source>
+        <translation>不明。正在同步前導資料中(%1, %2%)...</translation>
     </message>
 </context>
 <context>
@@ -994,10 +1018,6 @@
         <translation>資料庫快取大小(&amp;D)</translation>
     </message>
     <message>
-        <source>MB</source>
-        <translation>MB (百萬位元組)</translation>
-    </message>
-    <message>
         <source>Number of script &amp;verification threads</source>
         <translation>指令碼驗證執行緒數目(&amp;V)</translation>
     </message>
@@ -1028,10 +1048,6 @@
     <message>
         <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
         <translation>在交易頁籤的情境選單出現的第三方網址連結(URL)，比如說區塊探索網站。網址中的 %s 會被取代為交易的雜湊值。可以用直線符號 | 來分隔多個連結。</translation>
-    </message>
-    <message>
-        <source>Active command-line options that override above options:</source>
-        <translation>從命令列取代掉以上設定的選項有:</translation>
     </message>
     <message>
         <source>Open the %1 configuration file from the working directory.</source>
@@ -1328,16 +1344,16 @@
         <translation>要求付款時發生錯誤</translation>
     </message>
     <message>
-        <source>Cannot start Exosis: click-to-pay handler</source>
-        <translation>沒辦法啟動 Exosis 協議的「按就付」處理器</translation>
+        <source>Cannot start exosis: click-to-pay handler</source>
+        <translation>沒辦法啟動 exosis 協議的「按就付」處理器</translation>
     </message>
     <message>
         <source>URI handling</source>
         <translation>URI 處理</translation>
     </message>
     <message>
-        <source>'bitcoin://' is not a valid URI. Use 'bitcoin:' instead.</source>
-        <translation>字首為 bitcoin:// 不是有效的 URI，請改用 bitcoin: 開頭。</translation>
+        <source>'exosis://' is not a valid URI. Use 'exosis:' instead.</source>
+        <translation>字首為 exosis:// 不是有效的 URI，請改用 exosis: 開頭。</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -1815,10 +1831,6 @@
         <translation>連線解禁(&amp;U)</translation>
     </message>
     <message>
-        <source>default wallet</source>
-        <translation>預設錢包</translation>
-    </message>
-    <message>
         <source>Welcome to the %1 RPC console.</source>
         <translation>歡迎使用 %1 的 RPC 主控台。</translation>
     </message>
@@ -2151,14 +2163,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>隱藏</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for Exosis transactions than the network can process.</source>
-        <translation>當交易量少於區塊可容納的空間時，只付最低手續費不會有什麽問題。但是當交易量的需求成長到超過整體網路可以處理的量時，可能會造成一筆一直不會被確認的交易。</translation>
-    </message>
-    <message>
-        <source>(read the tooltip)</source>
-        <translation>(請看提示)</translation>
-    </message>
-    <message>
         <source>Recommended:</source>
         <translation>建議值:</translation>
     </message>
@@ -2185,6 +2189,10 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     <message>
         <source>Dust:</source>
         <translation>零散錢:</translation>
+    </message>
+    <message>
+        <source>A too low fee might result in a never confirming transaction (read the tooltip)</source>
+        <translation>手續費太低的話可能會造成永遠無法確認的交易(請參考提示)</translation>
     </message>
     <message>
         <source>Confirmation time target:</source>
@@ -2323,10 +2331,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>付款的要求過期了。</translation>
     </message>
     <message>
-        <source>Pay only the required fee of %1</source>
-        <translation>只付必要的手續費 %1</translation>
-    </message>
-    <message>
         <source>Warning: Invalid Exosis address</source>
         <translation>警告: Exosis 位址無效</translation>
     </message>
@@ -2390,8 +2394,8 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>刪掉這個項目</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less Exosiss than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>手續費會從要付款出去的金額中扣掉。因此收款人會收到比輸入的金額還要少的 Exosis。如果有多個收款人的話，手續費會平均分配來扣除。</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less exosis than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>手續費會從要付款出去的金額中扣掉。因此收款人會收到比輸入的金額還要少的 exosis。如果有多個收款人的話，手續費會平均分配來扣除。</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -2418,7 +2422,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>請輸入這個位址的標記，來把它加進去已使用過位址的清單。</translation>
     </message>
     <message>
-        <source>A message that was attached to the Exosis: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Exosis network.</source>
+        <source>A message that was attached to the exosis: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Exosis network.</source>
         <translation>附加在 Exosis 付款協議的資源識別碼(URI)中的訊息，會和交易內容一起存起來，給你自己做參考。注意: 這個訊息不會送到 Exosis 網路上。</translation>
     </message>
     <message>
@@ -2463,7 +2467,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>簽署訊息(&amp;S)</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive Exosiss sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive exosis sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation>你可以用自己的位址簽署訊息或合約，來證明你可以從該位址收款。但是請小心，不要簽署語意含糊不清，或隨機產生的內容，因為釣魚式詐騙可能會用騙你簽署的手法來冒充是你。只有在語句中的細節你都同意時才簽署。</translation>
     </message>
     <message>
@@ -3057,6 +3061,21 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
 </context>
 <context>
+    <name>WalletController</name>
+    <message>
+        <source>Close wallet</source>
+        <translation>關閉錢包</translation>
+    </message>
+    <message>
+        <source>Are you sure you wish to close wallet &lt;i&gt;%1&lt;/i&gt;?</source>
+        <translation>確定要關上錢包&lt;i&gt;%1&lt;/i&gt;嗎？</translation>
+    </message>
+    <message>
+        <source>Closing the wallet for too long can result in having to resync the entire chain if pruning is enabled.</source>
+        <translation>關上錢包太久的話且修剪模式又有開啟的話，可能會造成日後需要重新同步整個區塊鏈。</translation>
+    </message>
+</context>
+<context>
     <name>WalletFrame</name>
     <message>
         <source>No wallet has been loaded.</source>
@@ -3104,6 +3123,10 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     <message>
         <source>Could not commit transaction</source>
         <translation>沒辦法提交交易</translation>
+    </message>
+    <message>
+        <source>default wallet</source>
+        <translation>預設錢包</translation>
     </message>
 </context>
 <context>
@@ -3264,10 +3287,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>你想要現在重建區塊資料庫嗎？</translation>
     </message>
     <message>
-        <source>Error creating %s: You can't create non-HD wallets with this version.</source>
-        <translation>產生 %s 發生錯誤：這個版本不能用來產生非 HD 錢包。</translation>
-    </message>
-    <message>
         <source>Error initializing block database</source>
         <translation>初始化區塊資料庫時發生錯誤</translation>
     </message>
@@ -3336,6 +3355,10 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>設定 -fallbackfee=&lt;金額&gt; 的金額無效: '%s'</translation>
     </message>
     <message>
+        <source>Specified blocks directory "%s" does not exist.</source>
+        <translation>指定的區塊目錄 "%s" 不存在。</translation>
+    </message>
+    <message>
         <source>Upgrading txindex database</source>
         <translation>正在升級 txindex 資料庫</translation>
     </message>
@@ -3384,18 +3407,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>沒辦法產生密鑰</translation>
     </message>
     <message>
-        <source>Unsupported argument -benchmark ignored, use -debug=bench.</source>
-        <translation>忽略了不再支援的 -benchmark 參數，請改用 -debug=bench</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -debugnet ignored, use -debug=net.</source>
-        <translation>忽略了不再支援的 -debugnet 參數，請改用 -debug=net</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -tor found, use -onion.</source>
-        <translation>找到不再支援的 -tor 參數，請改用 -onion 參數。</translation>
-    </message>
-    <message>
         <source>Unsupported logging category %s=%s.</source>
         <translation>不支援的紀錄類別 %s=%s。</translation>
     </message>
@@ -3430,10 +3441,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     <message>
         <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
         <translation>回到非修剪的模式需要用 -reindex 參數來重建資料庫。這會導致重新下載整個區塊鏈。</translation>
-    </message>
-    <message>
-        <source>Error loading %s: You can't disable HD on an already existing HD wallet</source>
-        <translation>載入 %s 發生錯誤：不能對已存在的 HD 錢包停用 HD 功能。</translation>
     </message>
     <message>
         <source>Error reading from database, shutting down.</source>
@@ -3540,10 +3547,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>參數 -maxtxfee 設定了很高的金額！這可是你一次交易就有可能付出的最高手續費。</translation>
     </message>
     <message>
-        <source>Error loading %s: You can't enable HD on an already existing non-HD wallet</source>
-        <translation>載入 %s 發生錯誤：不能對已存在的非 HD 錢包啟用 HD 功能。</translation>
-    </message>
-    <message>
         <source>This is the transaction fee you may pay when fee estimates are not available.</source>
         <translation>這是當預估手續費還沒計算出來時，付款交易預設會付的手續費。</translation>
     </message>
@@ -3554,18 +3557,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     <message>
         <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
         <translation>網路版本字串的總長度(%i)超過最大長度(%i)了。請減少 uacomment 參數的數目或長度。</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -socks found. Setting SOCKS version isn't possible anymore, only SOCKS5 proxies are supported.</source>
-        <translation>找到不再支援的 -socks 參數。現在只支援 SOCKS5 協定的代理伺服器，因此不可以指定 SOCKS 協定版本了。</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -whitelistalwaysrelay ignored, use -whitelistrelay and/or -whitelistforcerelay.</source>
-        <translation>忽略不支援的參數 -whitelistalwaysrelay，請改用 -whitelistrelay 和 -whitelistforcerelay​ 的組合。</translation>
-    </message>
-    <message>
-        <source>Warning: Unknown block versions being mined! It's possible unknown rules are in effect</source>
-        <translation>警告: 有礦工正在開採不明版本的區塊！這表示有不明的交易規則正在作用中</translation>
     </message>
     <message>
         <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
@@ -3618,10 +3609,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     <message>
         <source>Insufficient funds</source>
         <translation>累積金額不足</translation>
-    </message>
-    <message>
-        <source>Can't generate a change-address key. Private keys are disabled for this wallet.</source>
-        <translation>沒辦法造出密鑰給找零位址使用，因為目前這個錢包不允許有私鑰。</translation>
     </message>
     <message>
         <source>Cannot upgrade a non HD split wallet without upgrading to support pre split keypool. Please use -upgradewallet=169900 or -upgradewallet with no version specified.</source>

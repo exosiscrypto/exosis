@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>Închide</translation>
+        <translation>Î&amp;nchide</translation>
     </message>
     <message>
         <source>Delete the currently selected address from the list</source>
@@ -176,7 +176,7 @@
         <translation>Confirmaţi criptarea portofelului</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSISS&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSIS&lt;/b&gt;!</source>
         <translation>Atenţie: Dacă va criptati portofelul si ulterior pierdeti parola, &lt;b&gt;VEŢI PIERDE TOTI EXOSISII&lt;/b&gt;!</translation>
     </message>
     <message>
@@ -186,10 +186,6 @@
     <message>
         <source>Wallet encrypted</source>
         <translation>Portofel criptat</translation>
-    </message>
-    <message>
-        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your Exosiss from being stolen by malware infecting your computer.</source>
-        <translation>%1 se va închide acum pentru a termina procesul de criptare. Ţineţi minte că criptarea portofelului nu vă poate proteja în totalitate de furtul monedelor de către programe malware care vă infectează calculatorul.</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
@@ -221,7 +217,7 @@
     </message>
     <message>
         <source>Wallet passphrase was successfully changed.</source>
-        <translation>Parola portofelului a fost schimexosis.</translation>
+        <translation>Parola portofelului a fost schimbata.</translation>
     </message>
     <message>
         <source>Warning: The Caps Lock key is on!</source>
@@ -252,10 +248,6 @@
     <message>
         <source>&amp;Overview</source>
         <translation>&amp;Imagine de ansamblu</translation>
-    </message>
-    <message>
-        <source>Node</source>
-        <translation>Nod</translation>
     </message>
     <message>
         <source>Show general overview of wallet</source>
@@ -314,24 +306,12 @@
         <translation>S&amp;chimbă parola...</translation>
     </message>
     <message>
-        <source>&amp;Sending addresses...</source>
-        <translation>Adrese de trimitere...</translation>
-    </message>
-    <message>
-        <source>&amp;Receiving addresses...</source>
-        <translation>Adrese de p&amp;rimire...</translation>
-    </message>
-    <message>
         <source>Open &amp;URI...</source>
         <translation>Deschide &amp;URI...</translation>
     </message>
     <message>
         <source>Wallet:</source>
         <translation>Portofel:</translation>
-    </message>
-    <message>
-        <source>default wallet</source>
-        <translation>portofel implicit</translation>
     </message>
     <message>
         <source>Click to disable network activity.</source>
@@ -386,10 +366,6 @@
         <translation>Exosis</translation>
     </message>
     <message>
-        <source>Wallet</source>
-        <translation>Portofel</translation>
-    </message>
-    <message>
         <source>&amp;Send</source>
         <translation>Trimite</translation>
     </message>
@@ -434,8 +410,8 @@
         <translation>Bara de unelte</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and Exosis: URIs)</source>
-        <translation>Cereţi plăţi (generează coduri QR şi Exosis-uri: URls)</translation>
+        <source>Request payments (generates QR codes and exosis: URIs)</source>
+        <translation>Cereţi plăţi (generează coduri QR şi exosis-uri: URls)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -446,8 +422,8 @@
         <translation>Arată lista de adrese pentru primire şi etichetele</translation>
     </message>
     <message>
-        <source>Open a Exosis: URI or payment request</source>
-        <translation>Deschidere Exosis: o adresa URI sau o cerere de plată</translation>
+        <source>Open a exosis: URI or payment request</source>
+        <translation>Deschidere exosis: o adresa URI sau o cerere de plată</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -500,6 +476,18 @@
     <message>
         <source>Show the %1 help message to get a list with possible Exosis command-line options</source>
         <translation>Arată mesajul de ajutor %1 pentru a obţine o listă cu opţiunile posibile de linii de comandă Exosis</translation>
+    </message>
+    <message>
+        <source>default wallet</source>
+        <translation>portofel implicit</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Fereastră</translation>
+    </message>
+    <message>
+        <source>Minimize</source>
+        <translation>Minimizare</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -900,12 +888,12 @@
         <translation>Form</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Exosis network, as detailed below.</source>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the exosis network, as detailed below.</source>
         <translation>Tranzactiile recente pot sa nu fie inca vizibile, de aceea balanta portofelului poate fi incorecta. Aceasta informatie va fi corecta de indata ce portofelul va fi complet sincronizat cu reteaua Exosis, asa cum este detaliat mai jos.</translation>
     </message>
     <message>
-        <source>Attempting to spend Exosiss that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation>Incercarea de a cheltui Exosisi care sunt afectati de tranzactii ce inca nu sunt afisate nu va fi acceptata de retea.</translation>
+        <source>Attempting to spend exosis that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>Incercarea de a cheltui exosisi care sunt afectati de tranzactii ce inca nu sunt afisate nu va fi acceptata de retea.</translation>
     </message>
     <message>
         <source>Number of blocks left</source>
@@ -939,11 +927,7 @@
         <source>Hide</source>
         <translation>Ascunde</translation>
     </message>
-    <message>
-        <source>Unknown. Syncing Headers (%1)...</source>
-        <translation>Necunoscut. Se sincronizeaza headerele (%1)...</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>OpenURIDialog</name>
     <message>
@@ -990,10 +974,6 @@
         <translation>Mărimea bazei de &amp;date cache</translation>
     </message>
     <message>
-        <source>MB</source>
-        <translation>MB</translation>
-    </message>
-    <message>
         <source>Number of script &amp;verification threads</source>
         <translation>Numărul de thread-uri de &amp;verificare</translation>
     </message>
@@ -1026,10 +1006,6 @@
         <translation>URL-uri terţe părţi (de exemplu, un explorator de bloc), care apar în tab-ul tranzacţiilor ca elemente de meniu contextual. %s în URL este înlocuit cu hash de tranzacţie. URL-urile multiple sînt separate prin bară verticală |.</translation>
     </message>
     <message>
-        <source>Active command-line options that override above options:</source>
-        <translation>Opţiuni linie de comandă active care oprimă opţiunile de mai sus:</translation>
-    </message>
-    <message>
         <source>Open the %1 configuration file from the working directory.</source>
         <translation>Deschide fisierul de configurare %1 din directorul curent.</translation>
     </message>
@@ -1048,6 +1024,22 @@
     <message>
         <source>&amp;Network</source>
         <translation>Reţea</translation>
+    </message>
+    <message>
+        <source>Disables some advanced features but all blocks will still be fully validated. Reverting this setting requires re-downloading the entire blockchain. Actual disk usage may be somewhat higher.</source>
+        <translation>Dezactiveaza unele caracteristici avansate insa toate blocurile vor fi validate pe deplin. Inversarea acestei setari necesita re-descarcarea intregului blockchain. Utilizarea reala a discului poate fi ceva mai mare.</translation>
+    </message>
+    <message>
+        <source>Prune &amp;block storage to</source>
+        <translation>Reductie &amp;block storage la  </translation>
+    </message>
+    <message>
+        <source>GB</source>
+        <translation>GB</translation>
+    </message>
+    <message>
+        <source>Reverting this setting requires re-downloading the entire blockchain.</source>
+        <translation> Inversarea acestei setari necesita re-descarcarea intregului blockchain.</translation>
     </message>
     <message>
         <source>(0 = auto, &lt;0 = leave that many cores free)</source>
@@ -1163,7 +1155,7 @@
     </message>
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
-        <translation>Alegeţi subdiviziunea folosită la afişarea interfeţei şi la trimiterea de Exosis.</translation>
+        <translation>Alegeţi subdiviziunea folosită la afişarea interfeţei şi la trimiterea de exosis.</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -1223,7 +1215,7 @@
     </message>
     <message>
         <source>The supplied proxy address is invalid.</source>
-        <translation>Adresa Exosis pe care aţi specificat-o nu este validă.</translation>
+        <translation>Adresa exosis pe care aţi specificat-o nu este validă.</translation>
     </message>
 </context>
 <context>
@@ -1308,12 +1300,16 @@
         <translation>Eroare la cererea de plată</translation>
     </message>
     <message>
-        <source>Cannot start Exosis: click-to-pay handler</source>
+        <source>Cannot start exosis: click-to-pay handler</source>
         <translation>Exosis nu poate porni: click-to-pay handler</translation>
     </message>
     <message>
         <source>URI handling</source>
         <translation>Gestionare URI</translation>
+    </message>
+    <message>
+        <source>'exosis://' is not a valid URI. Use 'exosis:' instead.</source>
+        <translation>'exosis://' nu este un URI valid. Folositi 'exosis:' in loc.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -1513,8 +1509,16 @@
 <context>
     <name>QObject::QObject</name>
     <message>
+        <source>Error parsing command line arguments: %1.</source>
+        <translation>Eroare la analiza argumentelor linie de comanda: %1</translation>
+    </message>
+    <message>
         <source>Error: Specified data directory "%1" does not exist.</source>
         <translation>Eroare: Directorul de date specificat "%1" nu există.</translation>
+    </message>
+    <message>
+        <source>Error: Cannot parse configuration file: %1.</source>
+        <translation>Eroare: Nu se poate analiza fişierul de configuraţie: %1.</translation>
     </message>
     <message>
         <source>Error: %1</source>
@@ -1605,6 +1609,14 @@
     <message>
         <source>Memory usage</source>
         <translation>Memorie folosită</translation>
+    </message>
+    <message>
+        <source>Wallet: </source>
+        <translation>Portofel:</translation>
+    </message>
+    <message>
+        <source>(none)</source>
+        <translation>(nimic)</translation>
     </message>
     <message>
         <source>&amp;Reset</source>
@@ -1775,10 +1787,6 @@
         <translation>&amp;Unban</translation>
     </message>
     <message>
-        <source>default wallet</source>
-        <translation>portofel implicit</translation>
-    </message>
-    <message>
         <source>Welcome to the %1 RPC console.</source>
         <translation>Bun venit la consola %1 RPC.</translation>
     </message>
@@ -1801,6 +1809,14 @@
     <message>
         <source>Network activity disabled</source>
         <translation>Activitatea retelei a fost oprita.</translation>
+    </message>
+    <message>
+        <source>Executing command without any wallet</source>
+        <translation>Executarea comenzii fara nici un portofel.</translation>
+    </message>
+    <message>
+        <source>Executing command using "%1" wallet</source>
+        <translation>Executarea comenzii folosind portofelul "%1"</translation>
     </message>
     <message>
         <source>(node id: %1)</source>
@@ -2087,20 +2103,20 @@
         <translation>inchide setarile de taxare</translation>
     </message>
     <message>
+        <source>Specify a custom fee per kB (1,000 bytes) of the transaction's virtual size.
+
+Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis per kB" for a transaction size of 500 bytes (half of 1 kB) would ultimately yield a fee of only 50 satoshis.</source>
+        <translation>Specificati o taxa anume pe kB (1000 byte) din marimea virtuala a tranzactiei. 
+
+Nota: Cum taxa este calculata per byte, o taxa de "100 satoshi per kB" pentru o tranzactie de 500 byte (jumatate de kB) va produce o taxa de doar 50 satoshi.</translation>
+    </message>
+    <message>
         <source>per kilobyte</source>
         <translation>per kilooctet</translation>
     </message>
     <message>
         <source>Hide</source>
         <translation>Ascunde</translation>
-    </message>
-    <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for Exosis transactions than the network can process.</source>
-        <translation>Plata unei taxe minime de tranzactie este in regula atata timp cat exista mai mult spatiu in blocuri dacat sunt tranzactii. Insa trebuie sa fiti constienti ca acest lucru poate conduce la tranzactii care nu vor fi niciodata confirmate in cazul in care exista cerere de tranzactii mai mare decat poate procesa reteaua.</translation>
-    </message>
-    <message>
-        <source>(read the tooltip)</source>
-        <translation>(citeste tooltip)</translation>
     </message>
     <message>
         <source>Recommended:</source>
@@ -2207,6 +2223,14 @@
         <translation>Puteti creste taxa mai tarziu (semnaleaza Replace-By-Fee, BIP-125).</translation>
     </message>
     <message>
+        <source>from wallet %1</source>
+        <translation>de la portofelul %1</translation>
+    </message>
+    <message>
+        <source>Please, review your transaction.</source>
+        <translation>Va rugam sa revizuiti tranzactia.</translation>
+    </message>
+    <message>
         <source>Transaction fee</source>
         <translation>Taxă tranzacţie</translation>
     </message>
@@ -2215,12 +2239,8 @@
         <translation>Nu se semnalizeaza Replace-By-Fee, BIP-125</translation>
     </message>
     <message>
-        <source>You can increase the fee later (signals Replace-By-Fee, BIP-125).</source>
-        <translation>Puteti creste taxa mai tarziu (semnaleaza Replace-By-Fee, BIP-125).</translation>
-    </message>
-    <message>
-        <source>Not signalling Replace-By-Fee, BIP-125.</source>
-        <translation>Nu se semnalizeaza Replace-By-Fee, BIP-125</translation>
+        <source>Total Amount</source>
+        <translation>Suma totală</translation>
     </message>
     <message>
         <source>Confirm send coins</source>
@@ -2262,17 +2282,13 @@
         <source>Payment request expired.</source>
         <translation>Cerere de plată expirata</translation>
     </message>
-    <message>
-        <source>Pay only the required fee of %1</source>
-        <translation>Plăteşte doar taxa solicitata de %1</translation>
-    </message>
     <message numerus="yes">
         <source>Estimated to begin confirmation within %n block(s).</source>
         <translation><numerusform>Se estimeaza inceperea confirmarii in %n bloc.</numerusform><numerusform>Se estimeaza inceperea confirmarii in %n blocuri.</numerusform><numerusform>Se estimeaza inceperea confirmarii in %n blocuri.</numerusform></translation>
     </message>
     <message>
         <source>Warning: Invalid Exosis address</source>
-        <translation>Atenţie: Adresa Exosis nevalidă!</translation>
+        <translation>Atenţie: Adresa exosis nevalidă!</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -2315,7 +2331,7 @@
     </message>
     <message>
         <source>The Exosis address to send the payment to</source>
-        <translation>Adresa Exosis către care se face plata</translation>
+        <translation>Adresa exosis către care se face plata</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2334,8 +2350,8 @@
         <translation>Înlătură această intrare</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less Exosiss than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>Taxa va fi scazuta in suma trimisa. Destinatarul va primi mai putini Exosis decat ati specificat in campul sumei trimise. Daca au fost selectati mai multi destinatari, taxa se va imparti in mod egal.</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less exosis than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>Taxa va fi scazuta in suma trimisa. Destinatarul va primi mai putini exosis decat ati specificat in campul sumei trimise. Daca au fost selectati mai multi destinatari, taxa se va imparti in mod egal.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -2362,8 +2378,8 @@
         <translation>Introduceţi eticheta pentru ca această adresa să fie introdusă în lista de adrese folosite</translation>
     </message>
     <message>
-        <source>A message that was attached to the Exosis: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Exosis network.</source>
-        <translation>un mesaj a fost ataşat la Exosis: URI care va fi stocat cu tranzacţia pentru referinţa dvs. Notă: Acest mesaj nu va fi trimis către reţeaua Exosis.</translation>
+        <source>A message that was attached to the exosis: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Exosis network.</source>
+        <translation>un mesaj a fost ataşat la exosis: URI care va fi stocat cu tranzacţia pentru referinţa dvs. Notă: Acest mesaj nu va fi trimis către reţeaua exosis.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2407,8 +2423,8 @@
         <translation>&amp;Semnează mesaj</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive Exosiss sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>Puteţi semna mesaje/contracte cu adresele dvs. pentru a demostra ca puteti primi Exosisi trimisi la ele. Aveţi grijă să nu semnaţi nimic vag sau aleator, deoarece atacurile de tip phishing vă pot păcăli să le transferaţi identitatea. Semnaţi numai declaraţiile detaliate cu care sînteti de acord.</translation>
+        <source>You can sign messages/agreements with your addresses to prove you can receive exosis sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>Puteţi semna mesaje/contracte cu adresele dvs. pentru a demostra ca puteti primi exosisi trimisi la ele. Aveţi grijă să nu semnaţi nimic vag sau aleator, deoarece atacurile de tip phishing vă pot păcăli să le transferaţi identitatea. Semnaţi numai declaraţiile detaliate cu care sînteti de acord.</translation>
     </message>
     <message>
         <source>The Exosis address to sign the message with</source>
@@ -2674,6 +2690,10 @@
     <message>
         <source>Transaction total size</source>
         <translation>Dimensiune totala tranzacţie</translation>
+    </message>
+    <message>
+        <source>Transaction virtual size</source>
+        <translation>Dimensiune virtuala a tranzactiei</translation>
     </message>
     <message>
         <source>Output index</source>
@@ -2993,6 +3013,9 @@
     </message>
 </context>
 <context>
+    <name>WalletController</name>
+    </context>
+<context>
     <name>WalletFrame</name>
     <message>
         <source>No wallet has been loaded.</source>
@@ -3041,6 +3064,10 @@
         <source>Could not commit transaction</source>
         <translation>Tranzactia nu a putut fi consemnata.</translation>
     </message>
+    <message>
+        <source>default wallet</source>
+        <translation>portofel implicit</translation>
+    </message>
 </context>
 <context>
     <name>WalletView</name>
@@ -3076,7 +3103,11 @@
         <source>The wallet data was successfully saved to %1.</source>
         <translation>Datele portofelului s-au salvat cu succes la %1.</translation>
     </message>
-    </context>
+    <message>
+        <source>Cancel</source>
+        <translation>Anulare</translation>
+    </message>
+</context>
 <context>
     <name>bitcoin-core</name>
     <message>
@@ -3196,14 +3227,6 @@
         <translation>Doriţi să reconstruiţi baza de date blocuri acum?</translation>
     </message>
     <message>
-        <source>Error creating %s: You can't create non-HD wallets with this version.</source>
-        <translation>Eroare la crearea %s: Nu se pot crea portofele non-HD cu aceasta versiune.</translation>
-    </message>
-    <message>
-        <source>Error creating %s: You can't create non-HD wallets with this version.</source>
-        <translation>Eroare la crearea %s: Nu se pot crea portofele non-HD cu aceasta versiune.</translation>
-    </message>
-    <message>
         <source>Error initializing block database</source>
         <translation>Eroare la iniţializarea bazei de date de blocuri</translation>
     </message>
@@ -3214,6 +3237,10 @@
     <message>
         <source>Error loading %s</source>
         <translation>Eroare la încărcarea %s</translation>
+    </message>
+    <message>
+        <source>Error loading %s: Private keys can only be disabled during creation</source>
+        <translation>Eroare la incarcarea %s: Cheile private pot fi dezactivate doar in momentul crearii</translation>
     </message>
     <message>
         <source>Error loading %s: Wallet corrupted</source>
@@ -3268,6 +3295,14 @@
         <translation>Suma nevalidă pentru -fallbackfee=&lt;amount&gt;: '%s'</translation>
     </message>
     <message>
+        <source>Specified blocks directory "%s" does not exist.</source>
+        <translation>Directorul de blocuri "%s" specificat nu exista.</translation>
+    </message>
+    <message>
+        <source>Upgrading txindex database</source>
+        <translation>Actualizarea bazei de date txindex</translation>
+    </message>
+    <message>
         <source>Loading P2P addresses...</source>
         <translation>Încărcare adrese P2P...</translation>
     </message>
@@ -3308,16 +3343,8 @@
         <translation>Nu se poate efectua legatura la %s pe acest computer. %s probabil ruleaza deja.</translation>
     </message>
     <message>
-        <source>Unsupported argument -benchmark ignored, use -debug=bench.</source>
-        <translation>Argumentul nesuportat -benchmark este ignorat, folositi debug=bench.</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -debugnet ignored, use -debug=net.</source>
-        <translation>Argument nesuportat -debugnet ignorat, folosiţi -debug=net.</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -tor found, use -onion.</source>
-        <translation>Argument nesuportat -tor găsit, folosiţi -onion.</translation>
+        <source>Unable to generate keys</source>
+        <translation>Nu s-au putut genera cheile</translation>
     </message>
     <message>
         <source>Unsupported logging category %s=%s.</source>
@@ -3350,10 +3377,6 @@
     <message>
         <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
         <translation>Trebuie reconstruita intreaga baza de date folosind -reindex pentru a va intoarce la modul non-redus. Aceasta va determina descarcarea din nou a intregului blockchain</translation>
-    </message>
-    <message>
-        <source>Error loading %s: You can't disable HD on an already existing HD wallet</source>
-        <translation>Eroare la incarcarea %s: Nu se poate dezactiva HD la un portofel care este deja HD.</translation>
     </message>
     <message>
         <source>Error reading from database, shutting down.</source>
@@ -3394,14 +3417,6 @@
     <message>
         <source>Signing transaction failed</source>
         <translation>Nu s-a reuşit semnarea tranzacţiei</translation>
-    </message>
-    <message>
-        <source>Specified -walletdir "%s" does not exist</source>
-        <translation>Nu exista -walletdir "%s" specificat</translation>
-    </message>
-    <message>
-        <source>Specified -walletdir "%s" is a relative path</source>
-        <translation>-walletdir "%s" specificat este o cale relativa</translation>
     </message>
     <message>
         <source>Specified -walletdir "%s" does not exist</source>
@@ -3464,10 +3479,6 @@
         <translation>-maxtxfee este setata foarte sus! Se pot plati taxe de aceasta marime pe o singura tranzactie.</translation>
     </message>
     <message>
-        <source>Error loading %s: You can't enable HD on an already existing non-HD wallet</source>
-        <translation>Eroare la incarcarea %s: Nu se poate activa HD la un portofel care este deja non-HD.</translation>
-    </message>
-    <message>
         <source>This is the transaction fee you may pay when fee estimates are not available.</source>
         <translation>Aceasta este taxa de tranzactie pe care este posibil sa o platiti daca estimarile de taxe nu sunt disponibile.</translation>
     </message>
@@ -3478,18 +3489,6 @@
     <message>
         <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
         <translation>Lungimea totala a sirului versiunii retelei (%i) depaseste lungimea maxima (%i). Reduceti numarul sa dimensiunea uacomments. </translation>
-    </message>
-    <message>
-        <source>Unsupported argument -socks found. Setting SOCKS version isn't possible anymore, only SOCKS5 proxies are supported.</source>
-        <translation>S-a gasit un argument -socks nesuportat. Setarea versiunii SOCKS nu mai este posibila, sunt suportate doar proxiurile SOCKS5.</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -whitelistalwaysrelay ignored, use -whitelistrelay and/or -whitelistforcerelay.</source>
-        <translation>Se ignora argumentul nesuportat -whitelistalwaysrelay, folositi -whitelistrelay si/sau -whitelistforcerelay.</translation>
-    </message>
-    <message>
-        <source>Warning: Unknown block versions being mined! It's possible unknown rules are in effect</source>
-        <translation>Atentie: se mineaza blocuri cu versiune necunoscuta! Este posibil sa fie in vigoare reguli necunoscute.</translation>
     </message>
     <message>
         <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
@@ -3542,6 +3541,18 @@
     <message>
         <source>Insufficient funds</source>
         <translation>Fonduri insuficiente</translation>
+    </message>
+    <message>
+        <source>Fee estimation failed. Fallbackfee is disabled. Wait a few blocks or enable -fallbackfee.</source>
+        <translation>Estimarea taxei a esuat. Taxa implicita este dezactivata. Asteptati cateva blocuri, sau activati -fallbackfee.</translation>
+    </message>
+    <message>
+        <source>Warning: Private keys detected in wallet {%s} with disabled private keys</source>
+        <translation>Atentie: S-au detectat chei private in portofelul {%s} cu cheile private dezactivate</translation>
+    </message>
+    <message>
+        <source>Cannot write to data directory '%s'; check permissions.</source>
+        <translation>Nu se poate scrie in directorul de date '%s"; verificati permisiunile.</translation>
     </message>
     <message>
         <source>Loading block index...</source>

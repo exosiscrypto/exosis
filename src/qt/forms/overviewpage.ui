@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>625</width>
+    <width>596</width>
     <height>342</height>
    </rect>
   </property>
@@ -79,7 +79,7 @@
                <string/>
               </property>
               <property name="icon">
-               <iconset>
+               <iconset resource="../bitcoin.qrc">
                 <normaloff>:/icons/warning</normaloff>
                 <disabledoff>:/icons/warning</disabledoff>:/icons/warning</iconset>
               </property>
@@ -419,16 +419,6 @@
          </property>
         </spacer>
        </item>
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string/>
-         </property>
-         <property name="pixmap">
-          <pixmap>../res/icons/exosisbanner200x50.png</pixmap>
-         </property>
-        </widget>
-       </item>
       </layout>
      </item>
      <item>
@@ -475,7 +465,7 @@
                <string/>
               </property>
               <property name="icon">
-               <iconset>
+               <iconset resource="../bitcoin.qrc">
                 <normaloff>:/icons/warning</normaloff>
                 <disabledoff>:/icons/warning</disabledoff>:/icons/warning</iconset>
               </property>

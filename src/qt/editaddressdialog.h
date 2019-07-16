@@ -25,13 +25,12 @@ class EditAddressDialog : public QDialog
 
 public:
     enum Mode {
-        NewReceivingAddress,
         NewSendingAddress,
         EditReceivingAddress,
         EditSendingAddress
     };
 
-    explicit EditAddressDialog(Mode mode, QWidget *parent = 0);
+    explicit EditAddressDialog(Mode mode, QWidget *parent = nullptr);
     ~EditAddressDialog();
 
     void setModel(AddressTableModel *model);

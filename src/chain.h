@@ -18,7 +18,7 @@
  * Maximum amount of time that a block timestamp is allowed to exceed the
  * current network-adjusted time before the block will be accepted.
  */
-static const int64_t MAX_FUTURE_BLOCK_TIME = 2 * 60 * 60;
+static constexpr int64_t MAX_FUTURE_BLOCK_TIME = 2 * 60 * 60;
 
 /**
  * Timestamp window used as a grace period by code that compares external
@@ -26,7 +26,15 @@ static const int64_t MAX_FUTURE_BLOCK_TIME = 2 * 60 * 60;
  * to block timestamps. This should be set at least as high as
  * MAX_FUTURE_BLOCK_TIME.
  */
-static const int64_t TIMESTAMP_WINDOW = MAX_FUTURE_BLOCK_TIME;
+static constexpr int64_t TIMESTAMP_WINDOW = MAX_FUTURE_BLOCK_TIME;
+
+/**
+ * Maximum gap between node time and block time used
+ * for the "Catching up..." mode in GUI.
+ *
+ * Ref: https://github.com/bitcoin/bitcoin/pull/1026
+ */
+static constexpr int64_t MAX_BLOCK_TIME_GAP = 90 * 60;
 
 class CBlockFileInfo
 {
@@ -117,7 +125,7 @@ struct CDiskBlockPos
 
     std::string ToString() const
     {
-        return strprintf("CBlockDiskPos(nFile=%i, nPos=%i)", nFile, nPos);
+        return strprintf("CDiskBlockPos(nFile=%i, nPos=%i)", nFile, nPos);
     }
 
 };
@@ -194,15 +202,9 @@ public:
     //! (memory only) Total amount of work (expected number of hashes) in the chain up to and including this block
     arith_uint256 nChainWork;
 
-    
-    
     // EXOSIS BEGIN
     //! (memory only) Total amount of work normalized to algorithm efficiency
-    arith_uint256 nChainWorkSha256d;
-    arith_uint256 nChainWorkScrypt;
-    arith_uint256 nChainWorkNist5;
-    arith_uint256 nChainWorkLyra2Z;
-    arith_uint256 nChainWorkX11;
+    arith_uint256 nChainWorkExosis;
     arith_uint256 nChainWorkX16R;
     // EXOSIS END
 
@@ -230,7 +232,7 @@ public:
 
     //! (memory only) Maximum nTime in the chain up to and including this block.
     unsigned int nTimeMax;
-    
+
     //keeping track of coinbase
     int64_t nMoneySupply;
 
@@ -245,11 +247,7 @@ public:
         nUndoPos = 0;
         nChainWork = arith_uint256();
         // EXOSIS BEGIN
-        nChainWorkSha256d = arith_uint256();
-        nChainWorkScrypt = arith_uint256();
-        nChainWorkNist5 = arith_uint256();
-        nChainWorkLyra2Z = arith_uint256();
-        nChainWorkX11 = arith_uint256();
+        nChainWorkExosis = arith_uint256();
         nChainWorkX16R = arith_uint256();
         // EXOSIS END
         nTx = 0;
@@ -263,7 +261,9 @@ public:
         nTime          = 0;
         nBits          = 0;
         nNonce         = 0;
-        nMoneySupply = 0;
+        // EXOSIS BEGIN
+        nMoneySupply   = 0;
+        // EXOSIS END
     }
 
     CBlockIndex()
@@ -280,7 +280,9 @@ public:
         nTime          = block.nTime;
         nBits          = block.nBits;
         nNonce         = block.nNonce;
+        // EXOSIS BEGIN
         nMoneySupply   = block.nMoneySupply;
+        // EXOSIS END
     }
 
     CDiskBlockPos GetBlockPos() const {
@@ -311,7 +313,9 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
+        // EXOSIS BEGIN
         block.nMoneySupply   = nMoneySupply;
+        // EXOSIS END
         return block;
     }
 
@@ -320,7 +324,21 @@ public:
         return *phashBlock;
     }
 
-    
+    // EXOSIS BEGIN
+    uint256 GetBlockPoWHash() const
+    {
+        return GetBlockHeader().GetPoWHash();
+    }
+    // EXOSIS END
+
+    /**
+     * Check whether this block's and all previous blocks' transactions have been
+     * downloaded (and stored to disk) at some point.
+     *
+     * Does not imply the transactions are consensus-valid (ConnectTip might fail)
+     * Does not imply the transactions are still stored on disk. (IsBlockPruned might return true)
+     */
+    bool HaveTxsDownloaded() const { return nChainTx != 0; }
 
     int64_t GetBlockTime() const
     {
@@ -331,11 +349,13 @@ public:
     {
         return (int64_t)nTimeMax;
     }
-    
+
+    // EXOSIS BEHIN
     int64_t GetMoneySupply() const
     {
-        return (int64_t) nMoneySupply;
+        return (int64_t)nMoneySupply;
     }
+    // EXOSIS END
 
     static constexpr int nMedianTimeSpan = 11;
 
@@ -355,11 +375,15 @@ public:
 
     std::string ToString() const
     {
+        // EXOSIS BEGIN
+        //return strprintf("CBlockIndex(pprev=%p, nHeight=%d, merkle=%s, hashBlock=%s)",
         return strprintf("CBlockIndex(pprev=%p, nHeight=%d, merkle=%s, hashBlock=%s, nMoneySupply=%s)",
             pprev, nHeight,
             hashMerkleRoot.ToString(),
+            //GetBlockHash().ToString());
             GetBlockHash().ToString(),
             GetMoneySupply());
+        // EXOSIS END
     }
 
     //! Check whether this block index entry is valid up to the passed validity level.
@@ -398,7 +422,11 @@ arith_uint256 GetBlockProof(const CBlockIndex& block);
 int64_t GetBlockProofEquivalentTime(const CBlockIndex& to, const CBlockIndex& from, const CBlockIndex& tip, const Consensus::Params&);
 /** Find the forking point between two chain tips. */
 const CBlockIndex* LastCommonAncestor(const CBlockIndex* pa, const CBlockIndex* pb);
-
+// EXOSIS BEGIN
+// Return name of algorithm
+std::string GetAlgoName(int32_t nAlgo);
+int32_t GetAlgoId(std::string strAlgo);
+// EXOSIS END
 
 /** Used to marshal pointers into hashes for db storage. */
 class CDiskBlockIndex : public CBlockIndex
@@ -439,7 +467,9 @@ public:
         READWRITE(nTime);
         READWRITE(nBits);
         READWRITE(nNonce);
-        READWRITE(nMoneySupply);
+        // EXOSIS BEGIN
+        if ((this->nVersion & ALGO_VERSION_MASK) == ALGO_EXOSIS) READWRITE(nMoneySupply);
+        // EXOSIS END
     }
 
     uint256 GetBlockHash() const
@@ -451,7 +481,9 @@ public:
         block.nTime           = nTime;
         block.nBits           = nBits;
         block.nNonce          = nNonce;
+        // EXOSIS BEGIN
         block.nMoneySupply    = nMoneySupply;
+        // EXOSIS END
         return block.GetHash();
     }
 

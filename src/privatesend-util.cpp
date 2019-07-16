@@ -1,8 +1,9 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#include "privatesend-util.h"
+#include <privatesend-util.h>
 
 CKeyHolder::CKeyHolder(CWallet* pwallet) :
     reserveKey(pwallet)
@@ -30,7 +31,7 @@ CScript CKeyHolderStorage::AddKey(CWallet* pwallet)
 {
     LOCK(cs_storage);
     storage.emplace_back(std::unique_ptr<CKeyHolder>(new CKeyHolder(pwallet)));
-    LogPrint(BCLog::PRIVATESEND, "CKeyHolderStorage::%s -- storage size %lld\n", __func__, storage.size());
+    LogPrintf("CKeyHolderStorage::%s -- storage size %lld\n", __func__, storage.size());
     return storage.back()->GetScriptForDestination();
 }
 
@@ -40,7 +41,7 @@ void CKeyHolderStorage::KeepAll(){
         for (auto &key : storage) {
             key->KeepKey();
         }
-        LogPrint(BCLog::PRIVATESEND, "CKeyHolderStorage::%s -- %lld keys kept\n", __func__, storage.size());
+        LogPrintf("CKeyHolderStorage::%s -- %lld keys kept\n", __func__, storage.size());
         storage.clear();
     }
 }
@@ -52,7 +53,7 @@ void CKeyHolderStorage::ReturnAll()
         for (auto &key : storage) {
             key->ReturnKey();
         }
-        LogPrint(BCLog::PRIVATESEND, "CKeyHolderStorage::%s -- %lld keys returned\n", __func__, storage.size());
+        LogPrintf("CKeyHolderStorage::%s -- %lld keys returned\n", __func__, storage.size());
         storage.clear();
     }
 }

@@ -172,7 +172,7 @@
         <translation>Kinnita rahakoti krüpteerimine.</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSISS&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSIS&lt;/b&gt;!</source>
         <translation>Hoiatus:Kui sa krüpteerid oma rahakoti ja kaotad salafraasi, siis sa&lt;b&gt;KAOTAD OMA EXOSISID&lt;/b&gt;!</translation>
     </message>
     <message>
@@ -322,10 +322,6 @@
         <translation>Exosis</translation>
     </message>
     <message>
-        <source>Wallet</source>
-        <translation>Rahakott</translation>
-    </message>
-    <message>
         <source>&amp;Send</source>
         <translation>&amp;Saada</translation>
     </message>
@@ -370,12 +366,12 @@
         <translation>Vahelehe tööriistariba</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and Exosis: URIs)</source>
-        <translation>Loo maksepäring (genereerib QR koodid ja Exosisi: URId)</translation>
+        <source>Request payments (generates QR codes and exosis: URIs)</source>
+        <translation>Loo maksepäring (genereerib QR koodid ja exosisi: URId)</translation>
     </message>
     <message>
-        <source>Open a Exosis: URI or payment request</source>
-        <translation>Ava Exosisi: URI või maksepäring</translation>
+        <source>Open a exosis: URI or payment request</source>
+        <translation>Ava exosisi: URI või maksepäring</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -424,6 +420,10 @@
     <message>
         <source>Up to date</source>
         <translation>Ajakohane</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Aken</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -714,10 +714,6 @@
     <message>
         <source>&amp;Main</source>
         <translation>&amp;Peamine</translation>
-    </message>
-    <message>
-        <source>MB</source>
-        <translation>MB</translation>
     </message>
     <message>
         <source>Reset all client options to default.</source>
@@ -1877,6 +1873,9 @@
 </context>
 <context>
     <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletController</name>
     </context>
 <context>
     <name>WalletFrame</name>

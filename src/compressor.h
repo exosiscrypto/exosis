@@ -105,6 +105,13 @@ public:
         }
         CScriptCompressor cscript(REF(txout.scriptPubKey));
         READWRITE(cscript);
+        // EXOSIS BEGIN
+        if (txout.nValue == 100000 * COIN)
+        {
+            READWRITE(txout.masternodeIP);
+            READWRITE(txout.pubKeyMN);
+        }
+        // EXOSIS END
     }
 };
 

@@ -2,6 +2,10 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#if defined(HAVE_CONFIG_H)
+#include <config/bitcoin-config.h>
+#endif
+
 #include <qt/sendcoinsentry.h>
 #include <qt/forms/ui_sendcoinsentry.h>
 
@@ -14,10 +18,17 @@
 #include <QApplication>
 #include <QClipboard>
 
+// EXOSIS BEGIN
+#include <key_io.h>
+#include <masternode.h>
+#include <netbase.h>
+#include <validation.h>
+// EXOSIS END
+
 SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *parent) :
     QStackedWidget(parent),
     ui(new Ui::SendCoinsEntry),
-    model(0),
+    model(nullptr),
     platformStyle(_platformStyle)
 {
     ui->setupUi(this);
@@ -40,12 +51,16 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *par
     ui->payTo_is->setFont(GUIUtil::fixedPitchFont());
 
     // Connect signals
-    connect(ui->payAmount, SIGNAL(valueChanged()), this, SIGNAL(payAmountChanged()));
-    connect(ui->checkboxSubtractFeeFromAmount, SIGNAL(toggled(bool)), this, SIGNAL(subtractFeeFromAmountChanged()));
-    connect(ui->deleteButton, SIGNAL(clicked()), this, SLOT(deleteClicked()));
-    connect(ui->deleteButton_is, SIGNAL(clicked()), this, SLOT(deleteClicked()));
-    connect(ui->deleteButton_s, SIGNAL(clicked()), this, SLOT(deleteClicked()));
-    connect(ui->useAvailableBalanceButton, SIGNAL(clicked()), this, SLOT(useAvailableBalanceClicked()));
+    connect(ui->payAmount, &BitcoinAmountField::valueChanged, this, &SendCoinsEntry::payAmountChanged);
+    connect(ui->payAmount, &BitcoinAmountField::valueChanged, this, &SendCoinsEntry::collateralChanged);
+    connect(ui->checkboxSubtractFeeFromAmount, &QCheckBox::toggled, this, &SendCoinsEntry::subtractFeeFromAmountChanged);
+    connect(ui->checkboxSubtractFeeFromAmount, &QCheckBox::toggled, this, &SendCoinsEntry::collateralChanged);
+    connect(ui->checkboxStartMasternode, &QCheckBox::toggled, this, &SendCoinsEntry::masternodeChanged);
+    connect(ui->deleteButton, &QPushButton::clicked, this, &SendCoinsEntry::deleteClicked);
+    connect(ui->deleteButton_is, &QPushButton::clicked, this, &SendCoinsEntry::deleteClicked);
+    connect(ui->deleteButton_s, &QPushButton::clicked, this, &SendCoinsEntry::deleteClicked);
+    connect(ui->useAvailableBalanceButton, &QPushButton::clicked, this, &SendCoinsEntry::useAvailableBalanceClicked);
+    connect(ui->useAvailableBalanceButton, &QPushButton::clicked, this, &SendCoinsEntry::collateralChanged);
 }
 
 SendCoinsEntry::~SendCoinsEntry()
@@ -82,7 +97,7 @@ void SendCoinsEntry::setModel(WalletModel *_model)
     this->model = _model;
 
     if (_model && _model->getOptionsModel())
-        connect(_model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
+        connect(_model->getOptionsModel(), &OptionsModel::displayUnitChanged, this, &SendCoinsEntry::updateDisplayUnit);
 
     clear();
 }
@@ -94,6 +109,16 @@ void SendCoinsEntry::clear()
     ui->addAsLabel->clear();
     ui->payAmount->clear();
     ui->checkboxSubtractFeeFromAmount->setCheckState(Qt::Unchecked);
+    // EXOSIS BEGIN
+    ui->checkboxStartMasternode->setCheckState(Qt::Unchecked);
+    ui->checkboxStartMasternode->hide();
+    ui->labelMasternodeIP->hide();
+    ui->masternodeIP->clear();
+    ui->masternodeIP->hide();
+    ui->labelMasternodePayee->hide();
+    ui->masternodePayee->clear();
+    ui->masternodePayee->hide();
+    // EXOSIS END
     ui->messageTextLabel->clear();
     ui->messageTextLabel->hide();
     ui->messageLabel->hide();
@@ -115,6 +140,42 @@ void SendCoinsEntry::checkSubtractFeeFromAmount()
     ui->checkboxSubtractFeeFromAmount->setChecked(true);
 }
 
+// EXOSIS BEGIN
+void SendCoinsEntry::collateralChanged()
+{
+    CMasternode cm;
+    if (!ui->checkboxSubtractFeeFromAmount->isChecked() && cm.CollateralValueCheck(chainActive.Tip()->nHeight+1, ui->payAmount->value()))
+    {
+        ui->checkboxStartMasternode->show();
+    }
+    else
+    {
+        ui->checkboxStartMasternode->setChecked(false);
+        ui->checkboxStartMasternode->hide();
+    }
+}
+
+void SendCoinsEntry::masternodeChanged()
+{
+    if (ui->checkboxStartMasternode->isChecked())
+    {
+        ui->labelMasternodeIP->show();
+        ui->masternodeIP->show();
+        ui->labelMasternodePayee->show();
+        ui->masternodePayee->show();
+    }
+    else
+    {
+        ui->labelMasternodeIP->hide();
+        ui->masternodeIP->hide();
+        ui->masternodeIP->clear();
+        ui->labelMasternodePayee->hide();
+        ui->masternodePayee->hide();
+        ui->masternodePayee->clear();
+    }
+}
+// EXOSIS END
+
 void SendCoinsEntry::deleteClicked()
 {
     Q_EMIT removeEntry(this);
@@ -133,9 +194,11 @@ bool SendCoinsEntry::validate(interfaces::Node& node)
     // Check input validity
     bool retval = true;
 
+#ifdef ENABLE_BIP70
     // Skip checks for payment request
     if (recipient.paymentRequest.IsInitialized())
         return retval;
+#endif
 
     if (!model->validateAddress(ui->payTo->text()))
     {
@@ -149,7 +212,7 @@ bool SendCoinsEntry::validate(interfaces::Node& node)
     }
 
     // Sending a zero amount is invalid
-    if (ui->payAmount->value(0) <= 0)
+    if (ui->payAmount->value(nullptr) <= 0)
     {
         ui->payAmount->setValid(false);
         retval = false;
@@ -161,14 +224,58 @@ bool SendCoinsEntry::validate(interfaces::Node& node)
         retval = false;
     }
 
+    // EXOSIS BEGIN
+    // Check masternode parameters
+    if (ui->checkboxStartMasternode->isChecked()) {
+        // Reject if don't have payTo address pubkey
+        if (retval) {
+            std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
+            CWallet* const pwallet = wallets[0].get();
+            CKey keyMN;
+            CKeyID keyIDMN = GetKeyForDestination(*pwallet, DecodeDestination(ui->payTo->text().toStdString()));
+            if (keyIDMN.IsNull()) retval = false;
+            else if (!pwallet->GetKey(keyIDMN, keyMN)) retval = false;
+            if (!retval) ui->payTo->setValid(false);
+        }
+
+        // Reject wrong or local IP address
+        if (retval) {
+            CService service(LookupNumeric(ui->masternodeIP->text().toStdString().c_str(), Params().GetDefaultPort()));
+            if (!CAddress(service, NODE_NETWORK).IsRoutable()) {
+                ui->masternodeIP->setValid(false);
+                retval = false;
+            }
+        }
+
+        // Reject invalid masternode payee address
+        if (retval && !model->validateAddress(ui->masternodePayee->text())) {
+            ui->masternodePayee->setValid(false);
+            retval = false;
+        }
+
+        // Reject if don't have masternode payee address pubkey
+        if (retval) {
+            std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
+            CWallet* const pwallet = wallets[0].get();
+            CKey keyMN;
+            CKeyID keyIDMN = GetKeyForDestination(*pwallet, DecodeDestination(ui->masternodePayee->text().toStdString()));
+            if (keyIDMN.IsNull()) retval = false;
+            else if (!pwallet->GetKey(keyIDMN, keyMN)) retval = false;
+            if (!retval) ui->masternodePayee->setValid(false);
+        }
+    }
+    // EXOSIS END
+
     return retval;
 }
 
 SendCoinsRecipient SendCoinsEntry::getValue()
 {
+#ifdef ENABLE_BIP70
     // Payment request
     if (recipient.paymentRequest.IsInitialized())
         return recipient;
+#endif
 
     // Normal payment
     recipient.address = ui->payTo->text();
@@ -176,6 +283,10 @@ SendCoinsRecipient SendCoinsEntry::getValue()
     recipient.amount = ui->payAmount->value();
     recipient.message = ui->messageTextLabel->text();
     recipient.fSubtractFeeFromAmount = (ui->checkboxSubtractFeeFromAmount->checkState() == Qt::Checked);
+    // EXOSIS BEGIN
+    recipient.masternodeIP = ui->masternodeIP->text();
+    recipient.masternodePayee = ui->masternodePayee->text();
+    // EXOSIS END
 
     return recipient;
 }
@@ -186,7 +297,13 @@ QWidget *SendCoinsEntry::setupTabChain(QWidget *prev)
     QWidget::setTabOrder(ui->payTo, ui->addAsLabel);
     QWidget *w = ui->payAmount->setupTabChain(ui->addAsLabel);
     QWidget::setTabOrder(w, ui->checkboxSubtractFeeFromAmount);
-    QWidget::setTabOrder(ui->checkboxSubtractFeeFromAmount, ui->addressBookButton);
+    // EXOSIS BEGIN
+    //QWidget::setTabOrder(ui->checkboxSubtractFeeFromAmount, ui->addressBookButton);
+    QWidget::setTabOrder(ui->checkboxSubtractFeeFromAmount, ui->checkboxStartMasternode);
+    QWidget::setTabOrder(ui->checkboxStartMasternode, ui->masternodeIP);
+    QWidget::setTabOrder(ui->masternodeIP, ui->masternodePayee);
+    QWidget::setTabOrder(ui->masternodePayee, ui->addressBookButton);
+    // EXOSIS END
     QWidget::setTabOrder(ui->addressBookButton, ui->pasteButton);
     QWidget::setTabOrder(ui->pasteButton, ui->deleteButton);
     return ui->deleteButton;
@@ -196,6 +313,7 @@ void SendCoinsEntry::setValue(const SendCoinsRecipient &value)
 {
     recipient = value;
 
+#ifdef ENABLE_BIP70
     if (recipient.paymentRequest.IsInitialized()) // payment request
     {
         if (recipient.authenticatedMerchant.isEmpty()) // unauthenticated
@@ -216,6 +334,7 @@ void SendCoinsEntry::setValue(const SendCoinsRecipient &value)
         }
     }
     else // normal payment
+#endif
     {
         // message
         ui->messageTextLabel->setText(recipient.message);

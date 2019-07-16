@@ -1,15 +1,16 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef NETFULFILLEDMAN_H
-#define NETFULFILLEDMAN_H
+#ifndef DASH_NETFULFILLEDMAN_H
+#define DASH_NETFULFILLEDMAN_H
 
-#include "netbase.h"
-#include "protocol.h"
-#include "serialize.h"
-#include "sync.h"
+#include <netbase.h>
+#include <protocol.h>
+#include <serialize.h>
+#include <sync.h>
 
 class CNetFulfilledRequestManager;
 extern CNetFulfilledRequestManager netfulfilledman;
@@ -47,4 +48,4 @@ public:
     std::string ToString() const;
 };
 
-#endif
+#endif // DASH_NETFULFILLEDMAN_H

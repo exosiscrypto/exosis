@@ -1,13 +1,14 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef MASTERNODEMAN_H
-#define MASTERNODEMAN_H
+#ifndef DASH_MASTERNODEMAN_H
+#define DASH_MASTERNODEMAN_H
 
-#include "masternode.h"
-#include "sync.h"
+#include <masternode.h>
+#include <sync.h>
 
 using namespace std;
 
@@ -65,14 +66,13 @@ private:
     std::map<uint256, std::vector<CMasternodeBroadcast> > mMnbRecoveryGoodReplies;
     std::list< std::pair<CService, uint256> > listScheduledMnbRequestConnections;
 
-    /// Set when masternodes are added, 
+    /// Set when masternodes are added, cleared when CGovernanceManager is notified
     bool fMasternodesAdded;
 
-    /// Set when masternodes are removed, 
+    /// Set when masternodes are removed, cleared when CGovernanceManager is notified
     bool fMasternodesRemoved;
 
     std::vector<uint256> vecDirtyGovernanceObjectHashes;
-   
 
     int64_t nLastWatchdogVoteTime;
 
@@ -127,6 +127,9 @@ public:
 
     /// Add an entry
     bool Add(CMasternode &mn);
+    // EXOSIS BEGIN
+    bool Remove(COutPoint out);
+    // EXOSIS END
 
     /// Ask (source) node for mnb
     void AskForMN(CNode *pnode, const COutPoint& outpoint, CConnman& connman);
@@ -210,7 +213,7 @@ public:
         LOCK(cs);
         vecDirtyGovernanceObjectHashes.push_back(nHash);
     }
-    
+
     std::vector<uint256> GetAndClearDirtyGovernanceObjectHashes()
     {
         LOCK(cs);
@@ -223,7 +226,7 @@ public:
     void UpdateWatchdogVoteTime(const COutPoint& outpoint, uint64_t nVoteTime = 0);
     bool AddGovernanceVote(const COutPoint& outpoint, uint256 nGovernanceObjectHash);
     void RemoveGovernanceObject(uint256 nGovernanceObjectHash);
- 
+
     void CheckMasternode(const CPubKey& pubKeyMasternode, bool fForce);
 
     bool IsMasternodePingedWithin(const COutPoint& outpoint, int nSeconds, int64_t nTimeToCheckAt = -1);
@@ -239,4 +242,4 @@ public:
 
 };
 
-#endif
+#endif // DASH_MASTERNODEMAN_H

@@ -164,8 +164,8 @@
         <translation>Cadarnhau amgryptio'r waled</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSISS&lt;/b&gt;!</source>
-        <translation>Rhybudd: Os ydych yn amgryptio'r waled ag yn colli'r cyfrinair, byddwch yn &lt;b&gt; COLLI EICH EXOSISS I GYD &lt;b&gt; !</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSIS&lt;/b&gt;!</source>
+        <translation>Rhybudd: Os ydych yn amgryptio'r waled ag yn colli'r cyfrinair, byddwch yn &lt;b&gt; COLLI EICH EXOSIS I GYD &lt;b&gt; !</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -174,10 +174,6 @@
     <message>
         <source>Wallet encrypted</source>
         <translation>Waled Wedi Amgryptio</translation>
-    </message>
-    <message>
-        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your Exosiss from being stolen by malware infecting your computer.</source>
-        <translation>Bydd %1 nawr yn gorffen y broses amgryptio. Cofiwch nad ydy amgryptio eich waled yn llawn amddiffyn eich Exosiss rhag cael eu dwyn gan afiechyd yn heintio eich cyfrifiadur.</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
@@ -242,10 +238,6 @@
         <translation>&amp;Trosolwg</translation>
     </message>
     <message>
-        <source>Node</source>
-        <translation>Nod</translation>
-    </message>
-    <message>
         <source>Show general overview of wallet</source>
         <translation>Dangos trosolwg cyffredinol y waled</translation>
     </message>
@@ -302,14 +294,6 @@
         <translation>&amp;Newid cyfrinymadrodd...</translation>
     </message>
     <message>
-        <source>&amp;Sending addresses...</source>
-        <translation>&amp;Cyfeiriadau anfon...</translation>
-    </message>
-    <message>
-        <source>&amp;Receiving addresses...</source>
-        <translation>&amp;Cyfeiriadau derbyn...</translation>
-    </message>
-    <message>
         <source>Open &amp;URI...</source>
         <translation>Agor &amp;URI...</translation>
     </message>
@@ -358,10 +342,6 @@
         <translation>Exosis</translation>
     </message>
     <message>
-        <source>Wallet</source>
-        <translation>Waled</translation>
-    </message>
-    <message>
         <source>&amp;Send</source>
         <translation>&amp;Anfon</translation>
     </message>
@@ -406,8 +386,8 @@
         <translation>Bar offer tabiau</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and Exosis: URIs)</source>
-        <translation>Gofyn taliadau (creu côd QR a Exosis: URIs)</translation>
+        <source>Request payments (generates QR codes and exosis: URIs)</source>
+        <translation>Gofyn taliadau (creu côd QR a exosis: URIs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -418,7 +398,7 @@
         <translation>Dangos rhestr o gyfeiriadau derbyn a labelau wedi eu defnyddio</translation>
     </message>
     <message>
-        <source>Open a Exosis: URI or payment request</source>
+        <source>Open a exosis: URI or payment request</source>
         <translation>Agor Exosis: URI neu ofyn taliad</translation>
     </message>
     <message>
@@ -460,6 +440,10 @@
     <message>
         <source>Up to date</source>
         <translation>Cyfamserol</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Ffenestr</translation>
     </message>
     <message>
         <source>Connecting to peers...</source>
@@ -1007,6 +991,9 @@
     <name>UnitDisplayStatusBarControl</name>
     </context>
 <context>
+    <name>WalletController</name>
+    </context>
+<context>
     <name>WalletFrame</name>
     </context>
 <context>
@@ -1038,8 +1025,8 @@
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Bitcoin Core</source>
-        <translation>Craidd Bitcoin</translation>
+        <source>Exosis Core</source>
+        <translation>Craidd Exosis</translation>
     </message>
     <message>
         <source>Information</source>

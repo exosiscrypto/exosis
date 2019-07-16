@@ -1,12 +1,14 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef MASTERNODE_SYNC_H
-#define MASTERNODE_SYNC_H
 
-#include "chain.h"
-#include "net.h"
+#ifndef DASH_MASTERNODE_SYNC_H
+#define DASH_MASTERNODE_SYNC_H
+
+#include <chain.h>
+#include <net.h>
 
 #include <univalue.h>
 
@@ -81,4 +83,4 @@ public:
     void UpdatedBlockTip(const CBlockIndex *pindexNew, bool fInitialDownload, CConnman& connman);
 };
 
-#endif
+#endif // DASH_MASTERNODE_SYNC_H

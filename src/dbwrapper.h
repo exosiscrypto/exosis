@@ -9,8 +9,8 @@
 #include <fs.h>
 #include <serialize.h>
 #include <streams.h>
-#include <util.h>
-#include <utilstrencodings.h>
+#include <util/system.h>
+#include <util/strencodings.h>
 #include <version.h>
 
 #include <leveldb/db.h>
@@ -240,7 +240,7 @@ public:
         if (!status.ok()) {
             if (status.IsNotFound())
                 return false;
-            LogPrint(BCLog::DB,"LevelDB read failure: %s\n", status.ToString());
+            LogPrintf("LevelDB read failure: %s\n", status.ToString());
             dbwrapper_private::HandleError(status);
         }
         try {
@@ -274,7 +274,7 @@ public:
         if (!status.ok()) {
             if (status.IsNotFound())
                 return false;
-            LogPrint(BCLog::DB,"LevelDB read failure: %s\n", status.ToString());
+            LogPrintf("LevelDB read failure: %s\n", status.ToString());
             dbwrapper_private::HandleError(status);
         }
         return true;

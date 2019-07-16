@@ -176,8 +176,8 @@
         <translation>تأكيد تشفير المحفظة</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSISS&lt;/b&gt;!</source>
-        <translation>تحذير: إذا قمت بتشفير محفظتك وفقدت كلمة المرور الخاص بك, ستفقد كل عملات EXOSISS الخاصة بك.</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSIS&lt;/b&gt;!</source>
+        <translation>تحذير: إذا قمت بتشفير محفظتك وفقدت كلمة المرور الخاص بك, ستفقد كل عملات EXOSIS الخاصة بك.</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -186,10 +186,6 @@
     <message>
         <source>Wallet encrypted</source>
         <translation>محفظة مشفرة</translation>
-    </message>
-    <message>
-        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your Exosis from being stolen by malware infecting your computer.</source>
-        <translation>سيتم إغلاق %1 الآن لإنهاء عملية التشفير. تذكر أن تشفير محفظتك لا يمكن أن يحمي البتكوين الخاص بك بالكامل من السرقة عبر البرامج الضارة التي بامكانها أن تصيب جهاز الكمبيوتر الخاص بك.</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
@@ -254,10 +250,6 @@
         <translation>&amp;نظرة عامة</translation>
     </message>
     <message>
-        <source>Node</source>
-        <translation>جهاز</translation>
-    </message>
-    <message>
         <source>Show general overview of wallet</source>
         <translation>إظهار نظرة عامة على المحفظة</translation>
     </message>
@@ -314,16 +306,12 @@
         <translation>&amp;تغيير كلمة المرور</translation>
     </message>
     <message>
-        <source>&amp;Sending addresses...</source>
-        <translation>&amp;عناوين الإرسال...</translation>
-    </message>
-    <message>
-        <source>&amp;Receiving addresses...</source>
-        <translation>&amp;عناوين الاستقبال...</translation>
-    </message>
-    <message>
         <source>Open &amp;URI...</source>
         <translation>افتح &amp;URI...</translation>
+    </message>
+    <message>
+        <source>Wallet:</source>
+        <translation>محفظة:</translation>
     </message>
     <message>
         <source>Click to disable network activity.</source>
@@ -374,10 +362,6 @@
         <translation>بتكوين</translation>
     </message>
     <message>
-        <source>Wallet</source>
-        <translation>محفظة</translation>
-    </message>
-    <message>
         <source>&amp;Send</source>
         <translation>&amp;ارسل</translation>
     </message>
@@ -422,7 +406,7 @@
         <translation>شريط أدوات علامات التبويب</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and Exosis: URIs)</source>
+        <source>Request payments (generates QR codes and exosis: URIs)</source>
         <translation>أطلب دفعات (يولد كودات الرمز المربع وبيت كوين: العناوين المعطاة)</translation>
     </message>
     <message>
@@ -434,16 +418,12 @@
         <translation>عرض قائمة عناوين الإستقبال المستخدمة والملصقات</translation>
     </message>
     <message>
-        <source>Open a Exosis: URI or payment request</source>
+        <source>Open a exosis: URI or payment request</source>
         <translation>فتح URI : Exosis أو طلب دفع</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;خيارات سطر الأوامر</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n active connection(s) to Exosis network</source>
-        <translation><numerusform>%n اتصال نشطة بشبكة بتكوين</numerusform><numerusform>%n اتصال نشطة بشبكة بتكوين</numerusform><numerusform>%n اتصال نشطة بشبكة بتكوين</numerusform><numerusform>%n اتصالات نشطة بشبكة بتكوين</numerusform><numerusform>%n اتصالات نشطة بشبكة بتكوين</numerusform><numerusform>%n اتصالات نشطة بشبكة بتكوين</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -452,10 +432,6 @@
     <message>
         <source>Processing blocks on disk...</source>
         <translation>معالجة الكتل على القرص...</translation>
-    </message>
-    <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
-        <translation><numerusform>تمت معالجة %n كتلة من محفوظات المعاملة.</numerusform><numerusform>تمت معالجة %n كتلة من محفوظات المعاملة.</numerusform><numerusform>تمت معالجة %n كتلة من محفوظات المعاملة.</numerusform><numerusform>تمت معالجة %n كتلات من محفوظات المعاملة.</numerusform><numerusform>تمت معالجة %n كتلات من محفوظات المعاملة.</numerusform><numerusform>تمت معالجة %n كتلات من محفوظات المعاملة.</numerusform></translation>
     </message>
     <message>
         <source>%1 behind</source>
@@ -486,8 +462,36 @@
         <translation>محدث</translation>
     </message>
     <message>
+        <source>&amp;Sending addresses</source>
+        <translation>&amp;عناوين الإرسال</translation>
+    </message>
+    <message>
+        <source>&amp;Receiving addresses</source>
+        <translation>&amp;عناوين الإستقبال</translation>
+    </message>
+    <message>
         <source>Show the %1 help message to get a list with possible Exosis command-line options</source>
         <translation>بين اشارة المساعدة %1 للحصول على قائمة من خيارات اوامر البت كوين المحتملة </translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>نافذه</translation>
+    </message>
+    <message>
+        <source>Minimize</source>
+        <translation>تصغير</translation>
+    </message>
+    <message>
+        <source>Zoom</source>
+        <translation>تكبير</translation>
+    </message>
+    <message>
+        <source>Restore</source>
+        <translation>إرجاع</translation>
+    </message>
+    <message>
+        <source>Main Window</source>
+        <translation>النافذة الرئيسية</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -856,15 +860,7 @@
         <source>Error</source>
         <translation>خطأ</translation>
     </message>
-    <message numerus="yes">
-        <source>%n GB of free space available</source>
-        <translation><numerusform>%n جيجابايت من المساحة المتوفرة</numerusform><numerusform>%n جيجابايت من المساحة المتوفرة</numerusform><numerusform>%n جيجابايت من المساحة المتوفرة</numerusform><numerusform>%n جيجابايت من المساحة المتوفرة</numerusform><numerusform>%n جيجابايت من المساحة المتوفرة</numerusform><numerusform>%n جيجابايت من المساحة المتوفرة</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <source>(of %n GB needed)</source>
-        <translation><numerusform>(من %n جيجابايت اللازمة)</numerusform><numerusform>(من %n جيجابايت اللازمة)</numerusform><numerusform>(من %n جيجابايت اللازمة)</numerusform><numerusform>(من %n جيجابايت اللازمة)</numerusform><numerusform>(من %n جيجابايت اللازمة)</numerusform><numerusform>(من %n جيجابايت اللازمة)</numerusform></translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>ModalOverlay</name>
     <message>
@@ -872,11 +868,11 @@
         <translation>نمودج</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Exosis network, as detailed below.</source>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the exosis network, as detailed below.</source>
         <translation>قد لا تكون المعاملات الأخيرة مرئية بعد، وبالتالي قد يكون رصيد محفظتك غير صحيح. ستكون هذه المعلومات صحيحة بمجرد الانتهاء من محفظتك مع شبكة البيتكوين، كما هو مفصل أدناه.</translation>
     </message>
     <message>
-        <source>Attempting to spend Exosis that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <source>Attempting to spend exosis that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
         <translation>لن تقبل الشبكة محاولة إنفاق البتكوين المتأثرة بالمعاملات التي لم يتم عرضها بعد.</translation>
     </message>
     <message>
@@ -911,11 +907,7 @@
         <source>Hide</source>
         <translation>إخفاء</translation>
     </message>
-    <message>
-        <source>Unknown. Syncing Headers (%1)...</source>
-        <translation>غير معروف. مزامنة الرؤوس (%1) ...</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>OpenURIDialog</name>
     <message>
@@ -962,10 +954,6 @@
         <translation>حجم ذاكرة التخزين المؤقت لقاعدة البيانات</translation>
     </message>
     <message>
-        <source>MB</source>
-        <translation>م ب</translation>
-    </message>
-    <message>
         <source>Number of script &amp;verification threads</source>
         <translation>عدد مؤشرات التحقق من البرنامج النصي</translation>
     </message>
@@ -988,10 +976,6 @@
     <message>
         <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Exit in the menu.</source>
         <translation>التصغير بدلاً من الخروج من التطبيق عند إغلاق النافذة. عند تفعيل هذا الخيار، سيتم إغلاق التطبيق فقط بعد اختيار الخروج من القائمة.</translation>
-    </message>
-    <message>
-        <source>Active command-line options that override above options:</source>
-        <translation>خيارات سطر الأوامر النشطة التي تتجاوز الخيارات أعلاه:</translation>
     </message>
     <message>
         <source>Open the %1 configuration file from the working directory.</source>
@@ -1252,7 +1236,7 @@
         <translation>خطأ في طلب الدفع</translation>
     </message>
     <message>
-        <source>Cannot start Exosis: click-to-pay handler</source>
+        <source>Cannot start exosis: click-to-pay handler</source>
         <translation>لا يمكن تشغيل بتكوين: معالج النقر للدفع</translation>
     </message>
     <message>
@@ -1400,10 +1384,6 @@
     <message>
         <source>%1 and %2</source>
         <translation>%1 و %2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n year(s)</source>
-        <translation><numerusform>%n يوم</numerusform><numerusform>%n يوم</numerusform><numerusform>%n يوم</numerusform><numerusform>%n أيام</numerusform><numerusform>%n أيام</numerusform><numerusform>%n أيام</numerusform></translation>
     </message>
     <message>
         <source>%1 B</source>
@@ -1633,10 +1613,6 @@
     <message>
         <source>&amp;Open</source>
         <translation>الفتح</translation>
-    </message>
-    <message>
-        <source>&amp;Console</source>
-        <translation>وحدة التحكم</translation>
     </message>
     <message>
         <source>&amp;Console</source>
@@ -1999,14 +1975,6 @@
         <translation>إخفاء</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for Exosis transactions than the network can process.</source>
-        <translation>إن دفع الحد الأدنى فقط من الرسوم يجوز طالما أن حجم المعاملات أقل من المساحة الموجودة في الكتل. ولكن كن على علم بأن هذا يمكن أن ينتهي في معاملة غير مؤكدة أبداً عندما يكون هناك طلب أكبر على معاملات البتكوين مما تستطيع الشبكة معالجته.</translation>
-    </message>
-    <message>
-        <source>(read the tooltip)</source>
-        <translation>(اقرأ تلميح الأدوات)</translation>
-    </message>
-    <message>
         <source>Recommended:</source>
         <translation>موصى به:</translation>
     </message>
@@ -2159,10 +2127,6 @@
         <translation>انتهاء صلاحية طلب الدفع.</translation>
     </message>
     <message>
-        <source>Pay only the required fee of %1</source>
-        <translation>دفع فقط الرسوم المطلوبة ل %1</translation>
-    </message>
-    <message>
         <source>Warning: Invalid Exosis address</source>
         <translation>تحذير: عنوان بتكوين غير صالح</translation>
     </message>
@@ -2222,7 +2186,7 @@
         <translation>ازل هذه المداخله</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less Exosis than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less exosis than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
         <translation>سيتم خصم الرسوم من المبلغ الذي يتم إرساله. لذا سوف يتلقى المستلم مبلغ أقل من البتكوين المدخل في حقل المبلغ. في حالة تحديد عدة مستلمين، يتم تقسيم الرسوم بالتساوي.</translation>
     </message>
     <message>
@@ -2250,7 +2214,7 @@
         <translation>أدخل تسمية لهذا العنوان لإضافته إلى قائمة العناوين المستخدمة</translation>
     </message>
     <message>
-        <source>A message that was attached to the Exosis: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Exosis network.</source>
+        <source>A message that was attached to the exosis: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Exosis network.</source>
         <translation>الرسالة التي تم إرفاقها مع البتكوين: العنوان الذي سيتم تخزينه مع المعاملة للرجوع إليه. ملاحظة: لن يتم إرسال هذه الرسالة عبر شبكة البتكوين.</translation>
     </message>
     <message>
@@ -2431,10 +2395,6 @@
 </context>
 <context>
     <name>TransactionDesc</name>
-    <message numerus="yes">
-        <source>Open for %n more block(s)</source>
-        <translation><numerusform>مفتوح ل %n كتلة إضافية</numerusform><numerusform>مفتوح ل %n كتلة إضافية</numerusform><numerusform>مفتوح ل %n كتلة إضافية</numerusform><numerusform>مفتوح ل %n كتلات إضافية</numerusform><numerusform>مفتوح ل %n كتلة إضافية</numerusform><numerusform>مفتوح ل %n كتلة إضافية</numerusform></translation>
-    </message>
     <message>
         <source>Open until %1</source>
         <translation>مفتوح حتى %1</translation>
@@ -2442,18 +2402,6 @@
     <message>
         <source>conflicted with a transaction with %1 confirmations</source>
         <translation>تعارضت مع معاملة لديها %1 تأكيدات</translation>
-    </message>
-    <message>
-        <source>in memory pool</source>
-        <translation>في تجمع الذاكرة</translation>
-    </message>
-    <message>
-        <source>not in memory pool</source>
-        <translation>ليس في تجمع الذاكرة</translation>
-    </message>
-    <message>
-        <source>abandoned</source>
-        <translation>مهجور</translation>
     </message>
     <message>
         <source>in memory pool</source>
@@ -2617,25 +2565,9 @@
         <source>Label</source>
         <translation>وصف</translation>
     </message>
-    <message numerus="yes">
-        <source>Open for %n more block(s)</source>
-        <translation><numerusform>مفتوح لـ %n كتلة إضافية</numerusform><numerusform>مفتوح لـ %n كتلة إضافية</numerusform><numerusform>مفتوح لـ %n كتلة إضافية</numerusform><numerusform>مفتوح لـ %n كتلة إضافية</numerusform><numerusform>مفتوح لـ %n كتلة إضافية</numerusform><numerusform>مفتوح لـ %n كتلة إضافية</numerusform></translation>
-    </message>
     <message>
         <source>Open until %1</source>
         <translation>مفتوح حتى %1</translation>
-    </message>
-    <message>
-        <source>Unconfirmed</source>
-        <translation>غير مؤكد</translation>
-    </message>
-    <message>
-        <source>Abandoned</source>
-        <translation>مهجور</translation>
-    </message>
-    <message>
-        <source>Confirming (%1 of %2 recommended confirmations)</source>
-        <translation>قيد التأكيد (%1 من %2 تأكيد موصى به)</translation>
     </message>
     <message>
         <source>Unconfirmed</source>
@@ -2881,6 +2813,9 @@
     </message>
 </context>
 <context>
+    <name>WalletController</name>
+    </context>
+<context>
     <name>WalletFrame</name>
     <message>
         <source>No wallet has been loaded.</source>
@@ -2929,7 +2864,7 @@
         <source>Could not commit transaction</source>
         <translation>لا يمكن تنفيذ المعاملة</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>WalletView</name>
     <message>
@@ -2992,6 +2927,11 @@
         <translation>يرجى المساهمة إذا وجدت %s مفيداً. تفضل بزيارة %s لمزيد من المعلومات حول البرنامج.</translation>
     </message>
     <message>
+        <source>%s corrupt, salvage failed</source>
+        <translation>
+%s تالف, فشل الانقاذ.</translation>
+    </message>
+    <message>
         <source>Change index out of range</source>
         <translation>فهرس الفكة خارج النطاق</translation>
     </message>
@@ -3008,48 +2948,20 @@
         <translation>هل تريد إعادة بناء قاعدة بيانات الكتل الآن؟</translation>
     </message>
     <message>
-        <source>Error creating %s: You can't create non-HD wallets with this version.</source>
-        <translation>خطأ في إنشاء %s: لا يمكنك إنشاء محافظ بلا خاصية الهرمية الحتمية non-HD باستخدام هذا الإصدار.</translation>
-    </message>
-    <message>
         <source>Error loading %s</source>
         <translation>خطأ في تحميل %s</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
-        <translation>خطأ في تحميل قاعدة بيانات الكتل</translation>
+        <source>Error loading %s: Private keys can only be disabled during creation</source>
+        <translation>خطأ في تحميل %s:  لا يمكن تعطيل المفاتيح الخاصة إلا أثناء الإنشاء.</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
-        <translation>خطأ في فتح قاعدة بيانات الكتل</translation>
+        <source>Error loading %s: Wallet corrupted</source>
+        <translation>خطأ في التحميل %s: المحفظة تالفة.</translation>
     </message>
     <message>
-        <source>Copyright (C) %i-%i</source>
-        <translation>حقوق الطبع والنشر (C) %i-%i</translation>
-    </message>
-    <message>
-        <source>Corrupted block database detected</source>
-        <translation>تم الكشف عن قاعدة بيانات كتل تالفة</translation>
-    </message>
-    <message>
-        <source>Debugging/Testing options:</source>
-        <translation>خيارات التصحيح / الاختبار:</translation>
-    </message>
-    <message>
-        <source>Do not load the wallet and disable wallet RPC calls</source>
-        <translation>لا تقم بتحميل المحفظة وتعطيل استدعاءات RPC للمحفظة</translation>
-    </message>
-    <message>
-        <source>Do you want to rebuild the block database now?</source>
-        <translation>هل تريد إعادة بناء قاعدة بيانات الكتل الآن؟</translation>
-    </message>
-    <message>
-        <source>Error creating %s: You can't create non-HD wallets with this version.</source>
-        <translation>خطأ في إنشاء %s: لا يمكنك إنشاء محافظ بلا خاصية الهرمية الحتمية non-HD باستخدام هذا الإصدار.</translation>
-    </message>
-    <message>
-        <source>Error loading %s</source>
-        <translation>خطأ في تحميل %s</translation>
+        <source>Error loading %s: Wallet requires newer version of %s</source>
+        <translation>خطا تحميل %s: المحفظة تتطلب النسخة الجديدة من %s.</translation>
     </message>
     <message>
         <source>Error loading block database</source>
@@ -3066,6 +2978,10 @@
     <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
         <translation>فشل في الاستماع على أي منفذ. استخدام الاستماع = 0 إذا كنت تريد هذا.</translation>
+    </message>
+    <message>
+        <source>Failed to rescan the wallet during initialization</source>
+        <translation>فشل في اعادة مسح المحفظة خلال عملية التهيئة.</translation>
     </message>
     <message>
         <source>Importing...</source>
@@ -3112,8 +3028,8 @@
         <translation>شفرة المصدر متاحة من %s.</translation>
     </message>
     <message>
-        <source>Unsupported argument -tor found, use -onion.</source>
-        <translation>تم العثور على وسيطة غير مدعومة -tor ، استخدم -onion.</translation>
+        <source>Unable to generate keys</source>
+        <translation> غير قادر على توليد مفاتيح.</translation>
     </message>
     <message>
         <source>Upgrading UTXO database</source>
@@ -3136,72 +3052,16 @@
         <translation>تحتاج إلى إعادة إنشاء قاعدة البيانات باستخدام -reindex للعودة إلى الوضعية الغير مجردة. هذا سوف يعيد تحميل سلسلة الكتل بأكملها</translation>
     </message>
     <message>
-        <source>Error loading %s: You can't disable HD on an already existing HD wallet</source>
-        <translation>خطأ أثناء تحميل %s: لا يمكنك تعطيل خاصية الهرمية الحتمية HD في محفظة مفعلة بخاصية الهرمية الحتمية HD مسبقاً</translation>
-    </message>
-    <message>
         <source>Error reading from database, shutting down.</source>
         <translation>خطأ في القراءة من قاعدة البيانات ، والتوقف.</translation>
     </message>
     <message>
         <source>Error upgrading chainstate database</source>
         <translation>خطأ في ترقية قاعدة بيانات chainstate</translation>
-    </message>
-    <message>
-        <source>Randomize credentials for every proxy connection. This enables Tor stream isolation (default: %u)</source>
-        <translation>عشوائية وثائق الاعتماد لكل اتصال عبر وكيل. يتيح ذلك عزل تيار تور (القيمة الافتراضية: %u)</translation>
-    </message>
-    <message>
-        <source>The transaction amount is too small to send after the fee has been deducted</source>
-        <translation>قيمة المعاملة صغيرة جدًا ولا يمكن إرسالها بعد خصم الرسوم</translation>
-    </message>
-    <message>
-        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
-        <translation>تحتاج إلى إعادة إنشاء قاعدة البيانات باستخدام -reindex للعودة إلى الوضعية الغير مجردة. هذا سوف يعيد تحميل سلسلة الكتل بأكملها</translation>
-    </message>
-    <message>
-        <source>(default: %u)</source>
-        <translation>(القيمة الافتراضية: %u)</translation>
-    </message>
-    <message>
-        <source>Accept public REST requests (default: %u)</source>
-        <translation>قبول طلبات REST العامة (القيمة الافتراضية: %u)</translation>
-    </message>
-    <message>
-        <source>Automatically create Tor hidden service (default: %d)</source>
-        <translation>إنشاء خدمة تور المخفية تلقائيًا (القيمة الافتراضية: %d)</translation>
-    </message>
-    <message>
-        <source>Connect through SOCKS5 proxy</source>
-        <translation>الاتصال من خلال وكيل SOCKS5</translation>
-    </message>
-    <message>
-        <source>Error loading %s: You can't disable HD on an already existing HD wallet</source>
-        <translation>خطأ أثناء تحميل %s: لا يمكنك تعطيل خاصية الهرمية الحتمية HD في محفظة مفعلة بخاصية الهرمية الحتمية HD مسبقاً</translation>
-    </message>
-    <message>
-        <source>Error reading from database, shutting down.</source>
-        <translation>خطأ في القراءة من قاعدة البيانات ، والتوقف.</translation>
-    </message>
-    <message>
-        <source>Error upgrading chainstate database</source>
-        <translation>خطأ في ترقية قاعدة بيانات chainstate</translation>
-    </message>
-    <message>
-        <source>Imports blocks from external blk000??.dat file on startup</source>
-        <translation>استيراد كتل من ملف blk000??.dat الخارجي عند بدء التشغيل</translation>
     </message>
     <message>
         <source>Information</source>
         <translation>معلومات</translation>
-    </message>
-    <message>
-        <source>Node relay options:</source>
-        <translation>خيارات ترحيل العقد:</translation>
-    </message>
-    <message>
-        <source>RPC server options:</source>
-        <translation>خيارات خادم RPC:</translation>
     </message>
     <message>
         <source>Signing transaction failed</source>
@@ -3214,14 +3074,6 @@
     <message>
         <source>This is experimental software.</source>
         <translation>هذا برنامج تجريبي.</translation>
-    </message>
-    <message>
-        <source>Tor control port password (default: empty)</source>
-        <translation>كلمة مرور منفذ تحكم تور (القيمة الافتراضية: فارغة)</translation>
-    </message>
-    <message>
-        <source>Tor control port to use if onion listening enabled (default: %s)</source>
-        <translation>منفذ تحكم Tor لاستخدامه في حالة تفعيل الاستماع بالبصل (افتراضي: %s)</translation>
     </message>
     <message>
         <source>Transaction amount too small</source>
@@ -3256,10 +3108,6 @@
         <translation>إزالة جميع المعاملات من المحفظة...</translation>
     </message>
     <message>
-        <source>Error loading %s: You can't enable HD on an already existing non-HD wallet</source>
-        <translation>خطأ أثناء تحميل %s: لا يمكنك تفعيل خاصية الهرمية الحتمية HD في محفظة لا تملك خاصية الهرمية الحتمية non-HD مسبقاً</translation>
-    </message>
-    <message>
         <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
         <translation>تحذير: ملف المحفظة فاسد ، تم انقاذ البيانات! تم حفظ %s الأصلي ك %s في %s؛ إذا كان رصيدك أو كانت معاملاتك غير صحيحة، فيجب عليك الإستعادة من نسخة احتياطية.</translation>
     </message>
@@ -3280,20 +3128,8 @@
         <translation>يجب ألا تكون قيمة المعاملة سلبية</translation>
     </message>
     <message>
-        <source>Transaction must have at least one recipient</source>
-        <translation>يجب أن تحتوي المعاملة على مستلم واحد على الأقل</translation>
-    </message>
-    <message>
-        <source>Starting network threads...</source>
-        <translation>بدء مؤشرات شبكة الاتصال...</translation>
-    </message>
-    <message>
-        <source>The wallet will avoid paying less than the minimum relay fee.</source>
-        <translation>سوف تتجنب المحفظة دفع أقل من الحد الأدنى لرسوم التتابع.</translation>
-    </message>
-    <message>
-        <source>Transaction amounts must not be negative</source>
-        <translation>يجب ألا تكون قيمة المعاملة سلبية</translation>
+        <source>Transaction has too long of a mempool chain</source>
+        <translation>المعاملات طويلة جداً على حجم سلسلة الذاكرة </translation>
     </message>
     <message>
         <source>Transaction must have at least one recipient</source>
@@ -3302,6 +3138,10 @@
     <message>
         <source>Insufficient funds</source>
         <translation>اموال غير كافية</translation>
+    </message>
+    <message>
+        <source>Cannot write to data directory '%s'; check permissions.</source>
+        <translation>لايمكن الكتابة على دليل البيانات '%s'؛ تحقق من السماحيات.</translation>
     </message>
     <message>
         <source>Loading block index...</source>

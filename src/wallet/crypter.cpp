@@ -1,6 +1,7 @@
 // Copyright (c) 2009-2018 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,7 +11,7 @@
 #include <crypto/sha512.h>
 #include <script/script.h>
 #include <script/standard.h>
-#include <util.h>
+#include <util/system.h>
 
 #include <openssl/aes.h>
 #include <openssl/evp.h>
@@ -135,7 +136,7 @@ bool EncryptAES256(const SecureString& sKey, const SecureString& sPlaintext, con
 
     // Verify key sizes
     if(sKey.size() != 32 || sIV.size() != AES_BLOCK_SIZE) {
-        LogPrint(BCLog::ALL,"crypter EncryptAES256 - Invalid key or block size: Key: %d sIV:%d\n", sKey.size(), sIV.size());
+        LogPrintf("crypter EncryptAES256 - Invalid key or block size: Key: %d sIV:%d\n", sKey.size(), sIV.size());
         return false;
     }
 
@@ -183,7 +184,7 @@ bool DecryptAES256(const SecureString& sKey, const std::string& sCiphertext, con
 
     // Verify key sizes
     if(sKey.size() != 32 || sIV.size() != AES_BLOCK_SIZE) {
-        LogPrint(BCLog::ALL,"crypter DecryptAES256 - Invalid key or block size\n");
+        LogPrintf("crypter DecryptAES256 - Invalid key or block size\n");
         return false;
     }
 
@@ -234,11 +235,25 @@ bool CCryptoKeyStore::SetCrypted()
     return true;
 }
 
+// Dash
+// This function should be used in a different combinations to determine
+// if CCryptoKeyStore is fully locked so that no operations requiring access
+// to private keys are possible:
+//      IsLocked(true)
+// or if CCryptoKeyStore's private keys are available for mixing only:
+//      !IsLocked(true) && IsLocked()
+// or if they are available for everything:
+//      !IsLocked()
+//bool CCryptoKeyStore::IsLocked() const
 bool CCryptoKeyStore::IsLocked(bool fForMixing) const
+//
 {
     if (!IsCrypted()) {
         return false;
     }
+    // Dash
+    //LOCK(cs_KeyStore);
+    //return vMasterKey.empty();
     bool result;
     {
         LOCK(cs_KeyStore);
@@ -255,31 +270,43 @@ bool CCryptoKeyStore::IsLocked(bool fForMixing) const
     if(!fForMixing && fOnlyMixingAllowed) return true;
 
     return result;
+    //
 }
 
+// Dash
+//bool CCryptoKeyStore::Lock()
 bool CCryptoKeyStore::Lock(bool fAllowMixing)
+//
 {
     if (!SetCrypted())
         return false;
 
+    // Dash
+    //{
     if (!fAllowMixing) {
+    //
         LOCK(cs_KeyStore);
         vMasterKey.clear();
     }
 
+    // Dash
     fOnlyMixingAllowed = fAllowMixing;
+    //
     NotifyStatusChanged(this);
     return true;
 }
 
-bool CCryptoKeyStore::Unlock(const CKeyingMaterial& vMasterKeyIn, bool fForMixingOnly)
+// Dash
+//bool CCryptoKeyStore::Unlock(const CKeyingMaterial& vMasterKeyIn, bool accept_no_keys)
+bool CCryptoKeyStore::Unlock(const CKeyingMaterial& vMasterKeyIn, bool accept_no_keys, bool fForMixingOnly)
+//
 {
     {
         LOCK(cs_KeyStore);
         if (!SetCrypted())
             return false;
 
-        bool keyPass = false;
+        bool keyPass = mapCryptedKeys.empty(); // Always pass when there are no encrypted keys
         bool keyFail = false;
         CryptedKeyMap::const_iterator mi = mapCryptedKeys.begin();
         for (; mi != mapCryptedKeys.end(); ++mi)
@@ -298,15 +325,17 @@ bool CCryptoKeyStore::Unlock(const CKeyingMaterial& vMasterKeyIn, bool fForMixin
         }
         if (keyPass && keyFail)
         {
-            LogPrint(BCLog::ALL, "The wallet is probably corrupted: Some keys decrypt but not all.\n");
-            assert(false);
+            LogPrintf("The wallet is probably corrupted: Some keys decrypt but not all.\n");
+            throw std::runtime_error("Error unlocking wallet: some keys decrypt but not all. Your wallet file may be corrupt.");
         }
-        if (keyFail || !keyPass)
+        if (keyFail || (!keyPass && !accept_no_keys))
             return false;
         vMasterKey = vMasterKeyIn;
         fDecryptionThoroughlyChecked = true;
     }
+    // Dash
     fOnlyMixingAllowed = fForMixingOnly;
+    //
     NotifyStatusChanged(this);
     return true;
 }
@@ -409,7 +438,7 @@ bool CCryptoKeyStore::EncryptKeys(CKeyingMaterial& vMasterKeyIn)
         return false;
 
     fUseCrypto = true;
-    for (KeyMap::value_type& mKey : mapKeys)
+    for (const KeyMap::value_type& mKey : mapKeys)
     {
         const CKey &key = mKey.second;
         CPubKey vchPubKey = key.GetPubKey();

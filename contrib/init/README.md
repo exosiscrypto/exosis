@@ -1,11 +1,11 @@
 Sample configuration files for:
 ```
-SystemD: exosisd.service
-Upstart: exosisd.conf
-OpenRC:  exosisd.openrc
-         exosisd.openrcconf
-CentOS:  exosisd.init
-macOS:    org.exosis.exosisd.plist
+SystemD: bitcoind.service
+Upstart: bitcoind.conf
+OpenRC:  bitcoind.openrc
+         bitcoind.openrcconf
+CentOS:  bitcoind.init
+macOS:   org.bitcoin.bitcoind.plist
 ```
 have been made available to assist packagers in creating node packages here.
 

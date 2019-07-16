@@ -1,17 +1,18 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef GOVERNANCE_VOTEDB_H
-#define GOVERNANCE_VOTEDB_H
+#ifndef DASH_GOVERNANCE_VOTEDB_H
+#define DASH_GOVERNANCE_VOTEDB_H
 
 #include <list>
 #include <map>
 
-#include "governance-vote.h"
-#include "serialize.h"
-#include "uint256.h"
+#include <governance-vote.h>
+#include <serialize.h>
+#include <uint256.h>
 
 /**
  * Represents the collection of votes associated with a given CGovernanceObject
@@ -91,4 +92,4 @@ private:
 
 };
 
-#endif
+#endif // DASH_GOVERNANCE_VOTEDB_H

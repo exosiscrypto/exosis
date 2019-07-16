@@ -1,8 +1,11 @@
-#ifndef SPH_FUGUE_H__
-#define SPH_FUGUE_H__
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
+
+#ifndef RNRT_CRYPTO_SPH_FUGUE_H
+#define RNRT_CRYPTO_SPH_FUGUE_H
 
 #include <stddef.h>
-#include "sph_types.h"
+#include <crypto/sph_types.h>
 
 #ifdef __cplusplus
 extern "C"{
@@ -78,4 +81,4 @@ void sph_fugue512_addbits_and_close(
 }
 #endif
 
-#endif
+#endif // RNRT_CRYPTO_SPH_FUGUE_H

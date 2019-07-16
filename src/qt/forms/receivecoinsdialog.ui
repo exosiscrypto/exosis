@@ -190,9 +190,6 @@
           </item>
           <item>
            <widget class="QCheckBox" name="useBech32">
-            <property name="visible">
-             <bool>false</bool>
-            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>

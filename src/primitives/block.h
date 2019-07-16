@@ -1,15 +1,31 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
-// Copyright (c) 2018-2019 The Exosis Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef EXOSIS_PRIMITIVES_BLOCK_H
-#define EXOSIS_PRIMITIVES_BLOCK_H
+#ifndef BITCOIN_PRIMITIVES_BLOCK_H
+#define BITCOIN_PRIMITIVES_BLOCK_H
 
 #include <primitives/transaction.h>
 #include <serialize.h>
 #include <uint256.h>
+
+// EXOSIS BEGIN
+// Algo number in nVersion
+enum {
+    ALGO_VERSION_MASK    = (255 << 8),
+
+    ALGO_EXOSIS          = (  0 << 8),
+    ALGO_X16R            = (  1 << 8),
+
+    ALGO_NULL
+};
+
+const unsigned int ALGO_ACTIVE_COUNT = 2;
+// EXOSIS END
 
 /** Nodes collect new transactions into a block, hash them into a hash tree,
  * and scan through nonce values to make the block's hash satisfy proof-of-work
@@ -28,7 +44,10 @@ public:
     uint32_t nTime;
     uint32_t nBits;
     uint32_t nNonce;
+    // EXOSIS BEGIN
     uint64_t nMoneySupply;
+    // EXOSIS END
+
     CBlockHeader()
     {
         SetNull();
@@ -44,7 +63,7 @@ public:
         READWRITE(nTime);
         READWRITE(nBits);
         READWRITE(nNonce);
-        READWRITE(nMoneySupply);
+        if ((this->nVersion & ALGO_VERSION_MASK) == ALGO_EXOSIS) READWRITE(nMoneySupply);
     }
 
     void SetNull()
@@ -65,15 +84,21 @@ public:
 
     uint256 GetHash() const;
 
+    uint256 GetPoWHash() const;
+
+    unsigned int GetAlgoEfficiency(int nBlockHeight) const;
+
     int64_t GetBlockTime() const
     {
         return (int64_t)nTime;
     }
 
+    // EXOSIS BEGIN
     int64_t GetMoneySupply() const
     {
         return (int64_t)nMoneySupply;
     }
+    // EXOSIS END
 };
 
 
@@ -84,7 +109,10 @@ public:
     std::vector<CTransactionRef> vtx;
 
     // memory only
+    // Dash
     mutable CTxOut txoutMasternode; // masternode payment
+    mutable std::vector<CTxOut> voutSuperblock; // superblock payment
+    //
     mutable bool fChecked;
 
     CBlock()
@@ -111,6 +139,7 @@ public:
         CBlockHeader::SetNull();
         vtx.clear();
         txoutMasternode = CTxOut();
+        voutSuperblock.clear();
         fChecked = false;
     }
 
@@ -123,7 +152,9 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
+        // EXOSIS BEGIN
         block.nMoneySupply   = nMoneySupply;
+        // EXOSIS END
         return block;
     }
 
@@ -163,4 +194,4 @@ struct CBlockLocator
     }
 };
 
-#endif // EXOSIS_PRIMITIVES_BLOCK_H
+#endif // BITCOIN_PRIMITIVES_BLOCK_H

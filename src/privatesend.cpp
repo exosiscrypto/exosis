@@ -1,27 +1,28 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#include "privatesend.h"
+#include <privatesend.h>
 
-#include "activemasternode.h"
-#include "consensus/validation.h"
-#include "governance.h"
-#include "init.h"
-#include "instantx.h"
-#include "masternode-payments.h"
-#include "masternode-sync.h"
-#include "masternodeman.h"
-#include "messagesigner.h"
-#include "netmessagemaker.h"
-#include "reverse_iterator.h"
-#include "script/sign.h"
+#include <activemasternode.h>
+#include <consensus/validation.h>
+#include <governance.h>
+#include <init.h>
+#include <instantx.h>
+#include <masternode-payments.h>
+#include <masternode-sync.h>
+#include <masternodeman.h>
+#include <messagesigner.h>
+#include <netmessagemaker.h>
+#include <reverse_iterator.h>
+#include <script/sign.h>
 // EXOSIS BEGIN
-#include "shutdown.h"
+#include <shutdown.h>
 // EXOSIS END
-#include "txmempool.h"
-#include "util.h"
-#include "utilmoneystr.h"
+#include <txmempool.h>
+#include <util/system.h>
+#include <util/moneystr.h>
 
 #include <boost/lexical_cast.hpp>
 
@@ -48,7 +49,7 @@ bool CDarksendQueue::Sign()
     std::string strMessage = vin.ToString() + boost::lexical_cast<std::string>(nDenom) + boost::lexical_cast<std::string>(nTime) + boost::lexical_cast<std::string>(fReady);
 
     if(!CMessageSigner::SignMessage(strMessage, vchSig, activeMasternode.keyMasternode)) {
-        LogPrint(BCLog::PRIVATESEND, "CDarksendQueue::Sign -- SignMessage() failed, %s\n", ToString());
+        LogPrintf("CDarksendQueue::Sign -- SignMessage() failed, %s\n", ToString());
         return false;
     }
 
@@ -61,7 +62,7 @@ bool CDarksendQueue::CheckSignature(const CPubKey& pubKeyMasternode)
     std::string strError = "";
 
     if(!CMessageSigner::VerifyMessage(pubKeyMasternode, vchSig, strMessage, strError)) {
-        LogPrint(BCLog::PRIVATESEND, "CDarksendQueue::CheckSignature -- Got bad Masternode queue signature: %s; error: %s\n", ToString(), strError);
+        LogPrintf("CDarksendQueue::CheckSignature -- Got bad Masternode queue signature: %s; error: %s\n", ToString(), strError);
         return false;
     }
 
@@ -86,7 +87,7 @@ bool CDarksendBroadcastTx::Sign()
     std::string strMessage = tx.GetHash().ToString() + boost::lexical_cast<std::string>(sigTime);
 
     if(!CMessageSigner::SignMessage(strMessage, vchSig, activeMasternode.keyMasternode)) {
-        LogPrint(BCLog::PRIVATESEND, "CDarksendBroadcastTx::Sign -- SignMessage() failed\n");
+        LogPrintf("CDarksendBroadcastTx::Sign -- SignMessage() failed\n");
         return false;
     }
 
@@ -99,7 +100,7 @@ bool CDarksendBroadcastTx::CheckSignature(const CPubKey& pubKeyMasternode)
     std::string strError = "";
 
     if(!CMessageSigner::VerifyMessage(pubKeyMasternode, vchSig, strMessage, strError)) {
-        LogPrint(BCLog::PRIVATESEND, "CDarksendBroadcastTx::CheckSignature -- Got bad dstx signature, error: %s\n", strError);
+        LogPrintf("CDarksendBroadcastTx::CheckSignature -- Got bad dstx signature, error: %s\n", strError);
         return false;
     }
 
@@ -194,7 +195,7 @@ bool CPrivateSend::IsCollateralValid(const CTransaction& txCollateral)
         nValueOut += txout.nValue;
 
         if(!txout.scriptPubKey.IsPayToPublicKeyHash()) {
-            LogPrintf ("CPrivateSend::IsCollateralValid -- Invalid Script, txCollateral=%s", txCollateral.ToString());
+            LogPrintf("CPrivateSend::IsCollateralValid -- Invalid Script, txCollateral=%s\n", txCollateral.ToString());
             return false;
         }
     }
@@ -202,7 +203,7 @@ bool CPrivateSend::IsCollateralValid(const CTransaction& txCollateral)
     for (const auto txin : txCollateral.vin) {
         Coin coin;
         if(!GetUTXOCoin(txin.prevout, coin)) {
-            LogPrint(BCLog::PRIVATESEND, "CPrivateSend::IsCollateralValid -- Unknown inputs in collateral transaction, txCollateral=%s", txCollateral.ToString());
+            LogPrint(BCLog::PRIVATESEND, "CPrivateSend::IsCollateralValid -- Unknown inputs in collateral transaction, txCollateral=%s\n", txCollateral.ToString());
             return false;
         }
         nValueIn += coin.out.nValue;
@@ -210,11 +211,11 @@ bool CPrivateSend::IsCollateralValid(const CTransaction& txCollateral)
 
     //collateral transactions are required to pay out a small fee to the miners
     if(nValueIn - nValueOut < GetCollateralAmount()) {
-        LogPrint(BCLog::PRIVATESEND, "CPrivateSend::IsCollateralValid -- did not include enough fees in transaction: fees: %d, txCollateral=%s", nValueOut - nValueIn, txCollateral.ToString());
+        LogPrint(BCLog::PRIVATESEND, "CPrivateSend::IsCollateralValid -- did not include enough fees in transaction: fees: %d, txCollateral=%s\n", nValueOut - nValueIn, txCollateral.ToString());
         return false;
     }
 
-    LogPrint(BCLog::PRIVATESEND, "CPrivateSend::IsCollateralValid -- %s", txCollateral.ToString());
+    LogPrint(BCLog::PRIVATESEND, "CPrivateSend::IsCollateralValid -- %s\n", txCollateral.ToString());
 
     {
         LOCK(cs_main);
@@ -487,7 +488,7 @@ void ThreadCheckPrivateSend(CConnman& connman)
 
             if(nTick % (60 * 5) == 0) {
                 governance.DoMaintenance(connman);
+            }
         }
     }
-}
 }

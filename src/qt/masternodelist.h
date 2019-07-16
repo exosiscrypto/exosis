@@ -1,15 +1,16 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef MASTERNODELIST_H
-#define MASTERNODELIST_H
+#ifndef DASH_QT_MASTERNODELIST_H
+#define DASH_QT_MASTERNODELIST_H
 
-#include "primitives/transaction.h"
-#include "platformstyle.h"
-#include "sync.h"
-#include "util.h"
+#include <primitives/transaction.h>
+#include <qt/platformstyle.h>
+#include <sync.h>
+#include <util/system.h>
 
 #include <QMenu>
 #include <QTimer>
@@ -73,10 +74,11 @@ private:
 private Q_SLOTS:
     void showContextMenu(const QPoint &);
     void on_filterLineEdit_textChanged(const QString &strFilterIn);
-    void on_startButton_clicked();
-    void on_startAllButton_clicked();
-    void on_startMissingButton_clicked();
+    //void on_startButton_clicked();
+    //void on_startAllButton_clicked();
+    //void on_startMissingButton_clicked();
     void on_tableWidgetMyMasternodes_itemSelectionChanged();
     void on_UpdateButton_clicked();
 };
-#endif // MASTERNODELIST_H
+
+#endif // DASH_QT_MASTERNODELIST_H

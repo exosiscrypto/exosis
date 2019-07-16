@@ -11,9 +11,10 @@
 #include <rpc/server.h>
 #include <random.h>
 #include <sync.h>
-#include <util.h>
-#include <utilstrencodings.h>
+#include <util/system.h>
+#include <util/strencodings.h>
 #include <ui_interface.h>
+#include <walletinitinterface.h>
 #include <crypto/hmac_sha256.h>
 #include <stdio.h>
 
@@ -30,7 +31,7 @@ static const char* WWW_AUTH_HEADER_DATA = "Basic realm=\"jsonrpc\"";
 class HTTPRPCTimer : public RPCTimerBase
 {
 public:
-    HTTPRPCTimer(struct event_base* eventBase, std::function<void(void)>& func, int64_t millis) :
+    HTTPRPCTimer(struct event_base* eventBase, std::function<void()>& func, int64_t millis) :
         ev(eventBase, false, func)
     {
         struct timeval tv;
@@ -52,7 +53,7 @@ public:
     {
         return "HTTP";
     }
-    RPCTimerBase* NewTimer(std::function<void(void)>& func, int64_t millis) override
+    RPCTimerBase* NewTimer(std::function<void()>& func, int64_t millis) override
     {
         return new HTTPRPCTimer(base, func, millis);
     }
@@ -162,7 +163,7 @@ static bool HTTPReq_JSONRPC(HTTPRequest* req, const std::string &)
     JSONRPCRequest jreq;
     jreq.peerAddr = req->GetPeer().ToString();
     if (!RPCAuthorized(authHeader.second, jreq.authUser)) {
-        LogPrint(BCLog::RPC, "ThreadRPCServer incorrect password attempt from %s\n", jreq.peerAddr);
+        LogPrintf("ThreadRPCServer incorrect password attempt from %s\n", jreq.peerAddr);
 
         /* Deter brute-forcing
            If this results in a DoS the user really
@@ -215,7 +216,7 @@ static bool InitRPCAuthentication()
 {
     if (gArgs.GetArg("-rpcpassword", "") == "")
     {
-        LogPrint(BCLog::RPC,"No rpcpassword set - using random cookie authentication.\n");
+        LogPrintf("No rpcpassword set - using random cookie authentication.\n");
         if (!GenerateAuthCookie(&strRPCUserColonPass)) {
             uiInterface.ThreadSafeMessageBox(
                 _("Error: A fatal internal error occurred, see debug.log for details"), // Same message as AbortNode
@@ -223,7 +224,7 @@ static bool InitRPCAuthentication()
             return false;
         }
     } else {
-        LogPrint(BCLog::RPC,"Config options rpcuser and rpcpassword will soon be deprecated. Locally-run instances may remove rpcuser to use cookie-based auth, or may be replaced with rpcauth. Please see share/rpcauth for rpcauth auth generation.\n");
+        LogPrintf("Config options rpcuser and rpcpassword will soon be deprecated. Locally-run instances may remove rpcuser to use cookie-based auth, or may be replaced with rpcauth. Please see share/rpcauth for rpcauth auth generation.\n");
         strRPCUserColonPass = gArgs.GetArg("-rpcuser", "") + ":" + gArgs.GetArg("-rpcpassword", "");
     }
     if (gArgs.GetArg("-rpcauth","") != "")
@@ -240,12 +241,12 @@ bool StartHTTPRPC()
         return false;
 
     RegisterHTTPHandler("/", true, HTTPReq_JSONRPC);
-#ifdef ENABLE_WALLET
-    // ifdef can be removed once we switch to better endpoint support and API versioning
-    RegisterHTTPHandler("/wallet/", false, HTTPReq_JSONRPC);
-#endif
-    assert(EventBase());
-    httpRPCTimerInterface = MakeUnique<HTTPRPCTimerInterface>(EventBase());
+    if (g_wallet_init_interface.HasWalletSupport()) {
+        RegisterHTTPHandler("/wallet/", false, HTTPReq_JSONRPC);
+    }
+    struct event_base* eventBase = EventBase();
+    assert(eventBase);
+    httpRPCTimerInterface = MakeUnique<HTTPRPCTimerInterface>(eventBase);
     RPCSetTimerInterface(httpRPCTimerInterface.get());
     return true;
 }
@@ -259,9 +260,9 @@ void StopHTTPRPC()
 {
     LogPrint(BCLog::RPC, "Stopping HTTP RPC server\n");
     UnregisterHTTPHandler("/", true);
-#ifdef ENABLE_WALLET
-    UnregisterHTTPHandler("/wallet/", false);
-#endif
+    if (g_wallet_init_interface.HasWalletSupport()) {
+        UnregisterHTTPHandler("/wallet/", false);
+    }
     if (httpRPCTimerInterface) {
         RPCUnsetTimerInterface(httpRPCTimerInterface.get());
         httpRPCTimerInterface.reset();

@@ -1,18 +1,19 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "chainparams.h"
-#include "dsnotificationinterface.h"
-#include "instantx.h"
-#include "governance.h"
-#include "masternodeman.h"
-#include "masternode-payments.h"
-#include "masternode-sync.h"
-#include "privatesend.h"
+#include <chainparams.h>
+#include <dsnotificationinterface.h>
+#include <instantx.h>
+#include <governance.h>
+#include <masternodeman.h>
+#include <masternode-payments.h>
+#include <masternode-sync.h>
+#include <privatesend.h>
 #ifdef ENABLE_WALLET
-#include "privatesend-client.h"
+#include <privatesend-client.h>
 #endif // ENABLE_WALLET
 
 void CDSNotificationInterface::InitializeCurrentBlockTip()
@@ -37,10 +38,6 @@ void CDSNotificationInterface::UpdatedBlockTip(const CBlockIndex *pindexNew, con
         return;
 
     masternodeSync.UpdatedBlockTip(pindexNew, fInitialDownload, connman);
-
-    // EXOSIS TODO:
-    // Update global DIP0001 activation status
-    //fDIP0001ActiveAtTip = (VersionBitsState(pindexNew, Params().GetConsensus(), Consensus::DEPLOYMENT_DIP0001, versionbitscache) == THRESHOLD_ACTIVE);
 
     if (fInitialDownload)
         return;

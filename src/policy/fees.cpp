@@ -1,7 +1,8 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,7 +13,7 @@
 #include <primitives/transaction.h>
 #include <streams.h>
 #include <txmempool.h>
-#include <util.h>
+#include <util/system.h>
 
 static constexpr double INF_FEERATE = 1e99;
 
@@ -513,7 +514,7 @@ void TxConfirmStats::removeTx(unsigned int entryHeight, unsigned int nBestSeenHe
 // of no harm to try to remove them again.
 bool CBlockPolicyEstimator::removeTx(uint256 hash, bool inBlock)
 {
-    LOCK(cs_feeEstimator);
+    LOCK(m_cs_fee_estimator);
     std::map<uint256, TxStatsInfo>::iterator pos = mapMemPoolTxs.find(hash);
     if (pos != mapMemPoolTxs.end()) {
         feeStats->removeTx(pos->second.blockHeight, nBestSeenHeight, pos->second.bucketIndex, inBlock);
@@ -550,7 +551,7 @@ CBlockPolicyEstimator::~CBlockPolicyEstimator()
 
 void CBlockPolicyEstimator::processTransaction(const CTxMemPoolEntry& entry, bool validFeeEstimate)
 {
-    LOCK(cs_feeEstimator);
+    LOCK(m_cs_fee_estimator);
     unsigned int txHeight = entry.GetHeight();
     uint256 hash = entry.GetTx().GetHash();
     if (mapMemPoolTxs.count(hash)) {
@@ -617,7 +618,7 @@ bool CBlockPolicyEstimator::processBlockTx(unsigned int nBlockHeight, const CTxM
 void CBlockPolicyEstimator::processBlock(unsigned int nBlockHeight,
                                          std::vector<const CTxMemPoolEntry*>& entries)
 {
-    LOCK(cs_feeEstimator);
+    LOCK(m_cs_fee_estimator);
     if (nBlockHeight <= nBestSeenHeight) {
         // Ignore side chains and re-orgs; assuming they are random
         // they don't affect the estimate.
@@ -695,7 +696,7 @@ CFeeRate CBlockPolicyEstimator::estimateRawFee(int confTarget, double successThr
     }
     }
 
-    LOCK(cs_feeEstimator);
+    LOCK(m_cs_fee_estimator);
     // Return failure if trying to analyze a target we're not tracking
     if (confTarget <= 0 || (unsigned int)confTarget > stats->GetMaxConfirms())
         return CFeeRate(0);
@@ -712,6 +713,7 @@ CFeeRate CBlockPolicyEstimator::estimateRawFee(int confTarget, double successThr
 
 unsigned int CBlockPolicyEstimator::HighestTargetTracked(FeeEstimateHorizon horizon) const
 {
+    LOCK(m_cs_fee_estimator);
     switch (horizon) {
     case FeeEstimateHorizon::SHORT_HALFLIFE: {
         return shortStats->GetMaxConfirms();
@@ -821,7 +823,7 @@ double CBlockPolicyEstimator::estimateConservativeFee(unsigned int doubleTarget,
  */
 CFeeRate CBlockPolicyEstimator::estimateSmartFee(int confTarget, FeeCalculation *feeCalc, bool conservative) const
 {
-    LOCK(cs_feeEstimator);
+    LOCK(m_cs_fee_estimator);
 
     if (feeCalc) {
         feeCalc->desiredTarget = confTarget;
@@ -900,6 +902,10 @@ CFeeRate CBlockPolicyEstimator::estimateSmartFee(int confTarget, FeeCalculation 
 // Dash
 /*double CBlockPolicyEstimator::estimatePriority(int confTarget)
 {
+    // EXOSIS BEGIN
+    LOCK(m_cs_fee_estimator);
+    // EXOSIS END
+
     // Return failure if trying to analyze a target we're not tracking
     if (confTarget <= 0 || (unsigned int)confTarget > priStats.GetMaxConfirms())
         return -1;
@@ -909,6 +915,10 @@ CFeeRate CBlockPolicyEstimator::estimateSmartFee(int confTarget, FeeCalculation 
 
 double CBlockPolicyEstimator::estimateSmartPriority(int confTarget, int *answerFoundAtTarget, const CTxMemPool& pool)
 {
+    // EXOSIS BEGIN
+    LOCK(m_cs_fee_estimator);
+    // EXOSIS END
+
     if (answerFoundAtTarget)
         *answerFoundAtTarget = confTarget;
     // Return failure if trying to analyze a target we're not tracking
@@ -935,7 +945,7 @@ double CBlockPolicyEstimator::estimateSmartPriority(int confTarget, int *answerF
 bool CBlockPolicyEstimator::Write(CAutoFile& fileout) const
 {
     try {
-        LOCK(cs_feeEstimator);
+        LOCK(m_cs_fee_estimator);
         fileout << 149900; // version required to read: 0.14.99 or later
         fileout << CLIENT_VERSION; // version that wrote the file
         fileout << nBestSeenHeight;
@@ -951,7 +961,7 @@ bool CBlockPolicyEstimator::Write(CAutoFile& fileout) const
         longStats->Write(fileout);
     }
     catch (const std::exception&) {
-        LogPrint(BCLog::ESTIMATEFEE, "CBlockPolicyEstimator::Write(): unable to write policy estimator data (non-fatal)\n");
+        LogPrintf("CBlockPolicyEstimator::Write(): unable to write policy estimator data (non-fatal)\n");
         return false;
     }
     return true;
@@ -960,7 +970,7 @@ bool CBlockPolicyEstimator::Write(CAutoFile& fileout) const
 bool CBlockPolicyEstimator::Read(CAutoFile& filein)
 {
     try {
-        LOCK(cs_feeEstimator);
+        LOCK(m_cs_fee_estimator);
         int nVersionRequired, nVersionThatWrote;
         filein >> nVersionRequired >> nVersionThatWrote;
         if (nVersionRequired > CLIENT_VERSION)
@@ -972,7 +982,7 @@ bool CBlockPolicyEstimator::Read(CAutoFile& filein)
         filein >> nFileBestSeenHeight;
 
         if (nVersionRequired < 149900) {
-            LogPrint(BCLog::ESTIMATEFEE, "%s: incompatible old fee estimation data (non-fatal). Version: %d\n", __func__, nVersionRequired);
+            LogPrintf("%s: incompatible old fee estimation data (non-fatal). Version: %d\n", __func__, nVersionRequired);
         } else { // New format introduced in 149900
             unsigned int nFileHistoricalFirst, nFileHistoricalBest;
             filein >> nFileHistoricalFirst >> nFileHistoricalBest;
@@ -1011,7 +1021,7 @@ bool CBlockPolicyEstimator::Read(CAutoFile& filein)
         }
     }
     catch (const std::exception& e) {
-        LogPrint(BCLog::ESTIMATEFEE, "CBlockPolicyEstimator::Read(): unable to read policy estimator data (non-fatal): %s\n",e.what());
+        LogPrintf("CBlockPolicyEstimator::Read(): unable to read policy estimator data (non-fatal): %s\n",e.what());
         return false;
     }
     return true;
@@ -1019,7 +1029,7 @@ bool CBlockPolicyEstimator::Read(CAutoFile& filein)
 
 void CBlockPolicyEstimator::FlushUnconfirmed() {
     int64_t startclear = GetTimeMicros();
-    LOCK(cs_feeEstimator);
+    LOCK(m_cs_fee_estimator);
     size_t num_entries = mapMemPoolTxs.size();
     // Remove every entry in mapMemPoolTxs
     while (!mapMemPoolTxs.empty()) {

@@ -1,4 +1,0 @@
-usr/local/bin/exosis-qt usr/bin
-share/pixmaps/exosis.png usr/share/pixmaps
-debian/exosis-qt.desktop usr/share/applications
-debian/exosis-qt.protocol usr/share/kde4/services/

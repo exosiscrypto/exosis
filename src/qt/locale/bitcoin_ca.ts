@@ -176,8 +176,8 @@
         <translation>Confirma l'encriptació del moneder</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSISS&lt;/b&gt;!</source>
-        <translation>Avís: si encripteu el vostre moneder i perdeu la contrasenya, &lt;b&gt;PERDREU TOTS ELS VOSTRES EXOSISS&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSIS&lt;/b&gt;!</source>
+        <translation>Avís: si encripteu el vostre moneder i perdeu la contrasenya, &lt;b&gt;PERDREU TOTS ELS VOSTRES EXOSIS&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -186,10 +186,6 @@
     <message>
         <source>Wallet encrypted</source>
         <translation>Moneder encriptat</translation>
-    </message>
-    <message>
-        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your Exosiss from being stolen by malware infecting your computer.</source>
-        <translation>Ara es tancarà el %1 per finalitzar el procés d'encriptació. Recordeu que encriptar el vostre moneder no garanteix que les vostres Exosiss no puguin ser robades per programari maliciós que infecti l'ordinador.</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
@@ -254,10 +250,6 @@
         <translation>&amp;Panorama general</translation>
     </message>
     <message>
-        <source>Node</source>
-        <translation>Node</translation>
-    </message>
-    <message>
         <source>Show general overview of wallet</source>
         <translation>Mostra el panorama general del moneder</translation>
     </message>
@@ -314,24 +306,12 @@
         <translation>&amp;Canvia la contrasenya...</translation>
     </message>
     <message>
-        <source>&amp;Sending addresses...</source>
-        <translation>Adreces d'e&amp;nviament...</translation>
-    </message>
-    <message>
-        <source>&amp;Receiving addresses...</source>
-        <translation>Adreces de &amp;recepció...</translation>
-    </message>
-    <message>
         <source>Open &amp;URI...</source>
         <translation>Obre un &amp;URI...</translation>
     </message>
     <message>
         <source>Wallet:</source>
         <translation>Moneder:</translation>
-    </message>
-    <message>
-        <source>default wallet</source>
-        <translation>moneder per defecte</translation>
     </message>
     <message>
         <source>Click to disable network activity.</source>
@@ -386,10 +366,6 @@
         <translation>Exosis</translation>
     </message>
     <message>
-        <source>Wallet</source>
-        <translation>Moneder</translation>
-    </message>
-    <message>
         <source>&amp;Send</source>
         <translation>&amp;Envia</translation>
     </message>
@@ -434,8 +410,8 @@
         <translation>Barra d'eines de les pestanyes</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and Exosis: URIs)</source>
-        <translation>Sol·licita pagaments (genera codis QR i Exosis: URI)</translation>
+        <source>Request payments (generates QR codes and exosis: URIs)</source>
+        <translation>Sol·licita pagaments (genera codis QR i exosis: URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -446,16 +422,12 @@
         <translation>Mostra la llista d'adreces de recepció i etiquetes utilitzades</translation>
     </message>
     <message>
-        <source>Open a Exosis: URI or payment request</source>
-        <translation>Obre una Exosis: sol·licitud d'URI o pagament</translation>
+        <source>Open a exosis: URI or payment request</source>
+        <translation>Obre una exosis: sol·licitud d'URI o pagament</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>Opcions de la &amp;línia d'ordres</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n active connection(s) to Exosis network</source>
-        <translation><numerusform>%n connexió activa a la xarxa Exosis</numerusform><numerusform>%n connexions actives a la xarxa Exosis</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -464,10 +436,6 @@
     <message>
         <source>Processing blocks on disk...</source>
         <translation>S'estan processant els blocs al disc...</translation>
-    </message>
-    <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
-        <translation><numerusform>Processat %n bloc de l'històric de transaccions.</numerusform><numerusform>Processats %n blocs de l'històric de transaccions.</numerusform></translation>
     </message>
     <message>
         <source>%1 behind</source>
@@ -500,6 +468,18 @@
     <message>
         <source>Show the %1 help message to get a list with possible Exosis command-line options</source>
         <translation>Mostra el missatge d'ajuda del %1 per obtenir una llista amb les possibles opcions de línia d'ordres de Exosis</translation>
+    </message>
+    <message>
+        <source>default wallet</source>
+        <translation>moneder per defecte</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Finestra</translation>
+    </message>
+    <message>
+        <source>Minimize</source>
+        <translation>Minimitza</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -888,15 +868,7 @@
         <source>Error</source>
         <translation>Error</translation>
     </message>
-    <message numerus="yes">
-        <source>%n GB of free space available</source>
-        <translation><numerusform>%n GB d'espai lliure disponible</numerusform><numerusform>%n GB d'espai lliure disponibles</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <source>(of %n GB needed)</source>
-        <translation><numerusform>(de %n GB necessari)</numerusform><numerusform>(de %n GB necessaris)</numerusform></translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>ModalOverlay</name>
     <message>
@@ -904,12 +876,12 @@
         <translation>Formulari</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Exosis network, as detailed below.</source>
-        <translation>És possible que les transaccions recents encara no siguin visibles i, per tant, el saldo del vostre moneder podria ser incorrecte. Aquesta informació serà correcta una vegada que el vostre moneder hagi finalitzat la sincronització amb la xarxa Exosis, tal com es detalla més avall.</translation>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the exosis network, as detailed below.</source>
+        <translation>És possible que les transaccions recents encara no siguin visibles i, per tant, el saldo del vostre moneder podria ser incorrecte. Aquesta informació serà correcta una vegada que el vostre moneder hagi finalitzat la sincronització amb la xarxa exosis, tal com es detalla més avall.</translation>
     </message>
     <message>
-        <source>Attempting to spend Exosiss that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation>Els intents de gastar Exosiss que es veuen afectats per les transaccions que encara no s'hagin mostrat no seran acceptats per la xarxa.</translation>
+        <source>Attempting to spend exosis that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>Els intents de gastar exosis que es veuen afectats per les transaccions que encara no s'hagin mostrat no seran acceptats per la xarxa.</translation>
     </message>
     <message>
         <source>Number of blocks left</source>
@@ -943,11 +915,7 @@
         <source>Hide</source>
         <translation>Amaga</translation>
     </message>
-    <message>
-        <source>Unknown. Syncing Headers (%1)...</source>
-        <translation>Desconegut. Sincronització de les capçaleres (%1)...</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>OpenURIDialog</name>
     <message>
@@ -994,10 +962,6 @@
         <translation>Mida de la memòria cau de la base de &amp;dades</translation>
     </message>
     <message>
-        <source>MB</source>
-        <translation>MB</translation>
-    </message>
-    <message>
         <source>Number of script &amp;verification threads</source>
         <translation>Nombre de fils de &amp;verificació d'scripts</translation>
     </message>
@@ -1028,10 +992,6 @@
     <message>
         <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
         <translation>URL de terceres parts (p. ex. explorador de blocs) que apareix en la pestanya de transaccions com elements del menú contextual. %s en l'URL es reemplaçat pel resum de la transacció. Diferents URL estan separades per una barra vertical |.</translation>
-    </message>
-    <message>
-        <source>Active command-line options that override above options:</source>
-        <translation>Opcions de línies d'ordre active que sobreescriuen les opcions de dalt:</translation>
     </message>
     <message>
         <source>Open the %1 configuration file from the working directory.</source>
@@ -1328,16 +1288,16 @@
         <translation>Error de la sol·licitud de pagament</translation>
     </message>
     <message>
-        <source>Cannot start Exosis: click-to-pay handler</source>
-        <translation>No es pot iniciar Exosis: controlador click-to-pay</translation>
+        <source>Cannot start exosis: click-to-pay handler</source>
+        <translation>No es pot iniciar exosis: controlador click-to-pay</translation>
     </message>
     <message>
         <source>URI handling</source>
         <translation>Gestió d'URI</translation>
     </message>
     <message>
-        <source>'Exosis://' is not a valid URI. Use 'Exosis:' instead.</source>
-        <translation>'Exosis://' no és una URI vàlida. Usi 'Exosis:' en lloc seu.</translation>
+        <source>'exosis://' is not a valid URI. Use 'exosis:' instead.</source>
+        <translation>'exosis://' no és una URI vàlida. Usi 'exosis:' en lloc seu.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -1481,33 +1441,9 @@
         <source>%1 ms</source>
         <translation>%1 ms</translation>
     </message>
-    <message numerus="yes">
-        <source>%n second(s)</source>
-        <translation><numerusform>%n segon</numerusform><numerusform>%n segons</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <source>%n minute(s)</source>
-        <translation><numerusform>%n minut</numerusform><numerusform>%n minuts</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <source>%n hour(s)</source>
-        <translation><numerusform>%n hora</numerusform><numerusform>%n hores</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <source>%n day(s)</source>
-        <translation><numerusform>%n dia</numerusform><numerusform>%n dies</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <source>%n week(s)</source>
-        <translation><numerusform>%n setmana</numerusform><numerusform>%n setmanes</numerusform></translation>
-    </message>
     <message>
         <source>%1 and %2</source>
         <translation>%1 i %2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n year(s)</source>
-        <translation><numerusform>%n any</numerusform><numerusform>%n anys</numerusform></translation>
     </message>
     <message>
         <source>%1 B</source>
@@ -1813,10 +1749,6 @@
     <message>
         <source>&amp;Unban</source>
         <translation>Desbandeja per</translation>
-    </message>
-    <message>
-        <source>default wallet</source>
-        <translation>moneder per defecte</translation>
     </message>
     <message>
         <source>Welcome to the %1 RPC console.</source>
@@ -2151,14 +2083,6 @@ Nota: Com que la comissió es calcula en funció dels bytes, una comissió de "1
         <translation>Amaga</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for Exosis transactions than the network can process.</source>
-        <translation>No hi ha cap problema en pagar només la comissió mínima sempre que hi hagi menys volum de transacció que espai en els blocs. Però tingueu present que això pot acabar en una transacció que mai es confirmi una vegada hi hagi més demanda de transaccions de Exosiss que la xarxa pugui processar.</translation>
-    </message>
-    <message>
-        <source>(read the tooltip)</source>
-        <translation>(llegiu l'indicador de funció)</translation>
-    </message>
-    <message>
         <source>Recommended:</source>
         <translation>Recomanada:</translation>
     </message>
@@ -2307,10 +2231,6 @@ Nota: Com que la comissió es calcula en funció dels bytes, una comissió de "1
         <translation>La sol·licitud de pagament ha vençut.</translation>
     </message>
     <message>
-        <source>Pay only the required fee of %1</source>
-        <translation>Paga només la comissió necessària de %1</translation>
-    </message>
-    <message>
         <source>Warning: Invalid Exosis address</source>
         <translation>Avís: adreça Exosis no vàlida</translation>
     </message>
@@ -2374,8 +2294,8 @@ Nota: Com que la comissió es calcula en funció dels bytes, una comissió de "1
         <translation>Elimina aquesta entrada</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less Exosiss than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>La comissió es deduirà de l'import que s'enviarà. El destinatari rebrà menys Exosiss que les que introduïu al camp d'import. Si se seleccionen múltiples destinataris, la comissió es dividirà per igual.</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less exosis than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>La comissió es deduirà de l'import que s'enviarà. El destinatari rebrà menys exosis que les que introduïu al camp d'import. Si se seleccionen múltiples destinataris, la comissió es dividirà per igual.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -2398,8 +2318,8 @@ Nota: Com que la comissió es calcula en funció dels bytes, una comissió de "1
         <translation>Introduïu una etiqueta per a aquesta adreça per afegir-la a la llista d'adreces utilitzades</translation>
     </message>
     <message>
-        <source>A message that was attached to the Exosis: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Exosis network.</source>
-        <translation>Un missatge que s'ha adjuntat al Exosis: URI que s'emmagatzemarà amb la transacció per a la vostra referència. Nota: el missatge no s'enviarà a través de la xarxa Exosis.</translation>
+        <source>A message that was attached to the exosis: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Exosis network.</source>
+        <translation>Un missatge que s'ha adjuntat al exosis: URI que s'emmagatzemarà amb la transacció per a la vostra referència. Nota: el missatge no s'enviarà a través de la xarxa Exosis.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2443,8 +2363,8 @@ Nota: Com que la comissió es calcula en funció dels bytes, una comissió de "1
         <translation>&amp;Signa el missatge</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive Exosiss sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>Podeu signar missatges/acords amb les vostres adreces per provar que rebeu les Exosiss que s'hi envien. Aneu amb compte no signar res que sigui vague o aleatori, perquè en alguns atacs de suplantació es pot provar que hi signeu la vostra identitat. Només signeu aquelles declaracions completament detallades en què hi esteu d'acord. </translation>
+        <source>You can sign messages/agreements with your addresses to prove you can receive exosis sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>Podeu signar missatges/acords amb les vostres adreces per provar que rebeu les exosis que s'hi envien. Aneu amb compte no signar res que sigui vague o aleatori, perquè en alguns atacs de suplantació es pot provar que hi signeu la vostra identitat. Només signeu aquelles declaracions completament detallades en què hi esteu d'acord. </translation>
     </message>
     <message>
         <source>The Exosis address to sign the message with</source>
@@ -3017,6 +2937,9 @@ Nota: Com que la comissió es calcula en funció dels bytes, una comissió de "1
     </message>
 </context>
 <context>
+    <name>WalletController</name>
+    </context>
+<context>
     <name>WalletFrame</name>
     <message>
         <source>No wallet has been loaded.</source>
@@ -3064,6 +2987,10 @@ Nota: Com que la comissió es calcula en funció dels bytes, una comissió de "1
     <message>
         <source>Could not commit transaction</source>
         <translation>No s'ha pogut confirmar la transacció</translation>
+    </message>
+    <message>
+        <source>default wallet</source>
+        <translation>moneder per defecte</translation>
     </message>
 </context>
 <context>
@@ -3316,18 +3243,6 @@ Nota: Com que la comissió es calcula en funció dels bytes, una comissió de "1
         <translation>No es pot enllaçar a %s en aquest ordinador. %s probablement ja s'estigui executant.</translation>
     </message>
     <message>
-        <source>Unsupported argument -benchmark ignored, use -debug=bench.</source>
-        <translation>S'ha ignorat l'argument no admès -benchmark , feu servir -debug=bench.</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -debugnet ignored, use -debug=net.</source>
-        <translation>S'ha ignorat l'argument no admès -debugnet, feu servir -debug=net.</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -tor found, use -onion.</source>
-        <translation>S'ha trobat un argument -tor no acceptat. Feu servir -onion.</translation>
-    </message>
-    <message>
         <source>Unsupported logging category %s=%s.</source>
         <translation>Categoria de registre no admesa %s=%s.</translation>
     </message>
@@ -3362,10 +3277,6 @@ Nota: Com que la comissió es calcula en funció dels bytes, una comissió de "1
     <message>
         <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
         <translation>Cal que torneu a construir la base de dades fent servir -reindex per tornar al mode no podat. Això tornarà a baixar la cadena de blocs sencera</translation>
-    </message>
-    <message>
-        <source>Error loading %s: You can't disable HD on an already existing HD wallet</source>
-        <translation>S'ha produït un error en carregar %s: no es pot desactivar HD en un moneder HD ja existent</translation>
     </message>
     <message>
         <source>Error reading from database, shutting down.</source>
@@ -3452,10 +3363,6 @@ Nota: Com que la comissió es calcula en funció dels bytes, una comissió de "1
         <translation>-maxtxfee especificat molt alt! Comissions tan grans podrien pagar-se en una única transacció.</translation>
     </message>
     <message>
-        <source>Error loading %s: You can't enable HD on an already existing non-HD wallet</source>
-        <translation>S'ha produït un error en carregar %s: no es pot activar HD en un moneder existent que no sigui HD</translation>
-    </message>
-    <message>
         <source>This is the transaction fee you may pay when fee estimates are not available.</source>
         <translation>Aquesta és la tarifa de transacció que podeu pagar quan les estimacions de tarifes no estan disponibles.</translation>
     </message>
@@ -3466,18 +3373,6 @@ Nota: Com que la comissió es calcula en funció dels bytes, una comissió de "1
     <message>
         <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
         <translation>La longitud total de la cadena de la versió de xarxa (%i) supera la longitud màxima (%i). Redueix el nombre o la mida de uacomments.</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -socks found. Setting SOCKS version isn't possible anymore, only SOCKS5 proxies are supported.</source>
-        <translation>S'ha trobat l'argument -socks no compatible. L'establiment de la versió SOCKS ja no és possible, només es permeten els servidors proxy SOCKS5.</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -whitelistalwaysrelay ignored, use -whitelistrelay and/or -whitelistforcerelay.</source>
-        <translation>S'ha ignorat l'argument no acceptat -whitelistalways, utilitza -whitelistrelay i/o -whitelistforcerelay.</translation>
-    </message>
-    <message>
-        <source>Warning: Unknown block versions being mined! It's possible unknown rules are in effect</source>
-        <translation>Advertència: s'està minant versions de blocs desconegudes. És possible que s'estiguin aplicant regles desconegudes</translation>
     </message>
     <message>
         <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>

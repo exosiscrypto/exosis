@@ -126,10 +126,6 @@
         <translation>&amp;Cambiar contrasinal...</translation>
     </message>
     <message>
-        <source>&amp;Receiving addresses...</source>
-        <translation>Direccións para recibir</translation>
-    </message>
-    <message>
         <source>Reindexing blocks on disk...</source>
         <translation>Reindexando bloques no disco...</translation>
     </message>
@@ -160,10 +156,6 @@
     <message>
         <source>Exosis</source>
         <translation>Exosis</translation>
-    </message>
-    <message>
-        <source>Wallet</source>
-        <translation>Moedeiro</translation>
     </message>
     <message>
         <source>&amp;Send</source>
@@ -210,8 +202,8 @@
         <translation>Barra de ferramentas</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and Exosis: URIs)</source>
-        <translation>Solicitar pagos (xenera códigos QR e Exosis: URIs)</translation>
+        <source>Request payments (generates QR codes and exosis: URIs)</source>
+        <translation>Solicitar pagos (xenera códigos QR e exosis: URIs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -222,8 +214,8 @@
         <translation>Amosar a listaxe de etiquetas e direccións para recibir empregadas</translation>
     </message>
     <message>
-        <source>Open a Exosis: URI or payment request</source>
-        <translation>Abrir un Exosis: URI ou solicitude de pago</translation>
+        <source>Open a exosis: URI or payment request</source>
+        <translation>Abrir un exosis: URI ou solicitude de pago</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -256,6 +248,10 @@
     <message>
         <source>Up to date</source>
         <translation>Actualizado</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Xanela</translation>
     </message>
     <message>
         <source>Catching up...</source>
@@ -987,6 +983,9 @@
     </context>
 <context>
     <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletController</name>
     </context>
 <context>
     <name>WalletFrame</name>

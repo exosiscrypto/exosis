@@ -1,10 +1,11 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef SRC_MASTERNODECONFIG_H_
-#define SRC_MASTERNODECONFIG_H_
+#ifndef DASH_MASTERNODECONFIG_H
+#define DASH_MASTERNODECONFIG_H
 
 class CMasternodeConfig;
 extern CMasternodeConfig masternodeConfig;
@@ -77,7 +78,10 @@ public:
         entries = std::vector<CMasternodeEntry>();
     }
 
-    void clear();
+    // EXOSIS BEGIN
+    //void clear();
+    void clear() { entries.clear(); };
+    // EXOSIS END
     bool read(std::string& strErr);
     void add(std::string alias, std::string ip, std::string privKey, std::string txHash, std::string outputIndex);
 
@@ -95,5 +99,4 @@ private:
 
 };
 
-
-#endif /* SRC_MASTERNODECONFIG_H_ */
+#endif // DASH_MASTERNODECONFIG_H

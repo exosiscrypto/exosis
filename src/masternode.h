@@ -1,14 +1,15 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef MASTERNODE_H
-#define MASTERNODE_H
+#ifndef DASH_MASTERNODE_H
+#define DASH_MASTERNODE_H
 
-#include "key.h"
-#include "validation.h"
-#include "spork.h"
+#include <key.h>
+#include <validation.h>
+#include <spork.h>
 
 class CMasternode;
 class CMasternodeBroadcast;
@@ -29,7 +30,9 @@ static const int MASTERNODE_POSE_BAN_MAX_SCORE          = 5;
 
 // sentinel version before sentinel ping implementation
 #define DEFAULT_SENTINEL_VERSION 0x010001
+// EXOSIS BEGIN
 #define DEFAULT_DAEMON_VERSION 120202
+// EXOSIS END
 
 class CMasternodePing
 {
@@ -41,7 +44,10 @@ public:
     bool fSentinelIsCurrent = false; // true if last sentinel ping was actual
     // MSB is always 0, other 3 bits corresponds to x.x.x version scheme
     uint32_t nSentinelVersion{DEFAULT_SENTINEL_VERSION};
+    // EXOSIS BEGIN
     uint32_t nDaemonVersion{DEFAULT_DAEMON_VERSION};
+    // EXOSIS END
+
     CMasternodePing() = default;
 
     CMasternodePing(const COutPoint& outpoint);
@@ -58,12 +64,16 @@ public:
         {
             fSentinelIsCurrent = false;
             nSentinelVersion = DEFAULT_SENTINEL_VERSION;
-            nDaemonVersion = DEFAULT_SENTINEL_VERSION;
+            // EXOSIS BEGIN
+            nDaemonVersion = DEFAULT_DAEMON_VERSION;
+            // EXOSIS END
             return;
         }
         READWRITE(fSentinelIsCurrent);
-        READWRITE(nSentinelVersion);
+        // EXOSIS BEGIN
+        //READWRITE(nSentinelVersion);
         READWRITE(nDaemonVersion);
+        // EXOSIS END
     }
 
     uint256 GetHash() const
@@ -124,7 +134,10 @@ struct masternode_info_t
     int64_t nLastDsq = 0; //the dsq count from the last dsq broadcast of this node
     int64_t nTimeLastChecked = 0;
     int64_t nTimeLastPaid = 0;
-    int64_t nTimeLastPing = 0; //* not in CMN
+    // EXOSIS BEGIN
+    //int64_t nTimeLastPing = 0; //* not in CMN
+    int64_t nTimeLastPing = GetAdjustedTime(); //0; //* not in CMN
+    // EXOSIS END
     bool fInfoValid = false; //* not in CMN
 };
 
@@ -140,16 +153,21 @@ private:
 
 public:
     enum state {
+        MASTERNODE_PRE_ENABLED,
         MASTERNODE_ENABLED,
         MASTERNODE_EXPIRED,
         MASTERNODE_OUTPOINT_SPENT,
         MASTERNODE_UPDATE_REQUIRED,
+        MASTERNODE_WATCHDOG_EXPIRED,
         MASTERNODE_NEW_START_REQUIRED,
         MASTERNODE_POSE_BAN
     };
 
     enum CollateralStatus {
         COLLATERAL_OK,
+        // EXOSIS BEGIN
+        COLLATERAL_IMMATURE,
+        // EXOSIS END
         COLLATERAL_UTXO_NOT_FOUND,
         COLLATERAL_INVALID_AMOUNT
     };
@@ -167,7 +185,6 @@ public:
 
     // KEEP TRACK OF GOVERNANCE ITEMS EACH MASTERNODE HAS VOTE UPON FOR RECALCULATION
     std::map<uint256, int> mapGovernanceObjectsVotedOn;
-
 
     CMasternode();
     CMasternode(const CMasternode& other);
@@ -208,8 +225,9 @@ public:
 
     static CollateralStatus CheckCollateral(const COutPoint& outpoint);
     static CollateralStatus CheckCollateral(const COutPoint& outpoint, int& nHeightRet);
-    static bool CheckCollateralForPayment(const COutPoint& outpoint);
+
     // EXOSIS BEGIN
+    static bool CheckCollateralForPayment(const COutPoint& outpoint);
     bool CollateralValueCheck(int nHeight, CAmount TxValue);
     CAmount CollateralValue(int nHeight);
     // EXOSIS END
@@ -229,18 +247,22 @@ public:
     }
 
     bool IsEnabled() { return nActiveState == MASTERNODE_ENABLED; }
+    bool IsPreEnabled() { return nActiveState == MASTERNODE_PRE_ENABLED; }
     bool IsPoSeBanned() { return nActiveState == MASTERNODE_POSE_BAN; }
     // NOTE: this one relies on nPoSeBanScore, not on nActiveState as everything else here
     bool IsPoSeVerified() { return nPoSeBanScore <= -MASTERNODE_POSE_BAN_MAX_SCORE; }
     bool IsExpired() { return nActiveState == MASTERNODE_EXPIRED; }
     bool IsOutpointSpent() { return nActiveState == MASTERNODE_OUTPOINT_SPENT; }
     bool IsUpdateRequired() { return nActiveState == MASTERNODE_UPDATE_REQUIRED; }
+    bool IsWatchdogExpired() { return nActiveState == MASTERNODE_WATCHDOG_EXPIRED; }
     bool IsNewStartRequired() { return nActiveState == MASTERNODE_NEW_START_REQUIRED; }
 
     static bool IsValidStateForAutoStart(int nActiveStateIn)
     {
         return  nActiveStateIn == MASTERNODE_ENABLED ||
-                nActiveStateIn == MASTERNODE_EXPIRED;
+                nActiveStateIn == MASTERNODE_PRE_ENABLED ||
+                nActiveStateIn == MASTERNODE_EXPIRED ||
+                nActiveStateIn == MASTERNODE_WATCHDOG_EXPIRED;
     }
 
     bool IsValidForPayment()
@@ -248,7 +270,10 @@ public:
         if(nActiveState == MASTERNODE_ENABLED) {
             return true;
         }
-        
+        if(!sporkManager.IsSporkActive(SPORK_14_REQUIRE_SENTINEL_FLAG) &&
+           (nActiveState == MASTERNODE_WATCHDOG_EXPIRED)) {
+            return true;
+        }
 
         return false;
     }
@@ -277,7 +302,7 @@ public:
     void AddGovernanceVote(uint256 nGovernanceObjectHash);
     // RECALCULATE CACHED STATUS FLAGS FOR ALL AFFECTED OBJECTS
     void FlagGovernanceItemsAsDirty();
-  
+
     void RemoveGovernanceObject(uint256 nGovernanceObjectHash);
 
     void UpdateWatchdogVoteTime(uint64_t nVoteTime = 0);
@@ -353,7 +378,7 @@ public:
     bool SimpleCheck(int& nDos);
     bool Update(CMasternode* pmn, int& nDos, CConnman& connman);
     bool CheckOutpoint(int& nDos);
-    
+
     bool Sign(const CKey& keyCollateralAddress);
     bool CheckSignature(int& nDos);
     void Relay(CConnman& connman);
@@ -409,4 +434,4 @@ public:
     }
 };
 
-#endif
+#endif // DASH_MASTERNODE_H

@@ -1,15 +1,16 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PRIVATESENDCLIENT_H
-#define PRIVATESENDCLIENT_H
+#ifndef DASH_PRIVATESEND_CLIENT_H
+#define DASH_PRIVATESEND_CLIENT_H
 
-#include "masternode.h"
-#include "privatesend.h"
-#include "wallet/wallet.h"
-#include "privatesend-util.h"
+#include <masternode.h>
+#include <privatesend.h>
+#include <wallet/wallet.h>
+#include <privatesend-util.h>
 
 class CPrivateSendClient;
 class CConnman;
@@ -148,4 +149,4 @@ public:
 
 void ThreadCheckPrivateSendClient(CConnman& connman);
 
-#endif
+#endif // DASH_PRIVATESEND_CLIENT_H

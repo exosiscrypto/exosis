@@ -1,4 +1,6 @@
 // Copyright (c) 2012-2018 The Bitcoin Core developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -13,8 +15,8 @@
 #include <serialize.h>
 #include <streams.h>
 #include <uint256.h>
-#include <util.h>
-#include <utilstrencodings.h>
+#include <util/system.h>
+#include <util/strencodings.h>
 #include <test/test_bitcoin.h>
 
 #include <vector>
@@ -84,7 +86,7 @@ BOOST_AUTO_TEST_CASE(bloom_create_insert_serialize_with_tweak)
 
 BOOST_AUTO_TEST_CASE(bloom_create_insert_key)
 {
-    std::string strSecret = std::string("5Kg1gnAjaLfKiwhhPpGS3QfRg2m6awQvaj98JCZBZQ5SuS2F15C");
+    std::string strSecret = std::string("XmE1CKq2kJA1d1VJygofRNv5ZbeAbrb2MmDAQoNXPoPraQqMBwMt");
     CKey key = DecodeSecret(strSecret);
     CPubKey pubkey = key.GetPubKey();
     std::vector<unsigned char> vchPubKey(pubkey.begin(), pubkey.end());
@@ -97,7 +99,7 @@ BOOST_AUTO_TEST_CASE(bloom_create_insert_key)
     CDataStream stream(SER_NETWORK, PROTOCOL_VERSION);
     stream << filter;
 
-    std::vector<unsigned char> vch = ParseHex("038fc16b080000000000000001");
+    std::vector<unsigned char> vch = ParseHex("03833b78080000000000000001");
     std::vector<char> expected(vch.size());
 
     for (unsigned int i = 0; i < vch.size(); i++)
@@ -461,6 +463,9 @@ static std::vector<unsigned char> RandomData()
 
 BOOST_AUTO_TEST_CASE(rolling_bloom)
 {
+    SeedInsecureRand(/* deterministic */ true);
+    g_mock_deterministic_tests = true;
+
     // last-100-entry, 1% false positive:
     CRollingBloomFilter rb1(100, 0.01);
 
@@ -485,12 +490,8 @@ BOOST_AUTO_TEST_CASE(rolling_bloom)
         if (rb1.contains(RandomData()))
             ++nHits;
     }
-    // Run test_bitcoin with --log_level=message to see BOOST_TEST_MESSAGEs:
-    BOOST_TEST_MESSAGE("RollingBloomFilter got " << nHits << " false positives (~100 expected)");
-
-    // Insanely unlikely to get a fp count outside this range:
-    BOOST_CHECK(nHits > 25);
-    BOOST_CHECK(nHits < 175);
+    // Expect about 100 hits
+    BOOST_CHECK_EQUAL(nHits, 75);
 
     BOOST_CHECK(rb1.contains(data[DATASIZE-1]));
     rb1.reset();
@@ -517,10 +518,8 @@ BOOST_AUTO_TEST_CASE(rolling_bloom)
         if (rb1.contains(data[i]))
             ++nHits;
     }
-    // Expect about 5 false positives, more than 100 means
-    // something is definitely broken.
-    BOOST_TEST_MESSAGE("RollingBloomFilter got " << nHits << " false positives (~5 expected)");
-    BOOST_CHECK(nHits < 100);
+    // Expect about 5 false positives
+    BOOST_CHECK_EQUAL(nHits, 6);
 
     // last-1000-entry, 0.01% false positive:
     CRollingBloomFilter rb2(1000, 0.001);
@@ -531,6 +530,7 @@ BOOST_AUTO_TEST_CASE(rolling_bloom)
     for (int i = 0; i < DATASIZE; i++) {
         BOOST_CHECK(rb2.contains(data[i]));
     }
+    g_mock_deterministic_tests = false;
 }
 
 BOOST_AUTO_TEST_SUITE_END()

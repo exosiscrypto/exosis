@@ -1,16 +1,17 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef CACHEMAP_H_
-#define CACHEMAP_H_
+#ifndef DASH_CACHEMAP_H
+#define DASH_CACHEMAP_H
 
 #include <map>
 #include <list>
 #include <cstddef>
 
-#include "serialize.h"
+#include <serialize.h>
 
 /**
  * Serializable structure for key/value items
@@ -200,4 +201,4 @@ private:
     }
 };
 
-#endif /* CACHEMAP_H_ */
+#endif // DASH_CACHEMAP_H

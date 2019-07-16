@@ -1,21 +1,22 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef GOVERNANCE_OBJECT_H
-#define GOVERNANCE_OBJECT_H
+#ifndef DASH_GOVERNANCE_OBJECT_H
+#define DASH_GOVERNANCE_OBJECT_H
 
 //#define ENABLE_DASH_DEBUG
 
-#include "cachemultimap.h"
-#include "governance-exceptions.h"
-#include "governance-vote.h"
-#include "governance-votedb.h"
-#include "key.h"
-#include "net.h"
-#include "sync.h"
-#include "util.h"
+#include <cachemultimap.h>
+#include <governance-exceptions.h>
+#include <governance-vote.h>
+#include <governance-votedb.h>
+#include <key.h>
+#include <net.h>
+#include <sync.h>
+#include <util/system.h>
 
 #include <univalue.h>
 
@@ -355,4 +356,4 @@ private:
 };
 
 
-#endif
+#endif // DASH_GOVERNANCE_OBJECT_H

@@ -163,10 +163,6 @@
         <source>Wallet encrypted</source>
         <translation>Monedero cifrado</translation>
     </message>
-    <message>
-        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your Exosis from being stolen by malware infecting your computer.</source>
-        <translation>%1 se cerrará ahora para finalizar el proceso de cifrado. Recuerde que el cifrado de su monedero no puede proteger de manera completa su Exosis de robo por malware que esté infectando su sistema.</translation>
-    </message>
     </context>
 <context>
     <name>BanTableModel</name>
@@ -184,10 +180,6 @@
     <message>
         <source>&amp;Overview</source>
         <translation>&amp;Vista general</translation>
-    </message>
-    <message>
-        <source>Node</source>
-        <translation>Nodo</translation>
     </message>
     <message>
         <source>Show general overview of wallet</source>
@@ -234,14 +226,6 @@
         <translation>&amp;Cambiar la contraseña…</translation>
     </message>
     <message>
-        <source>&amp;Sending addresses...</source>
-        <translation>$Enviando dirección...</translation>
-    </message>
-    <message>
-        <source>&amp;Receiving addresses...</source>
-        <translation>&amp;Recibiendo dirección</translation>
-    </message>
-    <message>
         <source>Open &amp;URI...</source>
         <translation>Abrir URI...</translation>
     </message>
@@ -276,10 +260,6 @@
     <message>
         <source>Exosis</source>
         <translation>Exosis</translation>
-    </message>
-    <message>
-        <source>Wallet</source>
-        <translation>Monedero</translation>
     </message>
     <message>
         <source>&amp;Send</source>
@@ -326,7 +306,7 @@
         <translation>Barra de pestañas</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and Exosis: URIs)</source>
+        <source>Request payments (generates QR codes and exosis: URIs)</source>
         <translation>Solicitar pagos (genera codigo QR y URL's de Exosis)</translation>
     </message>
     <message>
@@ -338,8 +318,8 @@
         <translation>Muestra la lista de direcciones de recepción y etiquetas</translation>
     </message>
     <message>
-        <source>Open a Exosis: URI or payment request</source>
-        <translation>Abrir un Exosis: URI o petición de pago</translation>
+        <source>Open a exosis: URI or payment request</source>
+        <translation>Abrir un exosis: URI o petición de pago</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -372,6 +352,10 @@
     <message>
         <source>Up to date</source>
         <translation>Actualizado</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Ventana</translation>
     </message>
     <message>
         <source>Catching up...</source>
@@ -568,10 +552,6 @@
     <message>
         <source>&amp;Main</source>
         <translation>&amp;Principal</translation>
-    </message>
-    <message>
-        <source>MB</source>
-        <translation>MB</translation>
     </message>
     <message>
         <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
@@ -1215,6 +1195,9 @@
     </context>
 <context>
     <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletController</name>
     </context>
 <context>
     <name>WalletFrame</name>

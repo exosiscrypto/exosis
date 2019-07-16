@@ -1,16 +1,17 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLAT_DATABASE_H
-#define FLAT_DATABASE_H
+#ifndef DASH_FLAT_DATABASE_H
+#define DASH_FLAT_DATABASE_H
 
-#include "chainparams.h"
-#include "clientversion.h"
-#include "hash.h"
-#include "streams.h"
-#include "util.h"
+#include <chainparams.h>
+#include <clientversion.h>
+#include <hash.h>
+#include <streams.h>
+#include <util/system.h>
 
 #include <boost/filesystem.hpp>
 
@@ -67,8 +68,8 @@ private:
         }
         fileout.fclose();
 
-        LogPrint(BCLog::DB,"Written info to %s  %dms\n", strFilename, GetTimeMillis() - nStart);
-        LogPrint(BCLog::DB,"     %s\n", objToSave.ToString());
+        LogPrintf("Written info to %s  %dms\n", strFilename, GetTimeMillis() - nStart);
+        LogPrintf("     %s\n", objToSave.ToString());
 
         return true;
     }
@@ -152,12 +153,12 @@ private:
             return IncorrectFormat;
         }
 
-        LogPrint(BCLog::DB,"Loaded info from %s  %dms\n", strFilename, GetTimeMillis() - nStart);
-        LogPrint(BCLog::DB,"     %s\n", objToLoad.ToString());
+        LogPrintf("Loaded info from %s  %dms\n", strFilename, GetTimeMillis() - nStart);
+        LogPrintf("     %s\n", objToLoad.ToString());
         if(!fDryRun) {
-            LogPrint(BCLog::DB,"%s: Cleaning....\n", __func__);
+            LogPrintf("%s: Cleaning....\n", __func__);
             objToLoad.CheckAndRemove();
-            LogPrint(BCLog::DB,"     %s\n", objToLoad.ToString());
+            LogPrintf("     %s\n", objToLoad.ToString());
         }
 
         return Ok;
@@ -174,19 +175,19 @@ public:
 
     bool Load(T& objToLoad)
     {
-        LogPrint(BCLog::DB,"Reading info from %s...\n", strFilename);
+        LogPrintf("Reading info from %s...\n", strFilename);
         ReadResult readResult = Read(objToLoad);
         if (readResult == FileError)
-            LogPrint(BCLog::DB,"Missing file %s, will try to recreate\n", strFilename);
+            LogPrintf("Missing file %s, will try to recreate\n", strFilename);
         else if (readResult != Ok)
         {
-            LogPrint(BCLog::DB,"Error reading %s: ", strFilename);
+            LogPrintf("Error reading %s: ", strFilename);
             if(readResult == IncorrectFormat)
             {
-                LogPrint(BCLog::DB,"%s: Magic is ok but data has invalid format, will try to recreate\n", __func__);
+                LogPrintf("%s: Magic is ok but data has invalid format, will try to recreate\n", __func__);
             }
             else {
-                LogPrint(BCLog::DB,"%s: File format is unknown or invalid, please fix it manually\n", __func__);
+                LogPrintf("%s: File format is unknown or invalid, please fix it manually\n", __func__);
                 // program should exit with an error
                 return false;
             }
@@ -198,28 +199,28 @@ public:
     {
         int64_t nStart = GetTimeMillis();
 
-        LogPrint(BCLog::DB,"Verifying %s format...\n", strFilename);
+        LogPrintf("Verifying %s format...\n", strFilename);
         T tmpObjToLoad;
         ReadResult readResult = Read(tmpObjToLoad, true);
 
         // there was an error and it was not an error on file opening => do not proceed
         if (readResult == FileError)
-            LogPrint(BCLog::DB,"Missing file %s, will try to recreate\n", strFilename);
+            LogPrintf("Missing file %s, will try to recreate\n", strFilename);
         else if (readResult != Ok)
         {
-            LogPrint(BCLog::DB,"Error reading %s: ", strFilename);
+            LogPrintf("Error reading %s: ", strFilename);
             if(readResult == IncorrectFormat)
-                LogPrint(BCLog::DB,"%s: Magic is ok but data has invalid format, will try to recreate\n", __func__);
+                LogPrintf("%s: Magic is ok but data has invalid format, will try to recreate\n", __func__);
             else
             {
-                LogPrint(BCLog::DB,"%s: File format is unknown or invalid, please fix it manually\n", __func__);
+                LogPrintf("%s: File format is unknown or invalid, please fix it manually\n", __func__);
                 return false;
             }
         }
 
-        LogPrint(BCLog::DB,"Writing info to %s...\n", strFilename);
+        LogPrintf("Writing info to %s...\n", strFilename);
         Write(objToSave);
-        LogPrint(BCLog::DB,"%s dump finished  %dms\n", strFilename, GetTimeMillis() - nStart);
+        LogPrintf("%s dump finished  %dms\n", strFilename, GetTimeMillis() - nStart);
 
         return true;
     }
@@ -227,4 +228,4 @@ public:
 };
 
 
-#endif
+#endif // DASH_FLAT_DATABASE_H

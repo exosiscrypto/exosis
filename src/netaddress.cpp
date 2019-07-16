@@ -1,13 +1,14 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <netaddress.h>
 #include <hash.h>
-#include <utilstrencodings.h>
+#include <util/strencodings.h>
 #include <tinyformat.h>
 
 static const unsigned char pchIPv4[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff };
@@ -82,6 +83,16 @@ CNetAddr::CNetAddr(const struct in6_addr& ipv6Addr, const uint32_t scope)
 unsigned int CNetAddr::GetByte(int n) const
 {
     return ip[15-n];
+}
+
+bool CNetAddr::IsBindAny() const
+{
+    const int cmplen = IsIPv4() ? 4 : 16;
+    for (int i = 0; i < cmplen; ++i) {
+        if (GetByte(i)) return false;
+    }
+
+    return true;
 }
 
 bool CNetAddr::IsIPv4() const
@@ -174,16 +185,16 @@ bool CNetAddr::IsTor() const
 
 bool CNetAddr::IsLocal() const
 {
-    // IPv4 loopback
-   if (IsIPv4() && (GetByte(3) == 127 || GetByte(3) == 0))
-       return true;
+    // IPv4 loopback (127.0.0.0/8 or 0.0.0.0/8)
+    if (IsIPv4() && (GetByte(3) == 127 || GetByte(3) == 0))
+        return true;
 
-   // IPv6 loopback (::1/128)
-   static const unsigned char pchLocal[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1};
-   if (memcmp(ip, pchLocal, 16) == 0)
-       return true;
+    // IPv6 loopback (::1/128)
+    static const unsigned char pchLocal[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1};
+    if (memcmp(ip, pchLocal, 16) == 0)
+        return true;
 
-   return false;
+    return false;
 }
 
 bool CNetAddr::IsValid() const

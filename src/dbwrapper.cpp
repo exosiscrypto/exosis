@@ -63,7 +63,7 @@ public:
 
                 assert(p <= limit);
                 base[std::min(bufsize - 1, (int)(p - base))] = '\0';
-                LogPrint(BCLog::DB,"leveldb: %s", base);  /* Continued */
+                LogPrintf("leveldb: %s", base);  /* Continued */
                 if (base != buffer) {
                     delete[] base;
                 }
@@ -78,7 +78,7 @@ static void SetMaxOpenFiles(leveldb::Options *options) {
     // do not interfere with select() loops. On 64-bit Unix hosts this value is
     // also OK, because up to that amount LevelDB will use an mmap
     // implementation that does not use extra file descriptors (the fds are
-    // closed after being mmaped).
+    // closed after being mmap'ed).
     //
     // Increasing the value beyond the default is dangerous because LevelDB will
     // fall back to a non-mmap implementation when the file count is too large.
@@ -129,21 +129,21 @@ CDBWrapper::CDBWrapper(const fs::path& path, size_t nCacheSize, bool fMemory, bo
         options.env = penv;
     } else {
         if (fWipe) {
-            LogPrint(BCLog::DB,"Wiping LevelDB in %s\n", path.string());
+            LogPrintf("Wiping LevelDB in %s\n", path.string());
             leveldb::Status result = leveldb::DestroyDB(path.string(), options);
             dbwrapper_private::HandleError(result);
         }
         TryCreateDirectories(path);
-        LogPrint(BCLog::DB,"Opening LevelDB in %s\n", path.string());
+        LogPrintf("Opening LevelDB in %s\n", path.string());
     }
     leveldb::Status status = leveldb::DB::Open(options, path.string(), &pdb);
     dbwrapper_private::HandleError(status);
-    LogPrint(BCLog::DB,"Opened LevelDB successfully\n");
+    LogPrintf("Opened LevelDB successfully\n");
 
     if (gArgs.GetBoolArg("-forcecompactdb", false)) {
-        LogPrint(BCLog::DB,"Starting database compaction of %s\n", path.string());
+        LogPrintf("Starting database compaction of %s\n", path.string());
         pdb->CompactRange(nullptr, nullptr);
-        LogPrint(BCLog::DB,"Finished database compaction of %s\n", path.string());
+        LogPrintf("Finished database compaction of %s\n", path.string());
     }
 
     // The base-case obfuscation key, which is a noop.
@@ -160,10 +160,10 @@ CDBWrapper::CDBWrapper(const fs::path& path, size_t nCacheSize, bool fMemory, bo
         Write(OBFUSCATE_KEY_KEY, new_key);
         obfuscate_key = new_key;
 
-        LogPrint(BCLog::DB,"Wrote new obfuscate key for %s: %s\n", path.string(), HexStr(obfuscate_key));
+        LogPrintf("Wrote new obfuscate key for %s: %s\n", path.string(), HexStr(obfuscate_key));
     }
 
-    LogPrint(BCLog::DB,"Using obfuscation key for %s: %s\n", path.string(), HexStr(obfuscate_key));
+    LogPrintf("Using obfuscation key for %s: %s\n", path.string(), HexStr(obfuscate_key));
 }
 
 CDBWrapper::~CDBWrapper()
@@ -245,8 +245,8 @@ void HandleError(const leveldb::Status& status)
     if (status.ok())
         return;
     const std::string errmsg = "Fatal LevelDB error: " + status.ToString();
-    LogPrint(BCLog::DB,"%s\n", errmsg);
-    LogPrint(BCLog::DB,"You can use -debug=leveldb to get more complete diagnostic messages\n");
+    LogPrintf("%s\n", errmsg);
+    LogPrintf("You can use -debug=leveldb to get more complete diagnostic messages\n");
     throw dbwrapper_error(errmsg);
 }
 

@@ -1,23 +1,24 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "keepass.h"
+#include <keepass.h>
 
-#include "wallet/crypter.h"
-#include "clientversion.h"
-#include "protocol.h"
-#include "random.h"
-#include "rpc/protocol.h"
+#include <wallet/crypter.h>
+#include <clientversion.h>
+#include <protocol.h>
+#include <random.h>
+#include <rpc/protocol.h>
 
 // Necessary to prevent compile errors due to forward declaration of
 //CScript in serialize.h (included from crypter.h)
-#include "script/script.h"
-#include "script/standard.h"
+#include <script/script.h>
+#include <script/standard.h>
 
-#include "util.h"
-#include "utilstrencodings.h"
+#include <util/system.h>
+#include <util/strencodings.h>
 
 #include <event2/event.h>
 #include <event2/http.h>
@@ -27,7 +28,7 @@
 #include <openssl/bio.h>
 #include <openssl/evp.h>
 #include <openssl/buffer.h>
-#include "support/cleanse.h" // for OPENSSL_cleanse()
+#include <support/cleanse.h> // for OPENSSL_cleanse()
 
 const char* CKeePassIntegrator::KEEPASS_HTTP_HOST = "localhost";
 
@@ -125,7 +126,7 @@ void CKeePassIntegrator::init()
 
 void CKeePassIntegrator::CKeePassRequest::addStrParameter(std::string strName, std::string strValue)
 {
-    requestObj.push_back(Pair(strName, strValue));
+    requestObj.pushKV(strName, strValue);
 }
 
 void CKeePassIntegrator::CKeePassRequest::addStrParameter(std::string strName, SecureString sValue)
@@ -242,7 +243,7 @@ std::string CKeePassIntegrator::constructHTTPPost(const std::string& strMsg, con
 {
     std::ostringstream streamOut;
     streamOut << "POST / HTTP/1.1\r\n"
-      << "User-Agent: exosis-json-rpc/" << FormatFullVersion() << "\r\n"
+      << "User-Agent: dash-json-rpc/" << FormatFullVersion() << "\r\n"
       << "Host: localhost\r\n"
       << "Content-Type: application/json\r\n"
       << "Content-Length: " << strMsg.size() << "\r\n"
@@ -335,7 +336,7 @@ void CKeePassIntegrator::doHTTPPost(const std::string& sRequest, int& nStatus, s
     struct evkeyvalq *output_headers = evhttp_request_get_output_headers(req);
     assert(output_headers);
 //    s << "POST / HTTP/1.1\r\n"
-    evhttp_add_header(output_headers, "User-Agent", ("exosis-json-rpc/" + FormatFullVersion()).c_str());
+    evhttp_add_header(output_headers, "User-Agent", ("dash-json-rpc/" + FormatFullVersion()).c_str());
     evhttp_add_header(output_headers, "Host", KEEPASS_HTTP_HOST);
     evhttp_add_header(output_headers, "Accept", "application/json");
     evhttp_add_header(output_headers, "Content-Type", "application/json");
@@ -493,7 +494,7 @@ void CKeePassIntegrator::rpcSetLogin(const SecureString& sWalletPass, const Secu
     LogPrint(BCLog::KEEPASS, "CKeePassIntegrator::rpcSetLogin -- send Url: %s\n", sUrl);
 
     //request.addStrParameter("SubmitUrl", sSubmitUrl); // Is used to construct the entry title
-    request.addStrParameter("Login", SecureString("exosis"));
+    request.addStrParameter("Login", SecureString("dash"));
     request.addStrParameter("Password", sWalletPass);
     if(sEntryId.size() != 0)
     {

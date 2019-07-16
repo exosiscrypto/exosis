@@ -1,5 +1,6 @@
 // Copyright (c) 2011-2018 The Bitcoin Core developers
-// Copyright (c) 2018-2019 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -16,9 +17,9 @@
 EditAddressDialog::EditAddressDialog(Mode _mode, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::EditAddressDialog),
-    mapper(0),
+    mapper(nullptr),
     mode(_mode),
-    model(0)
+    model(nullptr)
 {
     ui->setupUi(this);
 
@@ -26,10 +27,6 @@ EditAddressDialog::EditAddressDialog(Mode _mode, QWidget *parent) :
 
     switch(mode)
     {
-    case NewReceivingAddress:
-        setWindowTitle(tr("New receiving address"));
-        ui->addressEdit->setEnabled(false);
-        break;
     case NewSendingAddress:
         setWindowTitle(tr("New sending address"));
         break;
@@ -78,10 +75,9 @@ bool EditAddressDialog::saveCurrentRow()
 
     switch(mode)
     {
-    case NewReceivingAddress:
     case NewSendingAddress:
         address = model->addRow(
-                mode == NewSendingAddress ? AddressTableModel::Send : AddressTableModel::Receive,
+                AddressTableModel::Send,
                 ui->labelEdit->text(),
                 ui->addressEdit->text(),
                 model->GetDefaultAddressType());

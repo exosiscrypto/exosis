@@ -26,7 +26,7 @@ class SendCoinsEntry : public QStackedWidget
     Q_OBJECT
 
 public:
-    explicit SendCoinsEntry(const PlatformStyle *platformStyle, QWidget *parent = 0);
+    explicit SendCoinsEntry(const PlatformStyle *platformStyle, QWidget *parent = nullptr);
     ~SendCoinsEntry();
 
     void setModel(WalletModel *model);
@@ -56,8 +56,15 @@ Q_SIGNALS:
     void useAvailableBalance(SendCoinsEntry* entry);
     void payAmountChanged();
     void subtractFeeFromAmountChanged();
+    // EXOSIS BEGIN
+    void startMasternodeChanged();
+    // EXOSIS END
 
 private Q_SLOTS:
+    // EXOSIS BEGIN
+    void collateralChanged();
+    void masternodeChanged();
+    // EXOSIS END
     void deleteClicked();
     void useAvailableBalanceClicked();
     void on_payTo_textChanged(const QString &address);

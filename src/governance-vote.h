@@ -1,13 +1,15 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef GOVERNANCE_VOTE_H
-#define GOVERNANCE_VOTE_H
 
-#include "key.h"
-#include "primitives/transaction.h"
+#ifndef DASH_GOVERNANCE_VOTE_H
+#define DASH_GOVERNANCE_VOTE_H
+
+#include <key.h>
+#include <primitives/transaction.h>
 
 #include <boost/lexical_cast.hpp>
 
@@ -220,4 +222,4 @@ public:
 
 */
 
-#endif
+#endif // DASH_GOVERNANCE_VOTE_H

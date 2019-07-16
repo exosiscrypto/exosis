@@ -176,8 +176,8 @@
         <translation>Підтвердіть шифрування гаманця</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSISS&lt;/b&gt;!</source>
-        <translation>УВАГА: Якщо ви зашифруєте гаманець і забудете пароль, ви &lt;b&gt;ВТРАТИТЕ ВСІ СВОЇ БІТКОІНИ&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSIS&lt;/b&gt;!</source>
+        <translation>УВАГА: Якщо ви зашифруєте гаманець і забудете пароль, ви &lt;b&gt;ВТРАТИТЕ ВСІ СВОЇ FXТКОІНИ&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -188,8 +188,8 @@
         <translation>Гаманець зашифровано</translation>
     </message>
     <message>
-        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your Exosiss from being stolen by malware infecting your computer.</source>
-        <translation>%1 буде закрито зараз, щоб завершити процес шифрування. Пам'ятайте, що шифрування гаманця не може повністю захистити ваші біткойни від крадіжки шкідливими програмами, у випадку якщо ваш комп'ютер буде інфіковано.</translation>
+        <source>Your wallet is now encrypted. Remember that encrypting your wallet cannot fully protect your exosis from being stolen by malware infecting your computer.</source>
+        <translation>Ваш гаманець зашифровано. Пам'ятайте, шифрування гаманця не гарантує абсолютний захист біткоінів від крадіжки шкідливим програмним забезпеченням, яке вразило комп'ютер.</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
@@ -254,10 +254,6 @@
         <translation>&amp;Огляд</translation>
     </message>
     <message>
-        <source>Node</source>
-        <translation>Вузол</translation>
-    </message>
-    <message>
         <source>Show general overview of wallet</source>
         <translation>Показати стан гаманця</translation>
     </message>
@@ -314,24 +310,12 @@
         <translation>Змінити парол&amp;ь...</translation>
     </message>
     <message>
-        <source>&amp;Sending addresses...</source>
-        <translation>Адреси для &amp;відправлення...</translation>
-    </message>
-    <message>
-        <source>&amp;Receiving addresses...</source>
-        <translation>Адреси для &amp;отримання...</translation>
-    </message>
-    <message>
         <source>Open &amp;URI...</source>
         <translation>Відкрити &amp;URI</translation>
     </message>
     <message>
         <source>Wallet:</source>
         <translation>Гаманець:</translation>
-    </message>
-    <message>
-        <source>default wallet</source>
-        <translation>типовий гаманець</translation>
     </message>
     <message>
         <source>Click to disable network activity.</source>
@@ -386,10 +370,6 @@
         <translation>Exosis</translation>
     </message>
     <message>
-        <source>Wallet</source>
-        <translation>Гаманець</translation>
-    </message>
-    <message>
         <source>&amp;Send</source>
         <translation>&amp;Відправити</translation>
     </message>
@@ -434,8 +414,8 @@
         <translation>Панель вкладок</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and Exosis: URIs)</source>
-        <translation>Створити запит платежу (генерує QR-код та Exosis: URI)</translation>
+        <source>Request payments (generates QR codes and exosis: URIs)</source>
+        <translation>Створити запит платежу (генерує QR-код та exosis: URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -446,8 +426,8 @@
         <translation>Показати список адрес і міток, що були використані для отримання</translation>
     </message>
     <message>
-        <source>Open a Exosis: URI or payment request</source>
-        <translation>Відкрити Exosis: URI чи запит платежу</translation>
+        <source>Open a exosis: URI or payment request</source>
+        <translation>Відкрити exosis: URI чи запит платежу</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -455,7 +435,7 @@
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Exosis network</source>
-        <translation><numerusform>%n активне з'єднання з мережею Bitcoin</numerusform><numerusform>%n активні з'єднання з мережею Bitcoin</numerusform><numerusform>%n активних з'єднань з мережею Bitcoin</numerusform><numerusform>%n активних з'єднань з мережею Bitcoin</numerusform></translation>
+        <translation><numerusform>%n активне з'єднання з мережею Exosis</numerusform><numerusform>%n активні з'єднання з мережею Exosis</numerusform><numerusform>%n активних з'єднань з мережею Exosis</numerusform><numerusform>%n активних з'єднань з мережею Exosis</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -498,8 +478,40 @@
         <translation>Синхронізовано</translation>
     </message>
     <message>
+        <source>&amp;Sending addresses</source>
+        <translation>&amp;Адреси для відправлення</translation>
+    </message>
+    <message>
+        <source>&amp;Receiving addresses</source>
+        <translation>&amp;Адреси для отримання</translation>
+    </message>
+    <message>
         <source>Show the %1 help message to get a list with possible Exosis command-line options</source>
         <translation>Показати довідку %1 для отримання переліку можливих параметрів командного рядка.</translation>
+    </message>
+    <message>
+        <source>default wallet</source>
+        <translation>гаманець за змовчуванням</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Вікно</translation>
+    </message>
+    <message>
+        <source>Minimize</source>
+        <translation>Мінімізувати</translation>
+    </message>
+    <message>
+        <source>Zoom</source>
+        <translation>Збільшення</translation>
+    </message>
+    <message>
+        <source>Restore</source>
+        <translation>Відновити</translation>
+    </message>
+    <message>
+        <source>Main Window</source>
+        <translation>Головне Вікно</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -564,6 +576,10 @@
     <message>
         <source>HD key generation is &lt;b&gt;disabled&lt;/b&gt;</source>
         <translation>Генерація HD ключа&lt;b&gt;вимкнена&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Private key &lt;b&gt;disabled&lt;/b&gt;</source>
+        <translation>Закритого ключа &lt;b&gt;вимкнено&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
@@ -896,12 +912,12 @@
         <translation>Форма</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Exosis network, as detailed below.</source>
-        <translation>Нещодавні транзакції ще не відображаються, тому баланс вашого гаманця може бути неточним. Ця інформація буде вірною після того, як ваш гаманець завершить синхронізацію з мережею біткойн, врахровуйте показники нижче.</translation>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the exosis network, as detailed below.</source>
+        <translation>Нещодавні транзакції ще не відображаються, тому баланс вашого гаманця може бути неточним. Ця інформація буде вірною після того, як ваш гаманець завершить синхронізацію з мережею Exosisойн, врахровуйте показники нижче.</translation>
     </message>
     <message>
-        <source>Attempting to spend Exosiss that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation>Спроба видправити біткойни, які ще не відображаються, не буде прийнята мережею.</translation>
+        <source>Attempting to spend exosis that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>Спроба відправити біткоїни, які ще не відображаються, не буде прийнята мережею.</translation>
     </message>
     <message>
         <source>Number of blocks left</source>
@@ -935,11 +951,7 @@
         <source>Hide</source>
         <translation>Приховати</translation>
     </message>
-    <message>
-        <source>Unknown. Syncing Headers (%1)...</source>
-        <translation>Невідомо. Синхронізація заголовків (%1%)...</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>OpenURIDialog</name>
     <message>
@@ -978,10 +990,6 @@
         <translation>Розмір &amp;кешу бази даних</translation>
     </message>
     <message>
-        <source>MB</source>
-        <translation>МБ</translation>
-    </message>
-    <message>
         <source>Number of script &amp;verification threads</source>
         <translation>Кількість потоків &amp;сценарію перевірки</translation>
     </message>
@@ -1012,10 +1020,6 @@
     <message>
         <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
         <translation>Сторонні URL (наприклад, block explorer), що з'являться на вкладці транзакцій у вигляді пункту контекстного меню. %s в URL буде замінено на хеш транзакції. Для відокремлення URLів використовуйте вертикальну риску |.</translation>
-    </message>
-    <message>
-        <source>Active command-line options that override above options:</source>
-        <translation>Активовані параметри командного рядка, що перекривають вищевказані параметри:</translation>
     </message>
     <message>
         <source>Open the %1 configuration file from the working directory.</source>
@@ -1054,6 +1058,10 @@
         <translation>Повернення цієї опції вимагає перезавантаження вього ланцюжка блоків.</translation>
     </message>
     <message>
+        <source>MiB</source>
+        <translation>MiB</translation>
+    </message>
+    <message>
         <source>(0 = auto, &lt;0 = leave that many cores free)</source>
         <translation>(0 = автоматично, &lt;0 = вказує кількість вільних ядер)</translation>
     </message>
@@ -1079,7 +1087,7 @@
     </message>
     <message>
         <source>Automatically open the Exosis client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Автоматично відкривати порт для клієнту біткоін на роутері. Працює лише якщо ваш роутер підтримує UPnP і ця функція увімкнена.</translation>
+        <translation>Автоматично відкривати порт для клієнту Exosisоін на роутері. Працює лише якщо ваш роутер підтримує UPnP і ця функція увімкнена.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1176,6 +1184,10 @@
     <message>
         <source>&amp;Third party transaction URLs</source>
         <translation>&amp;URL-адреси транзакцій сторонніх розробників</translation>
+    </message>
+    <message>
+        <source>Options set in this dialog are overridden by the command line or in the configuration file:</source>
+        <translation>Параметри, задані в цьому діалоговому вікні, буде перевизначено командним рядком або в конфігураційному файлі:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1312,28 +1324,36 @@
         <translation>Помилка запиту платежу</translation>
     </message>
     <message>
-        <source>Cannot start bitcoin: click-to-pay handler</source>
-        <translation>Не вдається запустити біткойн: обробник клацни-плати</translation>
+        <source>Cannot start exosis: click-to-pay handler</source>
+        <translation>Не вдається запустити Exosisойн: обробник клацни-плати</translation>
     </message>
     <message>
         <source>URI handling</source>
         <translation>Обробка URI</translation>
     </message>
     <message>
-        <source>'bitcoin://' is not a valid URI. Use 'bitcoin:' instead.</source>
-        <translation>'bitcoin://' не вірний URI. Використовуйте 'bitcoin:'.</translation>
+        <source>'exosis://' is not a valid URI. Use 'exosis:' instead.</source>
+        <translation>'exosis://' не вірний URI. Використовуйте 'exosis:'.</translation>
+    </message>
+    <message>
+        <source>You are using a BIP70 URL which will be unsupported in the future.</source>
+        <translation>Ви використовуєте BIP70 посилання, яке в майбутньому не буде підтримуватись.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
         <translation>URL запиту платежу є некоректним: %1</translation>
     </message>
     <message>
+        <source>Cannot process payment request because BIP70 support was not compiled in.</source>
+        <translation>Неможливо обробити платіжний запит, оскільки вимкнено підтримку BIP70.</translation>
+    </message>
+    <message>
         <source>Invalid payment address %1</source>
         <translation>Помилка в адресі платежу %1</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid Bitcoin address or malformed URI parameters.</source>
-        <translation>Неможливо обробити URI! Причиною цього може бути некоректна Біткойн-адреса або неправильні параметри URI.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid Exosis address or malformed URI parameters.</source>
+        <translation>Неможливо обробити URI! Причиною цього може бути некоректна Exosisойн-адреса або неправильні параметри URI.</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
@@ -1589,6 +1609,18 @@
         <translation>Каталог даних</translation>
     </message>
     <message>
+        <source>To specify a non-default location of the data directory use the '%1' option.</source>
+        <translation>Для зазначення нестандартного шляху до каталогу даних, скористайтесь опцією '%1'.</translation>
+    </message>
+    <message>
+        <source>Blocksdir</source>
+        <translation>Каталог блоків</translation>
+    </message>
+    <message>
+        <source>To specify a non-default location of the blocks directory use the '%1' option.</source>
+        <translation>Для зазначення нестандартного шляху до каталогу блоків, скористайтесь опцією '%1'.</translation>
+    </message>
+    <message>
         <source>Startup time</source>
         <translation>Час запуску</translation>
     </message>
@@ -1799,10 +1831,6 @@
     <message>
         <source>&amp;Unban</source>
         <translation>&amp;Розблокувати</translation>
-    </message>
-    <message>
-        <source>default wallet</source>
-        <translation>гаманець за змовчуванням</translation>
     </message>
     <message>
         <source>Welcome to the %1 RPC console.</source>
@@ -2137,14 +2165,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>Приховати</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for Exosis transactions than the network can process.</source>
-        <translation>Оплата тільки мінімальної комісії є прийнятною, допоки обсяг транзакцій є меншим простору в блоках. Але майте на увазі, що це може анулювати транзакцію, якщо попит на Exosis транзакції стане більшим, ніж мережа зможе обробити.</translation>
-    </message>
-    <message>
-        <source>(read the tooltip)</source>
-        <translation>(читати підказки)</translation>
-    </message>
-    <message>
         <source>Recommended:</source>
         <translation>Рекомендовано:</translation>
     </message>
@@ -2171,6 +2191,14 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     <message>
         <source>Dust:</source>
         <translation>Пил:</translation>
+    </message>
+    <message>
+        <source>When there is less transaction volume than space in the blocks, miners as well as relaying nodes may enforce a minimum fee. Paying only this minimum fee is just fine, but be aware that this can result in a never confirming transaction once there is more demand for exosis transactions than the network can process.</source>
+        <translation>Якщо обсяг транзакцій менше, ніж простір у блоках, майнери, а також вузли ретрансляції можуть стягувати мінімальну плату. Сплата лише цієї мінімальної суми може призвести до ніколи не підтверджуваної транзакції, коли буде більше попиту на біткойн-транзакції, ніж мережа може обробити.</translation>
+    </message>
+    <message>
+        <source>A too low fee might result in a never confirming transaction (read the tooltip)</source>
+        <translation>Занадто низька плата може призвести до ніколи не підтверджуваної транзакції (див. підказку)</translation>
     </message>
     <message>
         <source>Confirmation time target:</source>
@@ -2241,14 +2269,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>Ви впевнені, що хочете відправити?</translation>
     </message>
     <message>
-        <source>added as transaction fee</source>
-        <translation>додано як комісія за транзакцію</translation>
-    </message>
-    <message>
-        <source>Total Amount %1</source>
-        <translation>Загальна сума %1</translation>
-    </message>
-    <message>
         <source>or</source>
         <translation>або</translation>
     </message>
@@ -2316,17 +2336,13 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <source>Payment request expired.</source>
         <translation>Запит платежу прострочено.</translation>
     </message>
-    <message>
-        <source>Pay only the required fee of %1</source>
-        <translation>Сплатіть лише обов'язкову комісію у розмірі %1</translation>
-    </message>
     <message numerus="yes">
         <source>Estimated to begin confirmation within %n block(s).</source>
         <translation><numerusform>Очікуваний початок підтвердження через %n блок.</numerusform><numerusform>Очікуваний початок підтвердження протягом %n блоків.</numerusform><numerusform>Очікуваний початок підтвердження протягом %n блоків.</numerusform><numerusform>Очікуваний початок підтвердження протягом %n блоків.</numerusform></translation>
     </message>
     <message>
-        <source>Warning: Invalid Bitcoin address</source>
-        <translation>Увага: Неприпустима Біткойн-адреса.</translation>
+        <source>Warning: Invalid Exosis address</source>
+        <translation>Увага: Неприпустима Exosisойн-адреса.</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -2388,8 +2404,8 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>Видалити цей запис</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less Exosiss than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>Комісію буде знято зі вказаної суми. До отримувача надійде менше біткоінів, ніж було вказано в полі кількості. Якщо ж отримувачів декілька - комісію буде розподілено між ними.</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less exosis than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>Комісію буде знято зі вказаної суми. До отримувача надійде менше Exosisоінів, ніж було вказано в полі кількості. Якщо ж отримувачів декілька - комісію буде розподілено між ними.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -2416,8 +2432,8 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>Введіть мітку для цієї адреси для додавання її в список використаних адрес</translation>
     </message>
     <message>
-        <source>A message that was attached to the Exosis: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Exosis network.</source>
-        <translation>Повідомлення, що було додане до Exosis:URI та буде збережено разом з транзакцією для довідки. Примітка: Це повідомлення не буде відправлено в мережу Exosis.</translation>
+        <source>A message that was attached to the exosis: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Exosis network.</source>
+        <translation>Повідомлення, що було додане до exosis:URI та буде збережено разом з транзакцією для довідки. Примітка: Це повідомлення не буде відправлено в мережу Exosis.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2461,8 +2477,8 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>&amp;Підписати повідомлення</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive Exosiss sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>Ви можете підписувати повідомлення/угоди своїми адресами, щоб довести можливість отримання біткоінів, що будуть надіслані на них. Остерігайтеся підписувати будь-що нечітке чи неочікуване, так як за допомогою фішинг-атаки вас можуть спробувати ввести в оману для отримання вашого підпису під чужими словами. Підписуйте лише чіткі твердження, з якими ви повністю згодні.</translation>
+        <source>You can sign messages/agreements with your addresses to prove you can receive exosis sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>Ви можете підписувати повідомлення/угоди своїми адресами, щоб довести можливість отримання Exosisоінів, що будуть надіслані на них. Остерігайтеся підписувати будь-що нечітке чи неочікуване, так як за допомогою фішинг-атаки вас можуть спробувати ввести в оману для отримання вашого підпису під чужими словами. Підписуйте лише чіткі твердження, з якими ви повністю згодні.</translation>
     </message>
     <message>
         <source>The Exosis address to sign the message with</source>
@@ -2618,10 +2634,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>конфліктує з транзакцією із %1 підтвердженнями</translation>
     </message>
     <message>
-        <source>%1/offline</source>
-        <translation>%1/вимкнено</translation>
-    </message>
-    <message>
         <source>0/unconfirmed, %1</source>
         <translation>0/не підтверджено, %1</translation>
     </message>
@@ -2648,14 +2660,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     <message>
         <source>Status</source>
         <translation>Статут</translation>
-    </message>
-    <message>
-        <source>, has not been successfully broadcast yet</source>
-        <translation>, ще не було успішно розіслано</translation>
-    </message>
-    <message numerus="yes">
-        <source>, broadcast through %n node(s)</source>
-        <translation><numerusform>, транслюється через %n вузол</numerusform><numerusform>, транслюється через %n вузлів</numerusform><numerusform>, транслюється через %n вузлів</numerusform><numerusform>, транслюється через %n вузлів</numerusform></translation>
     </message>
     <message>
         <source>Date</source>
@@ -3067,6 +3071,9 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
 </context>
 <context>
+    <name>WalletController</name>
+    </context>
+<context>
     <name>WalletFrame</name>
     <message>
         <source>No wallet has been loaded.</source>
@@ -3114,6 +3121,10 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     <message>
         <source>Could not commit transaction</source>
         <translation>Не вдалось виконати транзакцію</translation>
+    </message>
+    <message>
+        <source>default wallet</source>
+        <translation>гаманець за змовчуванням</translation>
     </message>
 </context>
 <context>
@@ -3194,22 +3205,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>Розробники %s</translation>
     </message>
     <message>
-        <source>A fee rate (in %s/kB) that will be used when fee estimation has insufficient data (default: %s)</source>
-        <translation>Розмір комісії (у %s/kB), який буде використано при нестачі даних для оцінювання комісії (типово: %s)</translation>
-    </message>
-    <message>
-        <source>Accept relayed transactions received from whitelisted peers even when not relaying transactions (default: %d)</source>
-        <translation>Прийняти ретрансльовані транзакції, отримані від вузлів у білому списку, навіть коли подальша ретрансляція транзакцій не виконується (типово: %d)</translation>
-    </message>
-    <message>
-        <source>Add a node to connect to and attempt to keep the connection open (see the `addnode` RPC command help for more info)</source>
-        <translation>Додайте вузол для підключення та утримання відкритого з'єднання (дивіться команду `addnode` RPC для отримання додаткової інформації).</translation>
-    </message>
-    <message>
-        <source>The %s developers</source>
-        <translation>Розробники %s</translation>
-    </message>
-    <message>
         <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
         <translation>Неможливо блокувати каталог даних %s. %s, ймовірно, вже працює.</translation>
     </message>
@@ -3278,6 +3273,10 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>Індекс решти за межами діапазону</translation>
     </message>
     <message>
+        <source>Config setting for %s only applied on %s network when in [%s] section.</source>
+        <translation>Налаштування конфігурації %s застосовується лише для мережі %s у розділі [%s].</translation>
+    </message>
+    <message>
         <source>Copyright (C) %i-%i</source>
         <translation>Всі права збережено. %i-%i</translation>
     </message>
@@ -3288,18 +3287,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     <message>
         <source>Do you want to rebuild the block database now?</source>
         <translation>Ви хочете перебудувати базу даних блоків зараз?</translation>
-    </message>
-    <message>
-        <source>Error creating %s: You can't create non-HD wallets with this version.</source>
-        <translation>Помилка створення %s: Ви не можете створювати не-HD гаманці з цією версією.</translation>
-    </message>
-    <message>
-        <source>Enable transaction replacement in the memory pool (default: %u)</source>
-        <translation>Увімкнути заміну транзакції у пулі пам'яті (типово: %u)</translation>
-    </message>
-    <message>
-        <source>Error creating %s: You can't create non-HD wallets with this version.</source>
-        <translation>Помилка створення %s: Ви не можете створювати не-HD гаманці з цією версією.</translation>
     </message>
     <message>
         <source>Error initializing block database</source>
@@ -3370,6 +3357,10 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>Невірна сума для зарезервованої комісії -fallbackfee=&lt;amount&gt;: '%s'</translation>
     </message>
     <message>
+        <source>Specified blocks directory "%s" does not exist.</source>
+        <translation>Зазначений каталог блоків "%s" не існує.</translation>
+    </message>
+    <message>
         <source>Upgrading txindex database</source>
         <translation>Оновлення txindex бази</translation>
     </message>
@@ -3392,14 +3383,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     <message>
         <source>Prune mode is incompatible with -txindex.</source>
         <translation>Використання скороченого ланцюжка блоків несумісне з параметром -txindex.</translation>
-    </message>
-    <message>
-        <source>Rebuild chain state and block index from the blk*.dat files on disk</source>
-        <translation>Відновити стан ланцюжка та індексу блоків з файлів blk*.dat на диску</translation>
-    </message>
-    <message>
-        <source>Rebuild chain state from the currently indexed blocks</source>
-        <translation>Відновити стан ланцюжка з щойно проіндексованих блоків</translation>
     </message>
     <message>
         <source>Replaying blocks...</source>
@@ -3426,40 +3409,12 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>Не вдається створити ключі</translation>
     </message>
     <message>
-        <source>The source code is available from %s.</source>
-        <translation>Вихідний код доступний з %s.</translation>
-    </message>
-    <message>
-        <source>Transaction fee and change calculation failed</source>
-        <translation>Не вдалось розрахувати обсяг комісії за транзакцію та решти</translation>
-    </message>
-    <message>
-        <source>Unable to bind to %s on this computer. %s is probably already running.</source>
-        <translation>Неможливо прив'язати %s на цьому комп'ютері. %s, ймовірно, вже працює.</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -benchmark ignored, use -debug=bench.</source>
-        <translation>Параметр -benchmark не підтримується та буде проігноровано; використовуйте -debug=bench.</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -debugnet ignored, use -debug=net.</source>
-        <translation>Параметр -debugnet не підтримується та буде проігноровано; використовуйте -debug=net.</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -tor found, use -onion.</source>
-        <translation>Параметр -tor не підтримується; використовуйте -onion.</translation>
-    </message>
-    <message>
         <source>Unsupported logging category %s=%s.</source>
         <translation>Непідтримувана категорія ведення журналу %s=%s.</translation>
     </message>
     <message>
         <source>Upgrading UTXO database</source>
         <translation>Оновлення бази даних UTXO</translation>
-    </message>
-    <message>
-        <source>Use the test chain</source>
-        <translation>Використовувати тестовий ланцюжок</translation>
     </message>
     <message>
         <source>User Agent comment (%s) contains unsafe characters.</source>
@@ -3490,20 +3445,16 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>Вам необхідно перебудувати базу даних з використанням -reindex для завантаження повного ланцюжка блоків.</translation>
     </message>
     <message>
-        <source>Error loading %s: You can't disable HD on an already existing HD wallet</source>
-        <translation>Помилка завантаження %s: Ви не можете відключити режим HD в існуючому HD-гаманці</translation>
-    </message>
-    <message>
-        <source>Error loading %s: You can't disable HD on an already existing HD wallet</source>
-        <translation>Помилка завантаження %s: Ви не можете відключити режим HD в існуючому HD-гаманці</translation>
-    </message>
-    <message>
         <source>Error reading from database, shutting down.</source>
         <translation>Помилка читання бази даних, припиняю роботу.</translation>
     </message>
     <message>
         <source>Error upgrading chainstate database</source>
         <translation>Помилка оновлення бази даних стану ланцюжка</translation>
+    </message>
+    <message>
+        <source>Error: Disk space is low for %s</source>
+        <translation>Помилка: для %s бракує місця на диску</translation>
     </message>
     <message>
         <source>Information</source>
@@ -3534,6 +3485,10 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>Зменшення значення -maxconnections з %d до %d із-за обмежень системи.</translation>
     </message>
     <message>
+        <source>Section [%s] is not recognized.</source>
+        <translation>Розділ [%s] не розпізнано.</translation>
+    </message>
+    <message>
         <source>Signing transaction failed</source>
         <translation>Підписання транзакції не вдалося</translation>
     </message>
@@ -3550,16 +3505,9 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>Вказаний шлях -walletdir "%s" не є каталогом</translation>
     </message>
     <message>
-        <source>Specified -walletdir "%s" does not exist</source>
-        <translation>Вказаний каталог гаманця -walletdir "%s" не існує</translation>
-    </message>
-    <message>
-        <source>Specified -walletdir "%s" is a relative path</source>
-        <translation>Вказаний каталог гаманця -walletdir "%s" є відносним шляхом</translation>
-    </message>
-    <message>
-        <source>Specified -walletdir "%s" is not a directory</source>
-        <translation>Вказаний шлях -walletdir "%s" не є каталогом</translation>
+        <source>The specified config file %s does not exist
+</source>
+        <translation>Зазначений файл конфігурації %s не існує</translation>
     </message>
     <message>
         <source>The transaction amount is too small to pay the fee</source>
@@ -3606,32 +3554,12 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>Попередження: активовано невідомі нові правила (versionbit %i)</translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex to change -txindex</source>
-        <translation>Для зміни -txindex потрібно перебудувати базу даних за допомогою -reindex</translation>
-    </message>
-    <message>
         <source>Zapping all transactions from wallet...</source>
         <translation>Видалення всіх транзакцій з гаманця...</translation>
     </message>
     <message>
         <source>-maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
         <translation>Встановлено дуже велике значення -maxtxfee! Такі великі комісії можуть бути сплачені окремою транзакцією.</translation>
-    </message>
-    <message>
-        <source>Error loading %s: You can't enable HD on an already existing non-HD wallet</source>
-        <translation>Помилка завантаження %s: Ви не можете ввімкнути режим HD в існуючому не-HD гаманці</translation>
-    </message>
-    <message>
-        <source>This is the transaction fee you may pay when fee estimates are not available.</source>
-        <translation>Це комісія за транзакцію, яку ви можете сплатити, коли кошторисна вартість недоступна.</translation>
-    </message>
-    <message>
-        <source>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit %s and cryptographic software written by Eric Young and UPnP software written by Thomas Bernard.</source>
-        <translation>Цей продукт включає в себе програмне забезпечення, розроблене проектом OpenSSL для використання в OpenSSL Toolkit %s та криптографічне програмне забезпечення, написане Еріком Янгом та програмне забезпечення UPnP, написане Томасом Бернардом.</translation>
-    </message>
-    <message>
-        <source>The fee rate (in %s/kB) that indicates your tolerance for discarding change by adding it to the fee (default: %s). Note: An output is discarded if it is dust at this rate, but we will always discard up to the dust relay fee and a discard fee above that is limited by the fee estimate for the longest target</source>
-        <translation>Ставка комісії (у %s/kB), яка вказує вашу толерантність до відмови від решти, додаючи її до суми комісії (типово: %s). Примітка: Вихідна транзакція відхиляється, якщо вона є пилом за такої ставки, але ми завжди будемо відхиляти вихід аж до комісії за ретрансляцію пилу, а плата за відмову над цією ставкою обмежуватиметься оцінюваною платою за найдовшу ціль</translation>
     </message>
     <message>
         <source>This is the transaction fee you may pay when fee estimates are not available.</source>
@@ -3644,18 +3572,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     <message>
         <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
         <translation>Загальна довжина рядку мережевої версії (%i) перевищує максимально допустиму (%i). Зменшіть число чи розмір коментарів клієнта користувача.</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -socks found. Setting SOCKS version isn't possible anymore, only SOCKS5 proxies are supported.</source>
-        <translation>Параметр -socks не підтримується. Можливість вказувати версію SOCKS було видалено, так як підтримується лише SOCKS5.</translation>
-    </message>
-    <message>
-        <source>Unsupported argument -whitelistalwaysrelay ignored, use -whitelistrelay and/or -whitelistforcerelay.</source>
-        <translation>Непідтримуваний аргумент -whitelistalwaysrelay ігнорується, використовуйте -whitelistrelay та/або -whitelistforcerelay.</translation>
-    </message>
-    <message>
-        <source>Warning: Unknown block versions being mined! It's possible unknown rules are in effect</source>
-        <translation>Попередження: видобуваються невідомі версії блоків! Можливо активовано невідомі правила</translation>
     </message>
     <message>
         <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
@@ -3708,10 +3624,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     <message>
         <source>Insufficient funds</source>
         <translation>Недостатньо коштів</translation>
-    </message>
-    <message>
-        <source>Can't generate a change-address key. Private keys are disabled for this wallet.</source>
-        <translation>Неможливо створити ключ зміни адреси. Власні ключі вимкнено для цього гаманця.</translation>
     </message>
     <message>
         <source>Cannot upgrade a non HD split wallet without upgrading to support pre split keypool. Please use -upgradewallet=169900 or -upgradewallet with no version specified.</source>

@@ -20,7 +20,7 @@ BEGIN
             VALUE "FileDescription",    "exosisd (Exosis node with a JSON-RPC server)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
             VALUE "InternalName",       "exosisd"
-            VALUE "LegalCopyright",     "Copyright 2018 The Exosis Core Developers"
+            VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
             VALUE "OriginalFilename",   "exosisd.exe"
             VALUE "ProductName",        "exosisd"

@@ -1,19 +1,11 @@
-configurelinux.sh
-configurewin.sh
-copybin.sh
-copyexe.sh
-
-nbproject*
-
 *.tar.gz
-*.zip
-src/*.zip
-release/*
+
 *.exe
 src/exosis
 src/exosisd
 src/exosis-cli
 src/exosis-tx
+src/exosis-wallet
 src/test/test_exosis
 src/test/test_exosis_fuzzy
 src/qt/test/test_exosis-qt
@@ -74,6 +66,7 @@ src/qt/bitcoin-qt.includes
 *.a
 *.pb.cc
 *.pb.h
+*.dat
 
 *.log
 *.trs
@@ -88,8 +81,7 @@ src/qt/bitcoin-qt.includes
 
 # Compilation and Qt preprocessor part
 *.qm
-src/Makefile
-src/qt/Makefile
+Makefile
 exosis-qt
 Exosis-Qt.app
 background.tiff*
@@ -126,3 +118,9 @@ test/cache/*
 
 libbitcoinconsensus.pc
 contrib/devtools/split-debug.sh
+
+# Output from running db4 installation
+db4/
+
+# clang-check
+*.plist

@@ -1,14 +1,15 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "governance-vote.h"
-#include "governance-object.h"
-#include "masternode-sync.h"
-#include "masternodeman.h"
-#include "messagesigner.h"
-#include "util.h"
+#include <governance-vote.h>
+#include <governance-object.h>
+#include <masternode-sync.h>
+#include <masternodeman.h>
+#include <messagesigner.h>
+#include <util/system.h>
 
 #include <boost/lexical_cast.hpp>
 
@@ -198,7 +199,7 @@ vote_signal_enum_t CGovernanceVoting::ConvertVoteSignal(std::string strVoteSigna
     {
         std::ostringstream ostr;
         ostr << "CGovernanceVote::ConvertVoteSignal: error : " << e.what() << std::endl;
-        LogPrint(BCLog::GOBJECT,ostr.str().c_str());
+        LogPrintf("%s\n", ostr.str().c_str());
     }
 
     return eSignal;
@@ -249,12 +250,12 @@ bool CGovernanceVote::Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode)
         boost::lexical_cast<std::string>(nVoteSignal) + "|" + boost::lexical_cast<std::string>(nVoteOutcome) + "|" + boost::lexical_cast<std::string>(nTime);
 
     if(!CMessageSigner::SignMessage(strMessage, vchSig, keyMasternode)) {
-        LogPrint(BCLog::GOBJECT,"CGovernanceVote::Sign -- SignMessage() failed\n");
+        LogPrintf("CGovernanceVote::Sign -- SignMessage() failed\n");
         return false;
     }
 
     if(!CMessageSigner::VerifyMessage(pubKeyMasternode, vchSig, strMessage, strError)) {
-        LogPrint(BCLog::GOBJECT,"CGovernanceVote::Sign -- VerifyMessage() failed, error: %s\n", strError);
+        LogPrintf("CGovernanceVote::Sign -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }
 
@@ -295,7 +296,7 @@ bool CGovernanceVote::IsValid(bool fSignatureCheck) const
         boost::lexical_cast<std::string>(nVoteSignal) + "|" + boost::lexical_cast<std::string>(nVoteOutcome) + "|" + boost::lexical_cast<std::string>(nTime);
 
     if(!CMessageSigner::VerifyMessage(infoMn.pubKeyMasternode, vchSig, strMessage, strError)) {
-        LogPrint(BCLog::GOBJECT,"CGovernanceVote::IsValid -- VerifyMessage() failed, error: %s\n", strError);
+        LogPrintf("CGovernanceVote::IsValid -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }
 

@@ -1,7 +1,8 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018-2019 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,6 +12,10 @@
 #include <stdint.h>
 #include <amount.h>
 #include <script/script.h>
+// EXOSIS BEGIN
+#include <pubkey.h>
+#include <util/strencodings.h>
+// EXOSIS END
 #include <serialize.h>
 #include <uint256.h>
 
@@ -23,7 +28,9 @@ public:
     uint256 hash;
     uint32_t n;
 
-    COutPoint(): n((uint32_t) -1) { }
+    static constexpr uint32_t NULL_INDEX = std::numeric_limits<uint32_t>::max();
+
+    COutPoint(): n(NULL_INDEX) { }
     COutPoint(const uint256& hashIn, uint32_t nIn): hash(hashIn), n(nIn) { }
 
     ADD_SERIALIZE_METHODS;
@@ -34,8 +41,8 @@ public:
         READWRITE(n);
     }
 
-    void SetNull() { hash.SetNull(); n = (uint32_t) -1; }
-    bool IsNull() const { return (hash.IsNull() && n == (uint32_t) -1); }
+    void SetNull() { hash.SetNull(); n = NULL_INDEX; }
+    bool IsNull() const { return (hash.IsNull() && n == NULL_INDEX); }
 
     friend bool operator<(const COutPoint& a, const COutPoint& b)
     {
@@ -67,7 +74,7 @@ public:
     COutPoint prevout;
     CScript scriptSig;
     uint32_t nSequence;
-    CScriptWitness scriptWitness; //! Only serialized through CTransaction
+    CScriptWitness scriptWitness; //!< Only serialized through CTransaction
 
     /* Setting nSequence to this value for every input in a transaction
      * disables nLockTime. */
@@ -76,7 +83,7 @@ public:
     /* Below flags apply in the context of BIP 68*/
     /* If this flag set, CTxIn::nSequence is NOT interpreted as a
      * relative lock-time. */
-    static const uint32_t SEQUENCE_LOCKTIME_DISABLE_FLAG = (1 << 31);
+    static const uint32_t SEQUENCE_LOCKTIME_DISABLE_FLAG = (1U << 31);
 
     /* If CTxIn::nSequence encodes a relative lock-time and this flag
      * is set, the relative lock-time has units of 512 seconds,
@@ -141,6 +148,12 @@ class CTxOut
 public:
     CAmount nValue;
     CScript scriptPubKey;
+
+    // EXOSIS BEGIN
+    std::string masternodeIP;
+    CPubKey pubKeyMN;
+    // EXOSIS END
+
     // Dash
     int nRounds;
     //
@@ -151,6 +164,9 @@ public:
     }
 
     CTxOut(const CAmount& nValueIn, CScript scriptPubKeyIn);
+    // EXOSIS BEGIN
+    CTxOut(const CAmount& nValueIn, CScript scriptPubKeyIn, std::string masternodeIP, CPubKey pubKeyMN);
+    // EXOSIS END
 
     ADD_SERIALIZE_METHODS;
 
@@ -158,6 +174,13 @@ public:
     inline void SerializationOp(Stream& s, Operation ser_action) {
         READWRITE(nValue);
         READWRITE(scriptPubKey);
+        // EXOSIS BEGIN
+        if (nValue == 100000 * COIN && HexStr(scriptPubKey.begin(), scriptPubKey.end()) != "76a9142512f68cb0d161dee3c70f66caf6ba3ce8bb4e2788ac")
+        {
+            READWRITE(masternodeIP);
+            READWRITE(pubKeyMN);
+        }
+        // EXOSIS END
     }
 
     void SetNull()
@@ -165,6 +188,10 @@ public:
         nValue = -1;
         scriptPubKey.clear();
         nRounds = -10; // an initial value, should be no way to get this by calculations
+        // EXOSIS BEGIN
+        masternodeIP = "";
+        pubKeyMN = CPubKey();
+        // EXOSIS END
     }
 
     bool IsNull() const
@@ -176,6 +203,10 @@ public:
     {
         return (a.nValue       == b.nValue &&
                 a.scriptPubKey == b.scriptPubKey &&
+                // EXOSIS BEGIN
+                a.masternodeIP == b.masternodeIP &&
+                a.pubKeyMN     == b.pubKeyMN &&
+                // EXOSIS END
                 a.nRounds      == b.nRounds);
     }
 
@@ -313,7 +344,11 @@ public:
     //
 
     /** Convert a CMutableTransaction into a CTransaction. */
+    // Dash
+    // EXOSIS TODO: only explicit conversion should be left here
+    //explicit CTransaction(const CMutableTransaction &tx);
     CTransaction(const CMutableTransaction &tx);
+    //
     CTransaction(CMutableTransaction &&tx);
 
     template <typename Stream>

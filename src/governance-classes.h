@@ -1,17 +1,19 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef GOVERNANCE_CLASSES_H
-#define GOVERNANCE_CLASSES_H
+
+#ifndef DASH_GOVERNANCE_CLASSES_H
+#define DASH_GOVERNANCE_CLASSES_H
 
 //#define ENABLE_DASH_DEBUG
 
-#include "governance.h"
-#include "key.h"
-#include "key_io.h"
-#include "script/standard.h"
-#include "util.h"
+#include <governance.h>
+#include <key.h>
+#include <key_io.h>
+#include <script/standard.h>
+#include <util/system.h>
 
 #include <boost/shared_ptr.hpp>
 
@@ -112,12 +114,12 @@ public:
         }
         catch(std::exception& e)
         {
-            LogPrint(BCLog::GOBJECT,"CGovernancePayment Payment not valid: addrIn = %s, nAmountIn = %d, what = %s\n",
+            LogPrintf("CGovernancePayment Payment not valid: addrIn = %s, nAmountIn = %d, what = %s\n",
                      EncodeDestination(dest), nAmountIn, e.what());
         }
         catch(...)
         {
-            LogPrint(BCLog::GOBJECT,"CGovernancePayment Payment not valid: addrIn = %s, nAmountIn = %d\n",
+            LogPrintf("CGovernancePayment Payment not valid: addrIn = %s, nAmountIn = %d\n",
                       EncodeDestination(dest), nAmountIn);
         }
     }
@@ -206,4 +208,4 @@ public:
     bool IsValid(const CTransactionRef txNew, int nBlockHeight, CAmount blockReward, CBlockHeader pblock);
 };
 
-#endif
+#endif // DASH_GOVERNANCE_CLASSES_H

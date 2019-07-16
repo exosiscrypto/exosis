@@ -136,6 +136,10 @@
         <translation>Въведете новата парола повторно</translation>
     </message>
     <message>
+        <source>Show password</source>
+        <translation>Покажи парола</translation>
+    </message>
+    <message>
         <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;ten or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
         <translation>Въведете новата парола към портфейла.&lt;br/&gt;Моля ползвайте парола съставена от &lt;b&gt;десет или повече произволни символа&lt;/b&gt;, или &lt;b&gt;осем или повече думи&lt;/b&gt;.</translation>
     </message>
@@ -172,7 +176,7 @@
         <translation>Потвърдете на шифрирането на портфейла</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSISS&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR EXOSIS&lt;/b&gt;!</source>
         <translation>ВНИМАНИЕ: Ако шифрирате вашият портфейл и изгубите паролата си, &lt;b&gt;ЩЕ ИЗГУБИТЕ ВСИЧКИТЕ СИ БИТКОИНИ&lt;/b&gt;!</translation>
     </message>
     <message>
@@ -246,10 +250,6 @@
         <translation>&amp;Баланс</translation>
     </message>
     <message>
-        <source>Node</source>
-        <translation>Сървър</translation>
-    </message>
-    <message>
         <source>Show general overview of wallet</source>
         <translation>Обобщена информация за портфейла</translation>
     </message>
@@ -306,16 +306,12 @@
         <translation>&amp;Смяна на паролата...</translation>
     </message>
     <message>
-        <source>&amp;Sending addresses...</source>
-        <translation>&amp;Изпращане на адресите...</translation>
-    </message>
-    <message>
-        <source>&amp;Receiving addresses...</source>
-        <translation>&amp;Получаване на адресите...</translation>
-    </message>
-    <message>
         <source>Open &amp;URI...</source>
         <translation>Отвори &amp;URI...</translation>
+    </message>
+    <message>
+        <source>Wallet:</source>
+        <translation>Портфейл</translation>
     </message>
     <message>
         <source>Click to disable network activity.</source>
@@ -328,6 +324,10 @@
     <message>
         <source>Click to enable network activity again.</source>
         <translation>Натиснете за повторно активиране на мрежата.</translation>
+    </message>
+    <message>
+        <source>Syncing Headers (%1%)...</source>
+        <translation>Синхронизиране на хедъри (%1%)</translation>
     </message>
     <message>
         <source>Reindexing blocks on disk...</source>
@@ -360,10 +360,6 @@
     <message>
         <source>Exosis</source>
         <translation>Биткоин</translation>
-    </message>
-    <message>
-        <source>Wallet</source>
-        <translation>Портфейл</translation>
     </message>
     <message>
         <source>&amp;Send</source>
@@ -410,7 +406,7 @@
         <translation>Раздели</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and Exosis: URIs)</source>
+        <source>Request payments (generates QR codes and exosis: URIs)</source>
         <translation>Изискване на плащания(генерира QR кодове и биткойн: URIs)</translation>
     </message>
     <message>
@@ -422,7 +418,7 @@
         <translation>Покажи списък с използваните адреси и имена.</translation>
     </message>
     <message>
-        <source>Open a Exosis: URI or payment request</source>
+        <source>Open a exosis: URI or payment request</source>
         <translation>Отворете биткойн: URI  или заявка за плащане</translation>
     </message>
     <message>
@@ -468,6 +464,18 @@
     <message>
         <source>Show the %1 help message to get a list with possible Exosis command-line options</source>
         <translation>Покажи %1 помощно съобщение за да получиш лист с възможни Биткойн команди</translation>
+    </message>
+    <message>
+        <source>default wallet</source>
+        <translation>Портфейл по подразбиране</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Прозорец</translation>
+    </message>
+    <message>
+        <source>Minimize</source>
+        <translation>Минимизирай</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -852,10 +860,6 @@
         <translation>Размер на кеша в &amp;базата данни</translation>
     </message>
     <message>
-        <source>MB</source>
-        <translation>Мегабайта</translation>
-    </message>
-    <message>
         <source>Number of script &amp;verification threads</source>
         <translation>Брой на скриптове и &amp;нишки за потвърждение</translation>
     </message>
@@ -874,6 +878,10 @@
     <message>
         <source>&amp;Network</source>
         <translation>&amp;Мрежа</translation>
+    </message>
+    <message>
+        <source>GB</source>
+        <translation>ГБ</translation>
     </message>
     <message>
         <source>W&amp;allet</source>
@@ -900,6 +908,14 @@
         <translation>Отваряне на входящия порт чрез &amp;UPnP</translation>
     </message>
     <message>
+        <source>Accept connections from outside.</source>
+        <translation>Позволи външни връзки</translation>
+    </message>
+    <message>
+        <source>Allow incomin&amp;g connections</source>
+        <translation>Позволи входящи връзки</translation>
+    </message>
+    <message>
         <source>Connect to the Exosis network through a SOCKS5 proxy.</source>
         <translation>Свързване с Биткойн мрежата чрез SOCKS5  прокси.</translation>
     </message>
@@ -918,6 +934,10 @@
     <message>
         <source>Port of the proxy (e.g. 9050)</source>
         <translation>Порт на прокси сървъра (пр. 9050)</translation>
+    </message>
+    <message>
+        <source>Tor</source>
+        <translation>Тор</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -978,6 +998,10 @@
     <message>
         <source>Client restart required to activate changes.</source>
         <translation>Изисква се рестартиране на клиента за активиране на извършените промени.</translation>
+    </message>
+    <message>
+        <source>Client will be shut down. Do you want to proceed?</source>
+        <translation>Клиентът ще бъде изключен. Искате ли да продължите?</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1054,7 +1078,7 @@
         <translation>Възникна грешка по време назаявката за плащане</translation>
     </message>
     <message>
-        <source>Cannot start Exosis: click-to-pay handler</source>
+        <source>Cannot start exosis: click-to-pay handler</source>
         <translation>Биткойн не можe да се стартира: click-to-pay handler</translation>
     </message>
     <message>
@@ -2247,6 +2271,9 @@
     <name>UnitDisplayStatusBarControl</name>
     </context>
 <context>
+    <name>WalletController</name>
+    </context>
+<context>
     <name>WalletFrame</name>
     <message>
         <source>No wallet has been loaded.</source>
@@ -2259,7 +2286,11 @@
         <source>Send Coins</source>
         <translation>Изпращане</translation>
     </message>
-    </context>
+    <message>
+        <source>default wallet</source>
+        <translation>Портфейл по подразбиране</translation>
+    </message>
+</context>
 <context>
     <name>WalletView</name>
     <message>
@@ -2299,7 +2330,7 @@
     <name>bitcoin-core</name>
     <message>
         <source>Exosis Core</source>
-        <translation>Биткойн ядро</translation>
+        <translation>Exosisойн ядро</translation>
     </message>
     <message>
         <source>Do you want to rebuild the block database now?</source>

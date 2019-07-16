@@ -8,6 +8,7 @@
 
 #include <assert.h>
 #include <cstring>
+#include <limits>
 #include <stdexcept>
 #include <stdint.h>
 #include <string>
@@ -189,7 +190,7 @@ public:
     {
         // prefix operator
         int i = 0;
-        while (i < WIDTH && --pn[i] == (uint32_t)-1)
+        while (i < WIDTH && --pn[i] == std::numeric_limits<uint32_t>::max())
             i++;
         return *this;
     }
@@ -280,14 +281,17 @@ public:
 
     friend uint256 ArithToUint256(const arith_uint256 &);
     friend arith_uint256 UintToArith256(const uint256 &);
+    // EXOSIS BEGIN
     friend class arith_uint512;
+    // EXOSIS END
 };
 
 uint256 ArithToUint256(const arith_uint256 &);
 arith_uint256 UintToArith256(const uint256 &);
 
+// EXOSIS BEGIN
 /** 512-bit unsigned integer */
-class arith_uint512 
+class arith_uint512
 {
 protected:
 	enum { WIDTH = 512 / 32 };
@@ -309,5 +313,6 @@ public:
 		return ret;
 	}
 };
+// EXOSIS END
 
 #endif // BITCOIN_ARITH_UINT256_H

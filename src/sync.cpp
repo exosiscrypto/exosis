@@ -5,7 +5,7 @@
 #include <sync.h>
 
 #include <logging.h>
-#include <utilstrencodings.h>
+#include <util/strencodings.h>
 
 #include <stdio.h>
 
@@ -19,8 +19,8 @@ static_assert(false, "thread_local is not supported");
 #endif
 void PrintLockContention(const char* pszName, const char* pszFile, int nLine)
 {
-    LogPrint(BCLog::ALL, "LOCKCONTENTION: %s\n", pszName);
-    LogPrint(BCLog::ALL, "Locker: %s:%d\n", pszFile, nLine);
+    LogPrintf("LOCKCONTENTION: %s\n", pszName);
+    LogPrintf("Locker: %s:%d\n", pszFile, nLine);
 }
 #endif /* DEBUG_LOCKCONTENTION */
 
@@ -73,38 +73,47 @@ struct LockData {
     LockOrders lockorders;
     InvLockOrders invlockorders;
     std::mutex dd_mutex;
-} static lockdata;
+};
+LockData& GetLockData() {
+    static LockData lockdata;
+    return lockdata;
+}
 
 static thread_local LockStack g_lockstack;
 
 static void potential_deadlock_detected(const std::pair<void*, void*>& mismatch, const LockStack& s1, const LockStack& s2)
 {
-    LogPrint(BCLog::ALL, "POTENTIAL DEADLOCK DETECTED\n");
-    LogPrint(BCLog::ALL, "Previous lock order was:\n");
+    LogPrintf("POTENTIAL DEADLOCK DETECTED\n");
+    LogPrintf("Previous lock order was:\n");
     for (const std::pair<void*, CLockLocation> & i : s2) {
         if (i.first == mismatch.first) {
-            LogPrint(BCLog::ALL, " (1)"); /* Continued */
+            LogPrintf(" (1)"); /* Continued */
         }
         if (i.first == mismatch.second) {
-            LogPrint(BCLog::ALL, " (2)"); /* Continued */
+            LogPrintf(" (2)"); /* Continued */
         }
-        LogPrint(BCLog::ALL, " %s\n", i.second.ToString());
+        LogPrintf(" %s\n", i.second.ToString());
     }
-    LogPrint(BCLog::ALL, "Current lock order is:\n");
+    LogPrintf("Current lock order is:\n");
     for (const std::pair<void*, CLockLocation> & i : s1) {
         if (i.first == mismatch.first) {
-            LogPrint(BCLog::ALL, " (1)"); /* Continued */
+            LogPrintf(" (1)"); /* Continued */
         }
         if (i.first == mismatch.second) {
-            LogPrint(BCLog::ALL, " (2)"); /* Continued */
+            LogPrintf(" (2)"); /* Continued */
         }
-        LogPrint(BCLog::ALL, " %s\n", i.second.ToString());
+        LogPrintf(" %s\n", i.second.ToString());
     }
-    assert(false);
+    if (g_debug_lockorder_abort) {
+        fprintf(stderr, "Assertion failed: detected inconsistent lock order at %s:%i, details in debug log.\n", __FILE__, __LINE__);
+        abort();
+    }
+    throw std::logic_error("potential deadlock detected");
 }
 
 static void push_lock(void* c, const CLockLocation& locklocation)
 {
+    LockData& lockdata = GetLockData();
     std::lock_guard<std::mutex> lock(lockdata.dd_mutex);
 
     g_lockstack.push_back(std::make_pair(c, locklocation));
@@ -169,6 +178,7 @@ void AssertLockNotHeldInternal(const char* pszName, const char* pszFile, int nLi
 
 void DeleteLock(void* cs)
 {
+    LockData& lockdata = GetLockData();
     if (!lockdata.available) {
         // We're already shutting down.
         return;
@@ -188,5 +198,7 @@ void DeleteLock(void* cs)
         lockdata.invlockorders.erase(invit++);
     }
 }
+
+bool g_debug_lockorder_abort = true;
 
 #endif /* DEBUG_LOCKORDER */

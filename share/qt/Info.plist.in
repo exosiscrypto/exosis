@@ -17,7 +17,7 @@
   <string>APPL</string>
 
   <key>CFBundleGetInfoString</key>
-  <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@, Copyright © 2009-@COPYRIGHT_YEAR@ @COPYRIGHT_HOLDERS_FINAL@</string>
+  <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@.@CLIENT_VERSION_BUILD@, Copyright © 2009-@COPYRIGHT_YEAR@ @COPYRIGHT_HOLDERS_FINAL@</string>
 
   <key>CFBundleShortVersionString</key>
   <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@</string>
@@ -38,7 +38,7 @@
   <true/>
 
   <key>CFBundleIdentifier</key>
-  <string>org.Exosisfoundation.Exosis-Qt</string>
+  <string>org.exosisoinfoundation.Exosis-Qt</string>
 
   <key>CFBundleURLTypes</key>
   <array>
@@ -46,10 +46,10 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>org.Exosis.ExosisPayment</string>
+      <string>org.exosisoin.ExosisoinPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>Exosis</string>
+        <string>exosisoin</string>
       </array>
     </dict>
   </array>
@@ -58,9 +58,9 @@
   <array>
     <dict>
       <key>UTTypeIdentifier</key>
-      <string>org.Exosis.paymentrequest</string>
+      <string>org.exosisoin.paymentrequest</string>
       <key>UTTypeDescription</key>
-      <string>Exosis payment request</string>
+      <string>Exosisoin payment request</string>
       <key>UTTypeConformsTo</key>
       <array>
         <string>public.data</string>
@@ -68,10 +68,10 @@
       <key>UTTypeTagSpecification</key>
       <dict>
         <key>public.mime-type</key>
-        <string>application/x-Exosis-payment-request</string>
+        <string>application/x-exosisoin-payment-request</string>
         <key>public.filename-extension</key>
         <array>
-          <string>Exosispaymentrequest</string>
+          <string>exosisoinpaymentrequest</string>
         </array>
       </dict>
     </dict>
@@ -84,7 +84,7 @@
       <string>Editor</string>
       <key>LSItemContentTypes</key>
       <array>
-        <string>org.Exosis.paymentrequest</string>
+        <string>org.exosisoin.paymentrequest</string>
       </array>
       <key>LSHandlerRank</key>
       <string>Owner</string>
@@ -95,9 +95,6 @@
     <string>NSApplication</string>
 
   <key>NSHighResolutionCapable</key>
-    <string>True</string>
-
-  <key>LSAppNapIsDisabled</key>
     <string>True</string>
 
   <key>NSRequiresAquaSystemAppearance</key>

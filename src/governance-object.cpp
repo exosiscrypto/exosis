@@ -1,18 +1,19 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "core_io.h"
-#include "governance.h"
-#include "governance-classes.h"
-#include "governance-object.h"
-#include "governance-vote.h"
-#include "instantx.h"
-#include "masternode-sync.h"
-#include "masternodeman.h"
-#include "messagesigner.h"
-#include "util.h"
+#include <core_io.h>
+#include <governance.h>
+#include <governance-classes.h>
+#include <governance-object.h>
+#include <governance-vote.h>
+#include <instantx.h>
+#include <masternode-sync.h>
+#include <masternodeman.h>
+#include <messagesigner.h>
+#include <util/system.h>
 
 #include <univalue.h>
 
@@ -110,7 +111,7 @@ bool CGovernanceObject::ProcessVote(CNode* pfrom,
             if(pfrom) {
                 mnodeman.AskForMN(pfrom, vote.GetMasternodeOutpoint(), connman);
             }
-            LogPrint(BCLog::GOBJECT,"%s\n", ostr.str());
+            LogPrintf("%s\n", ostr.str());
         }
         else {
             LogPrint(BCLog::GOBJECT, "%s\n", ostr.str());
@@ -134,7 +135,7 @@ bool CGovernanceObject::ProcessVote(CNode* pfrom,
     if(eSignal > MAX_SUPPORTED_VOTE_SIGNAL) {
         std::ostringstream ostr;
         ostr << "CGovernanceObject::ProcessVote -- Unsupported vote signal: " << CGovernanceVoting::ConvertSignalToString(vote.GetSignal());
-        LogPrint(BCLog::GOBJECT,"%s\n", ostr.str());
+        LogPrintf("%s\n", ostr.str());
         exception = CGovernanceException(ostr.str(), GOVERNANCE_EXCEPTION_PERMANENT_ERROR, 20);
         return false;
     }
@@ -176,7 +177,7 @@ bool CGovernanceObject::ProcessVote(CNode* pfrom,
                 << ", MN outpoint = " << vote.GetMasternodeOutpoint().ToStringShort()
                 << ", governance object hash = " << GetHash().ToString()
                 << ", vote hash = " << vote.GetHash().ToString();
-        LogPrint(BCLog::GOBJECT,"%s\n", ostr.str());
+        LogPrintf("%s\n", ostr.str());
         exception = CGovernanceException(ostr.str(), GOVERNANCE_EXCEPTION_PERMANENT_ERROR, 20);
         governance.AddInvalidVote(vote);
         return false;
@@ -238,12 +239,12 @@ bool CGovernanceObject::Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode)
     LOCK(cs);
 
     if(!CMessageSigner::SignMessage(strMessage, vchSig, keyMasternode)) {
-        LogPrint(BCLog::GOBJECT,"CGovernanceObject::Sign -- SignMessage() failed\n");
+        LogPrintf("CGovernanceObject::Sign -- SignMessage() failed\n");
         return false;
     }
 
     if(!CMessageSigner::VerifyMessage(pubKeyMasternode, vchSig, strMessage, strError)) {
-        LogPrint(BCLog::GOBJECT,"CGovernanceObject::Sign -- VerifyMessage() failed, error: %s\n", strError);
+        LogPrintf("CGovernanceObject::Sign -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }
 
@@ -262,7 +263,7 @@ bool CGovernanceObject::CheckSignature(CPubKey& pubKeyMasternode)
 
     LOCK(cs);
     if(!CMessageSigner::VerifyMessage(pubKeyMasternode, vchSig, strMessage, strError)) {
-        LogPrint(BCLog::GOBJECT,"CGovernance::CheckSignature -- VerifyMessage() failed, error: %s\n", strError);
+        LogPrintf("CGovernance::CheckSignature -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }
 
@@ -354,7 +355,7 @@ void CGovernanceObject::LoadData()
         ostr << "CGovernanceObject::LoadData Error parsing JSON"
              << ", e.what() = " << e.what();
         DBG( cout << ostr.str() << endl; );
-        LogPrint(BCLog::GOBJECT,"%s\n", ostr.str());
+        LogPrintf("%s\n", ostr.str());
         return;
     }
     catch(...) {
@@ -362,7 +363,7 @@ void CGovernanceObject::LoadData()
         std::ostringstream ostr;
         ostr << "CGovernanceObject::LoadData Unknown Error parsing JSON";
         DBG( cout << ostr.str() << endl; );
-        LogPrint(BCLog::GOBJECT,"%s\n", ostr.str());
+        LogPrintf("%s\n", ostr.str());
         return;
     }
 }
@@ -513,15 +514,15 @@ bool CGovernanceObject::IsCollateralValid(std::string& strError, bool& fMissingC
 
     // RETRIEVE TRANSACTION IN QUESTION
 
-    if(!GetTransaction(nCollateralHash, txCollateral, Params().GetConsensus(), nBlockHash, true)){
+    if(!GetTransaction(nCollateralHash, txCollateral, Params().GetConsensus(), nBlockHash)){
         strError = strprintf("Can't find collateral tx %s", txCollateral->ToString());
-        LogPrint(BCLog::GOBJECT,"CGovernanceObject::IsCollateralValid -- %s\n", strError);
+        LogPrintf("CGovernanceObject::IsCollateralValid -- %s\n", strError);
         return false;
     }
 
     if(txCollateral->vout.size() < 1) {
         strError = strprintf("tx vout size less than 1 | %d", txCollateral->vout.size());
-        LogPrint(BCLog::GOBJECT,"CGovernanceObject::IsCollateralValid -- %s\n", strError);
+        LogPrintf("CGovernanceObject::IsCollateralValid -- %s\n", strError);
         return false;
     }
 
@@ -545,7 +546,7 @@ bool CGovernanceObject::IsCollateralValid(std::string& strError, bool& fMissingC
              << endl; );
         if(!o.scriptPubKey.IsPayToPublicKeyHash() && !o.scriptPubKey.IsUnspendable()) {
             strError = strprintf("Invalid Script %s", txCollateral->ToString());
-            LogPrint(BCLog::GOBJECT,"CGovernanceObject::IsCollateralValid -- %s\n", strError);
+            LogPrintf ("CGovernanceObject::IsCollateralValid -- %s\n", strError);
             return false;
         }
         if(o.scriptPubKey == findScript && o.nValue >= nMinFee) {
@@ -560,7 +561,7 @@ bool CGovernanceObject::IsCollateralValid(std::string& strError, bool& fMissingC
 
     if(!foundOpReturn){
         strError = strprintf("Couldn't find opReturn %s in %s", nExpectedHash.ToString(), txCollateral->ToString());
-        LogPrint(BCLog::GOBJECT,"CGovernanceObject::IsCollateralValid -- %s\n", strError);
+        LogPrintf ("CGovernanceObject::IsCollateralValid -- %s\n", strError);
         return false;
     }
 
@@ -586,7 +587,7 @@ bool CGovernanceObject::IsCollateralValid(std::string& strError, bool& fMissingC
         } else {
             strError += ", rejected -- try again later";
         }
-        LogPrint(BCLog::GOBJECT,"CGovernanceObject::IsCollateralValid -- %s\n", strError);
+        LogPrintf ("CGovernanceObject::IsCollateralValid -- %s\n", strError);
 
         return false;
     }
@@ -743,7 +744,7 @@ void CGovernanceObject::CheckOrphanVotes(CConnman& connman)
         }
         CGovernanceException exception;
         if(!ProcessVote(NULL, vote, exception, connman)) {
-            LogPrint(BCLog::GOBJECT,"CGovernanceObject::CheckOrphanVotes -- Failed to add orphan vote: %s\n", exception.what());
+            LogPrintf("CGovernanceObject::CheckOrphanVotes -- Failed to add orphan vote: %s\n", exception.what());
         }
         else {
             vote.Relay(connman);

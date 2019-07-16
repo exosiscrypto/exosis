@@ -62,12 +62,12 @@
         <translation>Địa chỉ nhận</translation>
     </message>
     <message>
-        <source>These are your Bitcoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Đây là các địa chỉ Bitcoin để gửi bạn gửi tiền. Trước khi gửi bạn nên kiểm tra lại số tiền bạn muốn gửi và địa chỉ bitcoin của người nhận.</translation>
+        <source>These are your Exosis addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Đây là các địa chỉ Exosis để gửi bạn gửi tiền. Trước khi gửi bạn nên kiểm tra lại số tiền bạn muốn gửi và địa chỉ exosis của người nhận.</translation>
     </message>
     <message>
-        <source>These are your Bitcoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Đây là các địa chỉ Bitcoin để bạn nhận tiền. Với mỗi giao dịch, bạn nên dùng một địa chỉ Bitcoin mới để nhận tiền.</translation>
+        <source>These are your Exosis addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Đây là các địa chỉ Exosis để bạn nhận tiền. Với mỗi giao dịch, bạn nên dùng một địa chỉ Exosis mới để nhận tiền.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -239,10 +239,6 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>&amp;Tổng quan</translation>
     </message>
     <message>
-        <source>Node</source>
-        <translation>Node</translation>
-    </message>
-    <message>
         <source>Show general overview of wallet</source>
         <translation>Hiện thỉ thông tin sơ lược chung về Ví</translation>
     </message>
@@ -299,14 +295,6 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>&amp;Thay đổi mật khẩu...</translation>
     </message>
     <message>
-        <source>&amp;Sending addresses...</source>
-        <translation>&amp;Địa chỉ gửi</translation>
-    </message>
-    <message>
-        <source>&amp;Receiving addresses...</source>
-        <translation>Địa chỉ nhận</translation>
-    </message>
-    <message>
         <source>Open &amp;URI...</source>
         <translation>Mở &amp;URI...</translation>
     </message>
@@ -359,10 +347,6 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Exosis</translation>
     </message>
     <message>
-        <source>Wallet</source>
-        <translation>Ví</translation>
-    </message>
-    <message>
         <source>&amp;Send</source>
         <translation>&amp;Gửi</translation>
     </message>
@@ -407,7 +391,7 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Thanh công cụ (toolbar)</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and Exosis: URIs)</source>
+        <source>Request payments (generates QR codes and exosis: URIs)</source>
         <translation>Yêu cầu thanh toán(tạo mã QR và địa chỉ Exosis: URLs)</translation>
     </message>
     <message>
@@ -419,8 +403,8 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Hiện thỉ danh sách các địa chỉ và nhãn đã dùng để nhận.</translation>
     </message>
     <message>
-        <source>Open a Exosis: URI or payment request</source>
-        <translation>Mở Exosis:URL hoặc yêu cầu thanh toán</translation>
+        <source>Open a exosis: URI or payment request</source>
+        <translation>Mở exosis:URL hoặc yêu cầu thanh toán</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -675,10 +659,6 @@ Ví của bạn chưa được mã hóa.</translation>
     <message>
         <source>&amp;Main</source>
         <translation>&amp;Chính</translation>
-    </message>
-    <message>
-        <source>MB</source>
-        <translation>MB</translation>
     </message>
     <message>
         <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
@@ -1058,10 +1038,6 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Ẩn</translation>
     </message>
     <message>
-        <source>(read the tooltip)</source>
-        <translation>(Đọc hướng dẫn)</translation>
-    </message>
-    <message>
         <source>Send to multiple recipients at once</source>
         <translation>Gửi đến nhiều người nhận trong một lần</translation>
     </message>
@@ -1182,6 +1158,9 @@ Ví của bạn chưa được mã hóa.</translation>
     </context>
 <context>
     <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletController</name>
     </context>
 <context>
     <name>WalletFrame</name>

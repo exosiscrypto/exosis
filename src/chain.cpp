@@ -4,7 +4,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <chain.h>
-#include <util.h>
+#include <util/system.h>
 
 /**
  * CChain implementation
@@ -144,7 +144,7 @@ int64_t GetBlockProofEquivalentTime(const CBlockIndex& to, const CBlockIndex& fr
         r = from.nChainWork - to.nChainWork;
         sign = -1;
     }
-    r = r * arith_uint256(params.PowTargetSpacing(tip.nHeight)) / GetBlockProof(tip);
+    r = r * arith_uint256(params.nPowTargetSpacing) / GetBlockProof(tip);
     if (r.bits() > 63) {
         return sign * std::numeric_limits<int64_t>::max();
     }
@@ -170,4 +170,22 @@ const CBlockIndex* LastCommonAncestor(const CBlockIndex* pa, const CBlockIndex* 
     return pa;
 }
 
+std::string GetAlgoName(int32_t nAlgo)
+{
+    switch (nAlgo)
+    {
+        case ALGO_EXOSIS:
+            return std::string("exosis");
+        case ALGO_X16R:
+            return std::string("x16r");
+    }
+    return std::string("unknown");
+}
 
+int32_t GetAlgoId(std::string strAlgo)
+{
+    if (strAlgo == "exosis")          return ALGO_EXOSIS;
+    if (strAlgo == "x16r")            return ALGO_X16R;
+
+    return miningAlgo;
+}

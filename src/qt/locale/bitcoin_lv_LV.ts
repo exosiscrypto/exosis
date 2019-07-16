@@ -43,11 +43,11 @@
     </message>
     <message>
         <source>Choose the address to send coins to</source>
-        <translation>Izvēlies adresi uz kuru sūtīt Exosiss</translation>
+        <translation>Izvēlies adresi uz kuru sūtīt exosis</translation>
     </message>
     <message>
         <source>Choose the address to receive coins with</source>
-        <translation>Izvēlies adresi ar kuru saņemt Exosiss</translation>
+        <translation>Izvēlies adresi ar kuru saņemt exosis</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -150,10 +150,6 @@
         <translation>&amp;Pārskats</translation>
     </message>
     <message>
-        <source>Node</source>
-        <translation>Node</translation>
-    </message>
-    <message>
         <source>Show general overview of wallet</source>
         <translation>Rādīt vispārēju maciņa pārskatu</translation>
     </message>
@@ -198,14 +194,6 @@
         <translation>Mainīt &amp;Paroli...</translation>
     </message>
     <message>
-        <source>&amp;Sending addresses...</source>
-        <translation>&amp;Sūtīšanas adreses...</translation>
-    </message>
-    <message>
-        <source>&amp;Receiving addresses...</source>
-        <translation>Saņemšanas &amp;adreses...</translation>
-    </message>
-    <message>
         <source>Open &amp;URI...</source>
         <translation>Atvērt &amp;URI...</translation>
     </message>
@@ -240,10 +228,6 @@
     <message>
         <source>Exosis</source>
         <translation>Exosis</translation>
-    </message>
-    <message>
-        <source>Wallet</source>
-        <translation>Maciņš</translation>
     </message>
     <message>
         <source>&amp;Send</source>
@@ -290,12 +274,12 @@
         <translation>Ciļņu rīkjosla</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and Exosis: URIs)</source>
-        <translation>Pieprasīt maksājumus (izveido QR kodu un Exosis: URIs)</translation>
+        <source>Request payments (generates QR codes and exosis: URIs)</source>
+        <translation>Pieprasīt maksājumus (izveido QR kodu un exosis: URIs)</translation>
     </message>
     <message>
-        <source>Open a Exosis: URI or payment request</source>
-        <translation>Atvērt Exosis URI vai maksājuma pieprasījumu</translation>
+        <source>Open a exosis: URI or payment request</source>
+        <translation>Atvērt exosis URI vai maksājuma pieprasījumu</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -324,6 +308,10 @@
     <message>
         <source>Up to date</source>
         <translation>Sinhronizēts</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Logs</translation>
     </message>
     <message>
         <source>Catching up...</source>
@@ -522,10 +510,6 @@
         <translation>&amp;Datubāzes kešatmiņas izmērs</translation>
     </message>
     <message>
-        <source>MB</source>
-        <translation>MB</translation>
-    </message>
-    <message>
         <source>Number of script &amp;verification threads</source>
         <translation>Skriptu &amp;pārbaudes pavedienu skaits</translation>
     </message>
@@ -536,10 +520,6 @@
     <message>
         <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Exit in the menu.</source>
         <translation>Minimizēt nevis aizvērt aplikāciju, kad logs tiek aizvērts. Kad šī iespēja ir ieslēgta, aplikācija tiks aizvērta, izvēloties Aizvērt izvēlnē.</translation>
-    </message>
-    <message>
-        <source>Active command-line options that override above options:</source>
-        <translation>Aktīvās komandrindas opcijas, kuras pārspēko šos iestatījumus:</translation>
     </message>
     <message>
         <source>Reset all client options to default.</source>
@@ -563,7 +543,7 @@
     </message>
     <message>
         <source>Enable coin &amp;control features</source>
-        <translation>Ieslēgt Exosis &amp;kontroles funkcijas</translation>
+        <translation>Ieslēgt exosis &amp;kontroles funkcijas</translation>
     </message>
     <message>
         <source>&amp;Spend unconfirmed change</source>
@@ -1191,6 +1171,9 @@
     </context>
 <context>
     <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletController</name>
     </context>
 <context>
     <name>WalletFrame</name>

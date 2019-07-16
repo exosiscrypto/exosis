@@ -1,8 +1,0 @@
-/usr/bin/exosis-cli		--	gen_context(system_u:object_r:exosis_exec_t,s0)
-/usr/sbin/exosisd		--	gen_context(system_u:object_r:exosis_exec_t,s0)
-/usr/lib(64)?/exosis/exosisd		--	gen_context(system_u:object_r:exosis_exec_t,s0)
-
-/etc/exosis(/.*)?		gen_context(system_u:object_r:exosis_conf_t,s0)
-/var/lib/exosis(/.*)?		gen_context(system_u:object_r:exosis_var_lib_t,s0)
-
-(/var)?/run/exosisd(/.*)?   gen_context(system_u:object_r:exosis_var_run_t,s0)

@@ -1,12 +1,13 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PRIVATESENDUTIL_H
-#define PRIVATESENDUTIL_H
+#ifndef DASH_PRIVATESEND_UTIL_H
+#define DASH_PRIVATESEND_UTIL_H
 
-#include "wallet/wallet.h"
+#include <wallet/wallet.h>
 
 class CKeyHolder
 {
@@ -36,4 +37,5 @@ public:
     void ReturnAll();
 
 };
-#endif //PRIVATESENDUTIL_H
+
+#endif // DASH_PRIVATESEND_UTIL_H

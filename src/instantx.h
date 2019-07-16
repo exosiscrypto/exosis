@@ -1,13 +1,15 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018-2019 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef INSTANTX_H
-#define INSTANTX_H
 
-#include "chain.h"
-#include "net.h"
-#include "primitives/transaction.h"
+#ifndef DASH_INSTANTX_H
+#define DASH_INSTANTX_H
+
+#include <chain.h>
+#include <net.h>
+#include <primitives/transaction.h>
 
 class CTxLockVote;
 class COutPointLock;
@@ -261,4 +263,4 @@ public:
     void Relay(CConnman& connman) const;
 };
 
-#endif
+#endif // DASH_INSTANTX_H

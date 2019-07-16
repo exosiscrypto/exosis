@@ -1,6 +1,7 @@
 // Copyright (c) 2011-2018 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,6 +12,7 @@
 #include <qt/optionsmodel.h>
 
 #include <qt/bitcoinunits.h>
+#include <qt/guiconstants.h>
 #include <qt/guiutil.h>
 
 #include <interfaces/node.h>
@@ -23,7 +25,7 @@
 // Dash
 #ifdef ENABLE_WALLET
 #include <masternodeconfig.h>
-#endif
+#endif // ENABLE_WALLET
 //
 
 #include <QNetworkProxy>
@@ -84,12 +86,14 @@ void OptionsModel::Init(bool resetSettings)
     strThirdPartyTxUrls = settings.value("strThirdPartyTxUrls", "").toString();
 
     if (!settings.contains("fCoinControlFeatures"))
-        settings.setValue("fCoinControlFeatures", true);
-    fCoinControlFeatures = settings.value("fCoinControlFeatures", true).toBool();
+        settings.setValue("fCoinControlFeatures", false);
+    fCoinControlFeatures = settings.value("fCoinControlFeatures", false).toBool();
 
     // Dash
+#ifdef ENABLE_WALLET
     if (!settings.contains("fShowMasternodesTab"))
-    settings.setValue("fShowMasternodesTab", true);
+    settings.setValue("fShowMasternodesTab", masternodeConfig.getCount());
+#endif // ENABLE_WALLET
     //
 
     // These are shared with the core or have a command-line parameter
@@ -105,10 +109,10 @@ void OptionsModel::Init(bool resetSettings)
         settings.setValue("bPrune", false);
     if (!settings.contains("nPruneSize"))
         settings.setValue("nPruneSize", 2);
-    // Convert prune size to MB:
-    const uint64_t nPruneSizeMB = settings.value("nPruneSize").toInt() * 1000;
-    if (!m_node.softSetArg("-prune", settings.value("bPrune").toBool() ? std::to_string(nPruneSizeMB) : "0")) {
-      addOverriddenOption("-prune");
+    // Convert prune size from GB to MiB:
+    const uint64_t nPruneSizeMiB = (settings.value("nPruneSize").toInt() * GB_BYTES) >> 20;
+    if (!m_node.softSetArg("-prune", settings.value("bPrune").toBool() ? std::to_string(nPruneSizeMiB) : "0")) {
+        addOverriddenOption("-prune");
     }
 
     if (!settings.contains("nDatabaseCache"))

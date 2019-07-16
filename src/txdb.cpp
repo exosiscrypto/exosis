@@ -11,7 +11,7 @@
 #include <pow.h>
 #include <shutdown.h>
 #include <uint256.h>
-#include <util.h>
+#include <util/system.h>
 #include <ui_interface.h>
 
 #include <stdint.h>
@@ -124,7 +124,7 @@ bool CCoinsViewDB::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock) {
             if (crash_simulate) {
                 static FastRandomContext rng;
                 if (rng.randrange(crash_simulate) == 0) {
-                    LogPrint(BCLog::COINDB, "Simulating a crash. Goodbye.\n");
+                    LogPrintf("Simulating a crash. Goodbye.\n");
                     _Exit(0);
                 }
             }
@@ -273,9 +273,14 @@ bool CBlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, 
                 pindexNew->nNonce         = diskindex.nNonce;
                 pindexNew->nStatus        = diskindex.nStatus;
                 pindexNew->nTx            = diskindex.nTx;
+                // EXOSIS BEGIN
                 pindexNew->nMoneySupply   = diskindex.nMoneySupply;
-               
-                if (!CheckProofOfWork(pindexNew->GetBlockHash(), pindexNew->nBits, consensusParams))
+                // EXOSIS END
+
+                // Exosis BEGIN
+                if (pindexNew->nHeight > consensusParams.nlastValidPowHashHeight)
+                // EXOSIS END
+                if (!CheckProofOfWork(pindexNew->GetBlockPoWHash(), pindexNew->nBits, consensusParams))
                     return error("%s: CheckProofOfWork failed: %s", __func__, pindexNew->ToString());
 
                 pcursor->Next();
@@ -357,8 +362,8 @@ bool CCoinsViewDB::Upgrade() {
     }
 
     int64_t count = 0;
-    LogPrint(BCLog::COINDB, "Upgrading utxo-set database...\n");
-    LogPrint(BCLog::COINDB, "[0%%]..."); /* Continued */
+    LogPrintf("Upgrading utxo-set database...\n");
+    LogPrintf("[0%%]..."); /* Continued */
     uiInterface.ShowProgress(_("Upgrading UTXO database"), 0, true);
     size_t batch_size = 1 << 24;
     CDBBatch batch(db);
@@ -377,7 +382,7 @@ bool CCoinsViewDB::Upgrade() {
                 uiInterface.ShowProgress(_("Upgrading UTXO database"), percentageDone, true);
                 if (reportDone < percentageDone/10) {
                     // report max. every 10% step
-                    LogPrint(BCLog::COINDB, "[%d%%]...", percentageDone); /* Continued */
+                    LogPrintf("[%d%%]...", percentageDone); /* Continued */
                     reportDone = percentageDone/10;
                 }
             }
@@ -409,6 +414,6 @@ bool CCoinsViewDB::Upgrade() {
     db.WriteBatch(batch);
     db.CompactRange({DB_COINS, uint256()}, key);
     uiInterface.ShowProgress("", 100, false);
-    LogPrint(BCLog::COINDB, "[%s].\n", ShutdownRequested() ? "CANCELLED" : "DONE");
+    LogPrintf("[%s].\n", ShutdownRequested() ? "CANCELLED" : "DONE");
     return !ShutdownRequested();
 }

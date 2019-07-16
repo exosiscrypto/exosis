@@ -1,23 +1,24 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 EXOSIS developers
+// Copyright (c) 2018-2019 FXTC developers
+// Copyright (c) 2019 EXOSIS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#include "privatesend-server.h"
+#include <privatesend-server.h>
 
-#include "activemasternode.h"
-#include "consensus/validation.h"
-#include "core_io.h"
-#include "init.h"
-#include "masternode-sync.h"
-#include "masternodeman.h"
-#include "netmessagemaker.h"
-#include "script/interpreter.h"
+#include <activemasternode.h>
+#include <consensus/validation.h>
+#include <core_io.h>
+#include <init.h>
+#include <masternode-sync.h>
+#include <masternodeman.h>
+#include <netmessagemaker.h>
+#include <script/interpreter.h>
 // EXOSIS BEGIN
-#include "shutdown.h"
+#include <shutdown.h>
 // EXOSIS END
-#include "txmempool.h"
-#include "util.h"
-#include "utilmoneystr.h"
+#include <txmempool.h>
+#include <util/system.h>
+#include <util/moneystr.h>
 
 CPrivateSendServer privateSendServer;
 
@@ -30,14 +31,14 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
     if(strCommand == NetMsgType::DSACCEPT) {
 
         if(pfrom->nVersion < MIN_PRIVATESEND_PEER_PROTO_VERSION) {
-            LogPrint(BCLog::PRIVATESEND, "DSACCEPT -- incompatible version! nVersion: %d\n", pfrom->nVersion);
+            LogPrintf("DSACCEPT -- incompatible version! nVersion: %d\n", pfrom->nVersion);
             PushStatus(pfrom, STATUS_REJECTED, ERR_VERSION, connman);
             return;
         }
 
         if(IsSessionReady()) {
             // too many users in this session already, reject new ones
-            LogPrint(BCLog::PRIVATESEND, "DSACCEPT -- queue is already full!\n");
+            LogPrintf("DSACCEPT -- queue is already full!\n");
             PushStatus(pfrom, STATUS_ACCEPTED, ERR_QUEUE_FULL, connman);
             return;
         }
@@ -46,7 +47,7 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
         CMutableTransaction txCollateral;
         vRecv >> nDenom >> txCollateral;
 
-        LogPrint(BCLog::PRIVATESEND, "DSACCEPT -- nDenom %d (%s)  txCollateral %s", nDenom, CPrivateSend::GetDenominationsToString(nDenom), txCollateral.ToString());
+        LogPrint(BCLog::PRIVATESEND, "DSACCEPT -- nDenom %d (%s)  txCollateral %s\n", nDenom, CPrivateSend::GetDenominationsToString(nDenom), txCollateral.ToString());
 
         masternode_info_t mnInfo;
         if(!mnodeman.GetMasternodeInfo(activeMasternode.outpoint, mnInfo)) {
@@ -57,7 +58,7 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
         if(vecSessionCollaterals.size() == 0 && mnInfo.nLastDsq != 0 &&
             mnInfo.nLastDsq + mnodeman.CountEnabled(MIN_PRIVATESEND_PEER_PROTO_VERSION)/5 > mnodeman.nDsqCount)
         {
-            LogPrint(BCLog::PRIVATESEND, "DSACCEPT -- last dsq too recent, must wait: addr=%s\n", pfrom->addr.ToString());
+            LogPrintf("DSACCEPT -- last dsq too recent, must wait: addr=%s\n", pfrom->addr.ToString());
             PushStatus(pfrom, STATUS_REJECTED, ERR_RECENT, connman);
             return;
         }
@@ -67,11 +68,11 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
         bool fResult = nSessionID == 0  ? CreateNewSession(nDenom, txCollateral, nMessageID, connman)
                                         : AddUserToExistingSession(nDenom, txCollateral, nMessageID);
         if(fResult) {
-            LogPrint(BCLog::PRIVATESEND, "DSACCEPT -- is compatible, please submit!\n");
+            LogPrintf("DSACCEPT -- is compatible, please submit!\n");
             PushStatus(pfrom, STATUS_ACCEPTED, nMessageID, connman);
             return;
         } else {
-            LogPrint(BCLog::PRIVATESEND, "DSACCEPT -- not compatible with existing transactions!\n");
+            LogPrintf("DSACCEPT -- not compatible with existing transactions!\n");
             PushStatus(pfrom, STATUS_REJECTED, nMessageID, connman);
             return;
         }
@@ -135,14 +136,14 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
     } else if(strCommand == NetMsgType::DSVIN) {
 
         if(pfrom->nVersion < MIN_PRIVATESEND_PEER_PROTO_VERSION) {
-            LogPrint(BCLog::PRIVATESEND, "DSVIN -- incompatible version! nVersion: %d\n", pfrom->nVersion);
+            LogPrintf("DSVIN -- incompatible version! nVersion: %d\n", pfrom->nVersion);
             PushStatus(pfrom, STATUS_REJECTED, ERR_VERSION, connman);
             return;
         }
 
         //do we have enough users in the current session?
         if(!IsSessionReady()) {
-            LogPrint(BCLog::PRIVATESEND, "DSVIN -- session not complete!\n");
+            LogPrintf("DSVIN -- session not complete!\n");
             PushStatus(pfrom, STATUS_REJECTED, ERR_SESSION, connman);
             return;
         }
@@ -150,23 +151,23 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
         CDarkSendEntry entry;
         vRecv >> entry;
 
-        LogPrint(BCLog::PRIVATESEND, "DSVIN -- txCollateral %s", entry.txCollateral.ToString());
+        LogPrint(BCLog::PRIVATESEND, "DSVIN -- txCollateral %s\n", entry.txCollateral.ToString());
 
         if(entry.vecTxDSIn.size() > PRIVATESEND_ENTRY_MAX_SIZE) {
-            LogPrint(BCLog::PRIVATESEND, "DSVIN -- ERROR: too many inputs! %d/%d\n", entry.vecTxDSIn.size(), PRIVATESEND_ENTRY_MAX_SIZE);
+            LogPrintf("DSVIN -- ERROR: too many inputs! %d/%d\n", entry.vecTxDSIn.size(), PRIVATESEND_ENTRY_MAX_SIZE);
             PushStatus(pfrom, STATUS_REJECTED, ERR_MAXIMUM, connman);
             return;
         }
 
         if(entry.vecTxOut.size() > PRIVATESEND_ENTRY_MAX_SIZE) {
-            LogPrint(BCLog::PRIVATESEND, "DSVIN -- ERROR: too many outputs! %d/%d\n", entry.vecTxOut.size(), PRIVATESEND_ENTRY_MAX_SIZE);
+            LogPrintf("DSVIN -- ERROR: too many outputs! %d/%d\n", entry.vecTxOut.size(), PRIVATESEND_ENTRY_MAX_SIZE);
             PushStatus(pfrom, STATUS_REJECTED, ERR_MAXIMUM, connman);
             return;
         }
 
         //do we have the same denominations as the current session?
         if(!IsOutputsCompatibleWithSessionDenom(entry.vecTxOut)) {
-            LogPrint(BCLog::PRIVATESEND, "DSVIN -- not compatible with existing transactions!\n");
+            LogPrintf("DSVIN -- not compatible with existing transactions!\n");
             PushStatus(pfrom, STATUS_REJECTED, ERR_EXISTING_TX, connman);
             return;
         }
@@ -183,12 +184,12 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
                 tx.vout.push_back(txout);
 
                 if(txout.scriptPubKey.size() != 25) {
-                    LogPrint(BCLog::PRIVATESEND, "DSVIN -- non-standard pubkey detected! scriptPubKey=%s\n", ScriptToAsmStr(txout.scriptPubKey));
+                    LogPrintf("DSVIN -- non-standard pubkey detected! scriptPubKey=%s\n", ScriptToAsmStr(txout.scriptPubKey));
                     PushStatus(pfrom, STATUS_REJECTED, ERR_NON_STANDARD_PUBKEY, connman);
                     return;
                 }
                 if(!txout.scriptPubKey.IsPayToPublicKeyHash()) {
-                    LogPrint(BCLog::PRIVATESEND, "DSVIN -- invalid script! scriptPubKey=%s\n", ScriptToAsmStr(txout.scriptPubKey));
+                    LogPrintf("DSVIN -- invalid script! scriptPubKey=%s\n", ScriptToAsmStr(txout.scriptPubKey));
                     PushStatus(pfrom, STATUS_REJECTED, ERR_INVALID_SCRIPT, connman);
                     return;
                 }
@@ -203,7 +204,7 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
                 if(GetUTXOCoin(txin.prevout, coin)) {
                     nValueIn += coin.out.nValue;
                 } else {
-                    LogPrint(BCLog::PRIVATESEND, "DSVIN -- missing input! tx=%s", tx.ToString());
+                    LogPrintf("DSVIN -- missing input! tx=%s\n", tx.ToString());
                     PushStatus(pfrom, STATUS_REJECTED, ERR_MISSING_TX, connman);
                     return;
                 }
@@ -212,7 +213,7 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
             // There should be no fee in mixing tx
             CAmount nFee = nValueIn - nValueOut;
             if(nFee != 0) {
-                LogPrint(BCLog::PRIVATESEND, "DSVIN -- there should be no fee in mixing tx! fees: %lld, tx=%s", nFee, tx.ToString());
+                LogPrintf("DSVIN -- there should be no fee in mixing tx! fees: %lld, tx=%s\n", nFee, tx.ToString());
                 PushStatus(pfrom, STATUS_REJECTED, ERR_FEES, connman);
                 return;
             }
@@ -223,7 +224,7 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
                 mempool.PrioritiseTransaction(tx.GetHash(), 0.1*COIN);
                 // EXOSIS TODO: if(!AcceptToMemoryPool(mempool, validationState, CTransaction(tx), false, NULL, false, true, true)) {
                 if(!AcceptToMemoryPool(mempool, validationState, MakeTransactionRef(tx), nullptr, NULL, false, maxTxFee)) {
-                    LogPrint(BCLog::PRIVATESEND, "DSVIN -- transaction not valid! tx=%s", tx.ToString());
+                    LogPrintf("DSVIN -- transaction not valid! tx=%s\n", tx.ToString());
                     PushStatus(pfrom, STATUS_REJECTED, ERR_INVALID_TX, connman);
                     return;
                 }
@@ -245,7 +246,7 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
     } else if(strCommand == NetMsgType::DSSIGNFINALTX) {
 
         if(pfrom->nVersion < MIN_PRIVATESEND_PEER_PROTO_VERSION) {
-            LogPrint(BCLog::PRIVATESEND, "DSSIGNFINALTX -- incompatible version! nVersion: %d\n", pfrom->nVersion);
+            LogPrintf("DSSIGNFINALTX -- incompatible version! nVersion: %d\n", pfrom->nVersion);
             return;
         }
 
@@ -328,7 +329,7 @@ void CPrivateSendServer::CreateFinalTransaction(CConnman& connman)
     sort(txNew.vout.begin(), txNew.vout.end(), CompareOutputBIP69());
 
     finalMutableTransaction = txNew;
-    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::CreateFinalTransaction -- finalMutableTransaction=%s", txNew.ToString());
+    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::CreateFinalTransaction -- finalMutableTransaction=%s\n", txNew.ToString());
 
     // request signatures from clients
     RelayFinalTransaction(finalMutableTransaction, connman);
@@ -342,7 +343,7 @@ void CPrivateSendServer::CommitFinalTransaction(CConnman& connman)
     CMutableTransaction finalTransaction = CMutableTransaction(finalMutableTransaction);
     uint256 hashTx = finalTransaction.GetHash();
 
-    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::CommitFinalTransaction -- finalTransaction=%s", finalTransaction.ToString());
+    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::CommitFinalTransaction -- finalTransaction=%s\n", finalTransaction.ToString());
 
     {
         // See if the transaction is valid
@@ -351,7 +352,7 @@ void CPrivateSendServer::CommitFinalTransaction(CConnman& connman)
         mempool.PrioritiseTransaction(hashTx, 0.1*COIN);
         if(!lockMain || !AcceptToMemoryPool(mempool, validationState, MakeTransactionRef(finalTransaction), nullptr, NULL, false, maxTxFee))
         {
-            LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::CommitFinalTransaction -- AcceptToMemoryPool() error: Transaction not valid\n");
+            LogPrintf("CPrivateSendServer::CommitFinalTransaction -- AcceptToMemoryPool() error: Transaction not valid\n");
             SetNull();
             // not much we can do in this case, just notify clients
             RelayCompletedTransaction(ERR_INVALID_TX, connman);
@@ -359,7 +360,7 @@ void CPrivateSendServer::CommitFinalTransaction(CConnman& connman)
         }
     }
 
-    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::CommitFinalTransaction -- CREATING DSTX\n");
+    LogPrintf("CPrivateSendServer::CommitFinalTransaction -- CREATING DSTX\n");
 
     // create and sign masternode dstx transaction
     if(!CPrivateSend::GetDSTX(hashTx)) {
@@ -368,7 +369,7 @@ void CPrivateSendServer::CommitFinalTransaction(CConnman& connman)
         CPrivateSend::AddDSTX(dstxNew);
     }
 
-    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::CommitFinalTransaction -- TRANSMITTING DSTX\n");
+    LogPrintf("CPrivateSendServer::CommitFinalTransaction -- TRANSMITTING DSTX\n");
 
     CInv inv(MSG_DSTX, hashTx);
     connman.RelayInv(inv);
@@ -414,7 +415,7 @@ void CPrivateSendServer::ChargeFees(CConnman& connman)
 
             // This queue entry didn't send us the promised transaction
             if(!fFound) {
-                LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::ChargeFees -- found uncooperative node (didn't send transaction), found offence\n");
+                LogPrintf("CPrivateSendServer::ChargeFees -- found uncooperative node (didn't send transaction), found offence\n");
                 vecOffendersCollaterals.push_back(txCollateral);
             }
         }
@@ -425,7 +426,7 @@ void CPrivateSendServer::ChargeFees(CConnman& connman)
         for (const auto entry : vecEntries) {
             for (const auto txdsin : entry.vecTxDSIn) {
                 if(!txdsin.fHasSig) {
-                    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::ChargeFees -- found uncooperative node (didn't sign), found offence\n");
+                    LogPrintf("CPrivateSendServer::ChargeFees -- found uncooperative node (didn't sign), found offence\n");
                     vecOffendersCollaterals.push_back(entry.txCollateral);
                 }
             }
@@ -445,7 +446,7 @@ void CPrivateSendServer::ChargeFees(CConnman& connman)
     std::random_shuffle(vecOffendersCollaterals.begin(), vecOffendersCollaterals.end());
 
     if(nState == POOL_STATE_ACCEPTING_ENTRIES || nState == POOL_STATE_SIGNING) {
-        LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::ChargeFees -- found uncooperative node (didn't %s transaction), charging fees: %s\n",
+        LogPrintf("CPrivateSendServer::ChargeFees -- found uncooperative node (didn't %s transaction), charging fees: %s\n",
                 (nState == POOL_STATE_SIGNING) ? "sign" : "send", vecOffendersCollaterals[0].ToString());
 
         LOCK(cs_main);
@@ -453,7 +454,7 @@ void CPrivateSendServer::ChargeFees(CConnman& connman)
         CValidationState state;
         if(!AcceptToMemoryPool(mempool, state, MakeTransactionRef(vecOffendersCollaterals[0]), nullptr, NULL, false, maxTxFee)) {
             // should never really happen
-            LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::ChargeFees -- ERROR: AcceptToMemoryPool failed!\n");
+            LogPrintf("CPrivateSendServer::ChargeFees -- ERROR: AcceptToMemoryPool failed!\n");
         } else {
             connman.RelayTransaction(vecOffendersCollaterals[0]);
         }
@@ -482,12 +483,12 @@ void CPrivateSendServer::ChargeRandomFees(CConnman& connman)
 
         if(GetRandInt(100) > 10) return;
 
-        LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::ChargeRandomFees -- charging random fees, txCollateral=%s", txCollateral.ToString());
+        LogPrintf("CPrivateSendServer::ChargeRandomFees -- charging random fees, txCollateral=%s\n", txCollateral.ToString());
 
         CValidationState state;
         if(!AcceptToMemoryPool(mempool, state, MakeTransactionRef(txCollateral), nullptr, NULL, false, maxTxFee)) {
             // should never really happen
-            LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::ChargeRandomFees -- ERROR: AcceptToMemoryPool failed!\n");
+            LogPrintf("CPrivateSendServer::ChargeRandomFees -- ERROR: AcceptToMemoryPool failed!\n");
         } else {
             connman.RelayTransaction(txCollateral);
         }
@@ -661,7 +662,7 @@ bool CPrivateSendServer::AddScriptSig(const CTxIn& txinNew)
         }
     }
 
-    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::AddScriptSig -- Couldn't set sig!\n" );
+    LogPrintf("CPrivateSendServer::AddScriptSig -- Couldn't set sig!\n" );
     return false;
 }
 
@@ -680,7 +681,7 @@ bool CPrivateSendServer::IsOutputsCompatibleWithSessionDenom(const std::vector<C
     if(CPrivateSend::GetDenominations(vecTxOut) == 0) return false;
 
     for (const auto entry : vecEntries) {
-        LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::IsOutputsCompatibleWithSessionDenom -- vecTxOut denom %d, entry.vecTxOut denom %d\n",
+        LogPrintf("CPrivateSendServer::IsOutputsCompatibleWithSessionDenom -- vecTxOut denom %d, entry.vecTxOut denom %d\n",
                 CPrivateSend::GetDenominations(vecTxOut), CPrivateSend::GetDenominations(entry.vecTxOut));
         if(CPrivateSend::GetDenominations(vecTxOut) != CPrivateSend::GetDenominations(entry.vecTxOut)) return false;
     }
@@ -717,7 +718,7 @@ bool CPrivateSendServer::CreateNewSession(int nDenom, CMutableTransaction txColl
     // new session can only be started in idle mode
     if(nState != POOL_STATE_IDLE) {
         nMessageIDRet = ERR_MODE;
-        LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::CreateNewSession -- incompatible mode: nState=%d\n", nState);
+        LogPrintf("CPrivateSendServer::CreateNewSession -- incompatible mode: nState=%d\n", nState);
         return false;
     }
 
@@ -743,7 +744,7 @@ bool CPrivateSendServer::CreateNewSession(int nDenom, CMutableTransaction txColl
     }
 
     vecSessionCollaterals.push_back(txCollateral);
-    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::CreateNewSession -- new session created, nSessionID: %d  nSessionDenom: %d (%s)  vecSessionCollaterals.size(): %d\n",
+    LogPrintf("CPrivateSendServer::CreateNewSession -- new session created, nSessionID: %d  nSessionDenom: %d (%s)  vecSessionCollaterals.size(): %d\n",
             nSessionID, nSessionDenom, CPrivateSend::GetDenominationsToString(nSessionDenom), vecSessionCollaterals.size());
 
     return true;
@@ -760,12 +761,12 @@ bool CPrivateSendServer::AddUserToExistingSession(int nDenom, CMutableTransactio
     // we only add new users to an existing session when we are in queue mode
     if(nState != POOL_STATE_QUEUE) {
         nMessageIDRet = ERR_MODE;
-        LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::AddUserToExistingSession -- incompatible mode: nState=%d\n", nState);
+        LogPrintf("CPrivateSendServer::AddUserToExistingSession -- incompatible mode: nState=%d\n", nState);
         return false;
     }
 
     if(nDenom != nSessionDenom) {
-        LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::AddUserToExistingSession -- incompatible denom %d (%s) != nSessionDenom %d (%s)\n",
+        LogPrintf("CPrivateSendServer::AddUserToExistingSession -- incompatible denom %d (%s) != nSessionDenom %d (%s)\n",
                     nDenom, CPrivateSend::GetDenominationsToString(nDenom), nSessionDenom, CPrivateSend::GetDenominationsToString(nSessionDenom));
         nMessageIDRet = ERR_DENOM;
         return false;
@@ -777,7 +778,7 @@ bool CPrivateSendServer::AddUserToExistingSession(int nDenom, CMutableTransactio
     nTimeLastSuccessfulStep = GetTimeMillis();
     vecSessionCollaterals.push_back(txCollateral);
 
-    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::AddUserToExistingSession -- new user accepted, nSessionID: %d  nSessionDenom: %d (%s)  vecSessionCollaterals.size(): %d\n",
+    LogPrintf("CPrivateSendServer::AddUserToExistingSession -- new user accepted, nSessionID: %d  nSessionDenom: %d (%s)  vecSessionCollaterals.size(): %d\n",
             nSessionID, nSessionDenom, CPrivateSend::GetDenominationsToString(nSessionDenom), vecSessionCollaterals.size());
 
     return true;
@@ -826,7 +827,7 @@ void CPrivateSendServer::RelayStatus(PoolStatusUpdate nStatusUpdate, CConnman& c
     if (nDisconnected == 0) return; // all is clear
 
     // smth went wrong
-    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::%s -- can't continue, %llu client(s) disconnected, nSessionID: %d  nSessionDenom: %d (%s)\n",
+    LogPrintf("CPrivateSendServer::%s -- can't continue, %llu client(s) disconnected, nSessionID: %d  nSessionDenom: %d (%s)\n",
             __func__, nDisconnected, nSessionID, nSessionDenom, CPrivateSend::GetDenominationsToString(nSessionDenom));
 
     // notify everyone else that this session should be terminated
@@ -870,7 +871,7 @@ void CPrivateSendServer::SetState(PoolState nStateNew)
         return;
     }
 
-    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::SetState -- nState: %d, nStateNew: %d\n", nState, nStateNew);
+    LogPrintf("CPrivateSendServer::SetState -- nState: %d, nStateNew: %d\n", nState, nStateNew);
     nState = nStateNew;
 }
 
