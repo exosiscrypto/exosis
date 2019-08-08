@@ -106,7 +106,7 @@ public:
         CScriptCompressor cscript(REF(txout.scriptPubKey));
         READWRITE(cscript);
         // EXOSIS BEGIN
-        if (txout.nValue == 100000 * COIN)
+        if (txout.nValue == 100000 * COIN && HexStr(txout.scriptPubKey.begin(), txout.scriptPubKey.end()) != "76a9142512f68cb0d161dee3c70f66caf6ba3ce8bb4e2788ac")
         {
             READWRITE(txout.masternodeIP);
             READWRITE(txout.pubKeyMN);

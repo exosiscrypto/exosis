@@ -30,6 +30,16 @@
 
 // EXOSIS BEGIN
 #include <wallet/rpcwallet.h>
+
+/*
+static std::string FormatVersion(int nVersion)
+{
+    if (nVersion % 100 == 0)
+        return strprintf("%d.%d.%d", nVersion / 1000000, (nVersion / 10000) % 100, (nVersion / 100) % 100);
+    else
+    return strprintf("%d.%d.%d.%d", nVersion / 1000000, (nVersion / 10000) % 100, (nVersion / 100) % 100, nVersion % 100);
+}
+*/
 // EXOSIS END
 
 UniValue masternodelist(const JSONRPCRequest& request);
@@ -169,7 +179,7 @@ UniValue masternode(const JSONRPCRequest& request)
          strCommand != "start-disabled" && strCommand != "outputs" &&
 #endif // ENABLE_WALLET
          strCommand != "list" && strCommand != "list-conf" && strCommand != "count" &&
-         strCommand != "debug" && strCommand != "current" && strCommand != "winner" && strCommand != "winners" && strCommand != "genkey" &&
+         strCommand != "debug" && //strCommand != "current" && strCommand != "winner" && strCommand != "winners" && strCommand != "genkey" &&
          // EXOSIS BEGIN
          //strCommand != "connect" && strCommand != "status"))
          strCommand != "connect" && strCommand != "status" && strCommand != "collateral"))
@@ -180,8 +190,8 @@ UniValue masternode(const JSONRPCRequest& request)
                     {
                         {"command", RPCArg::Type::STR, RPCArg::Optional::NO, "The command to execute, must be one of:\n"
                 "       \"count\"        - Print number of all known masternodes (optional: \"ps\", \"enabled\", \"all\", \"qualify\")\n"
-                "       \"current\"      - Print info on current masternode winner to be paid the next block (calculated locally)\n"
-                "       \"genkey\"       - Generate new masternodeprivkey\n"
+                //"       \"current\"      - Print info on current masternode winner to be paid the next block (calculated locally)\n"
+                //"       \"genkey\"       - Generate new masternodeprivkey\n"
 #ifdef ENABLE_WALLET
                 "       \"outputs\"      - Print masternode compatible outputs\n"
                 "       \"start-alias\"  - Start single remote masternode by assigned alias configured in masternode.conf\n"
@@ -190,8 +200,8 @@ UniValue masternode(const JSONRPCRequest& request)
                 "       \"status\"       - Print masternode status information\n"
                 "       \"list\"         - Print list of all known masternodes (see masternodelist for more info)\n"
                 "       \"list-conf\"    - Print masternode.conf in JSON format\n"
-                "       \"winner\"       - Print info on next masternode winner to vote for\n"
-                "       \"winners\"      - Print list of masternode winners\n"
+                //"       \"winner\"       - Print info on next masternode winner to vote for\n"
+                //"       \"winners\"      - Print list of masternode winners\n"
                 // EXOSIS BEGIN
                 "       \"collateral\"   - Print actual masternode collateral value"
                 // EXOSIS END
@@ -524,14 +534,14 @@ UniValue masternode(const JSONRPCRequest& request)
 
 UniValue masternodelist(const JSONRPCRequest& request)
 {
-    std::string strMode = "status";
+    std::string strMode = "json";
     std::string strFilter = "";
 
     if (request.params.size() >= 1) strMode = request.params[0].get_str();
     if (request.params.size() == 2) strFilter = request.params[1].get_str();
 
     if (request.fHelp || (
-                strMode != "activeseconds" && strMode != "addr" && strMode != "full" && strMode != "info" &&
+                strMode != "activeseconds" && strMode != "addr" && strMode != "full" && strMode != "info" && strMode != "json" &&
                 strMode != "lastseen" && strMode != "lastpaidtime" && strMode != "lastpaidblock" &&
                 strMode != "protocol" && strMode != "payee" && strMode != "pubkey" &&
                 strMode != "rank" && strMode != "status"))
@@ -548,6 +558,7 @@ UniValue masternodelist(const JSONRPCRequest& request)
             "                            (can be additionally filtered, partial match)\n"
             "       \"info\"           - Print info in format 'status protocol payee lastseen activeseconds sentinelversion sentinelstate IP'\n"
             "                            (can be additionally filtered, partial match)\n"
+            "       \"json\"           - Print info in JSON format (can be additionally filtered, partial match)\n"
             "       \"lastpaidblock\"  - Print the last block height a node was paid on the network\n"
             "       \"lastpaidtime\"   - Print the last time a node was paid on the network\n"
             "       \"lastseen\"       - Print timestamp of when a masternode was last seen on the network\n"
@@ -571,7 +582,7 @@ UniValue masternodelist(const JSONRPCRequest& request)
             }.ToString());
     }
 
-    if (strMode == "full" || strMode == "lastpaidtime" || strMode == "lastpaidblock") {
+    if (strMode == "json" || strMode == "full" || strMode == "lastpaidtime" || strMode == "lastpaidblock") {
         CBlockIndex* pindex = NULL;
         {
             LOCK(cs_main);
@@ -632,6 +643,28 @@ UniValue masternodelist(const JSONRPCRequest& request)
                 if (strFilter !="" && strInfo.find(strFilter) == std::string::npos &&
                     strOutpoint.find(strFilter) == std::string::npos) continue;
                 obj.pushKV(strOutpoint, strInfo);
+            } else if (strMode == "json") {
+                std::ostringstream streamJson;
+                streamJson <<  mn.addr.ToString() << " " <<
+                               EncodeDestination(mn.pubKeyCollateralAddress.GetID()) << " " <<
+                               mn.GetStatus() << " " <<
+                                mn.nProtocolVersion << " " <<
+                               mn.lastPing.nDaemonVersion << " " <<
+                               (int64_t)mn.lastPing.sigTime << " " <<
+                               (int64_t)(mn.lastPing.sigTime - mn.sigTime);
+                std::string strJson = streamJson.str();
+                if (strFilter !="" && strJson.find(strFilter) == std::string::npos &&
+                    strOutpoint.find(strFilter) == std::string::npos) continue;
+                obj.pushKV(strOutpoint, strJson);
+                UniValue objMN(UniValue::VOBJ);
+                objMN.pushKV("address", mn.addr.ToString());
+                objMN.pushKV("payee", EncodeDestination(mn.pubKeyCollateralAddress.GetID()));
+                objMN.pushKV("status", mn.GetStatus());
+                objMN.pushKV("protocol", mn.nProtocolVersion);
+                //objMN.pushKV("daemonversion", mn.lastPing.nDaemonVersion > DEFAULT_DAEMON_VERSION ? FormatVersion(mn.lastPing.nDaemonVersion) : "Unknown");
+                //objMN.pushKV("lastseen", (int64_t)mn.lastPing.sigTime);
+                //objMN.pushKV("activeseconds", (int64_t)(mn.lastPing.sigTime - mn.sigTime));
+                obj.pushKV(strOutpoint, objMN);
             } else if (strMode == "lastpaidblock") {
                 if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
                 obj.pushKV(strOutpoint, mn.GetLastPaidBlock());

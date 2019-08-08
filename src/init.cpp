@@ -650,6 +650,7 @@ static void BlockNotifyCallback(bool initialSync, const CBlockIndex *pBlockIndex
 
     std::string strCmd = gArgs.GetArg("-blocknotify", "");
     if (!strCmd.empty()) {
+        boost::replace_all(strCmd, "%s.pow", pBlockIndex->GetBlockPoWHash().GetHex());
         boost::replace_all(strCmd, "%s", pBlockIndex->GetBlockHash().GetHex());
         std::thread t(runCommand, strCmd);
         t.detach(); // thread runs free
@@ -1246,12 +1247,12 @@ bool AppInitParameterInteraction()
     // algo switch
     std::string strAlgo = gArgs.GetArg("-algo","x16r");
     transform(strAlgo.begin(), strAlgo.end(), strAlgo.begin(), ::tolower);
-    if (strAlgo == "exosis")
-         miningAlgo = ALGO_EXOSIS;
-    else if (strAlgo == "x16r")
+    //if (strAlgo == "exosis")
+    //     miningAlgo = ALGO_EXOSIS;
+    //else if (strAlgo == "x16r")
          miningAlgo = ALGO_X16R;
-    else
-         miningAlgo = ALGO_EXOSIS; // EXOSIS TODO: we should not be here
+    //else
+    //     miningAlgo = ALGO_EXOSIS; // EXOSIS TODO: we should not be here
     // EXOSIS END
 
     return true;

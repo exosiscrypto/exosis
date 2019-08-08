@@ -30,11 +30,7 @@ static const int SPORK_START                                            = 10001;
 static const int SPORK_END                                              = 10013;
 // EXOSIS BEGIN
 static const int SPORK_EXOSIS_START                                    = 94680010;
-#ifdef EXPERIMENTAL_SPORKS
-static const int SPORK_EXOSIS_END                                      = 94680045;
-#else
-static const int SPORK_EXOSIS_END                                      = 94680031;
-#endif
+static const int SPORK_EXOSIS_END                                      = 94680051;
 // EXOSIS END
 
 static const int SPORK_2_INSTANTSEND_ENABLED                            = 10001;
@@ -66,6 +62,8 @@ static const int SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_64_127            = 9468004
 static const int SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_128_191           = 94680044;
 static const int SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_192_255           = 94680045;
 #endif
+
+static const int SPORK_EXOSIS_05_FIX_HEIGHT                            = 94680051;
 // EXOSIS END
 
 static const int64_t SPORK_2_INSTANTSEND_ENABLED_DEFAULT                = 0;            // ON
@@ -97,6 +95,8 @@ static const int64_t SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_64_127_DEFAULT  = 0;
 static const int64_t SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_128_191_DEFAULT = 0;
 static const int64_t SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_192_255_DEFAULT = 0;
 #endif
+
+static const int64_t SPORK_EXOSIS_05_FIX_HEIGHT_DEFAULT                  = 105000;
 // EXOSIS END
 
 extern std::map<uint256, CSporkMessage> mapSporks;

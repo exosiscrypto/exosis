@@ -19,17 +19,23 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
     if (params.fPowNoRetargeting)
         return pindexLast->nBits;
 
+    // block spacing fix active
+    const bool fFix = (pindexLast->nHeight >= sporkManager.GetSporkValue(SPORK_EXOSIS_05_FIX_HEIGHT));
+
     const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
 
     const int64_t nPastAlgoFastBlocks = 5; // fast average for algo
-    const int64_t nPastAlgoBlocks = nPastAlgoFastBlocks * 5; // average for algo
+    const int64_t nPastAlgoBlocks = nPastAlgoFastBlocks * (fFix ? ALGO_ACTIVE_COUNT : 5); // average for algo
 
     const int64_t nPastFastBlocks = nPastAlgoFastBlocks * 2; //fast average for chain
-    int64_t nPastBlocks = nPastFastBlocks * 5; // average for chain
+    int64_t nPastBlocks = nPastFastBlocks * (fFix ? ALGO_ACTIVE_COUNT : 5); // average for chain
 
     // stabilizing block spacing
     if ((pindexLast->nHeight + 1) >= 0)
         nPastBlocks *= 100;
+    // use daily average to stabilize difficulty
+    if (fFix)
+        nPastBlocks = 576;
 
     // make sure we have at least ALGO_ACTIVE_COUNT blocks, otherwise just return powLimit
     if (!pindexLast || pindexLast->nHeight < nPastBlocks) {
@@ -113,7 +119,7 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
     if (pindexAlgo && pindexAlgoLast && nCountAlgoBlocks > 1)
     {
         // EXOSIS instamine protection for algo
-        if (pindexLast->GetBlockTime() - pindexAlgoFast->GetBlockTime() < params.nPowTargetSpacing * 5 / 2)
+        if (pindexLast->GetBlockTime() - pindexAlgoFast->GetBlockTime() < params.nPowTargetSpacing * (fFix ? ALGO_ACTIVE_COUNT : 5) / 2)
         {
             nCountAlgoBlocks = nCountAlgoFastBlocks;
             pindexAlgo = pindexAlgoFast;
@@ -124,7 +130,7 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
 
         // pindexLast instead of pindexAlgoLst on purpose
         int64_t nActualTimespan = pindexLast->GetBlockTime() - pindexAlgo->GetBlockTime();
-        int64_t nTargetTimespan = nCountAlgoBlocks * params.nPowTargetSpacing * 5;
+        int64_t nTargetTimespan = nCountAlgoBlocks * params.nPowTargetSpacing * (fFix ? ALGO_ACTIVE_COUNT : 5);
 
         // higher algo diff faster
         if (nActualTimespan < 1)
@@ -209,8 +215,11 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
 {
     unsigned int nBits = DarkGravityWave(pindexLast, pblock, params);
 
-    // Dead lock protection will halve work every block spacing when no block for 2 * 5 * block spacing (Exosis: every 2.5 minutes if no block for 25 minutes)
-    int nHalvings = (pblock->GetBlockTime() - pindexLast->GetBlockTime()) / (params.nPowTargetSpacing * 2) - 5 + 1;
+    // Block spacing fix active
+    const bool fFix = (pindexLast->nHeight >= sporkManager.GetSporkValue(SPORK_EXOSIS_05_FIX_HEIGHT));
+
+    // Dead lock protection will halve work every block spacing when no block for 2 * ALGO_ACTIVE_COUNT * block spacing (Exosis: every 2.5 minutes if no block for 5 minutes)
+    int nHalvings = (pblock->GetBlockTime() - pindexLast->GetBlockTime()) / (params.nPowTargetSpacing * 2) - (fFix ? ALGO_ACTIVE_COUNT : 5) + 1;
     if (nHalvings > 0)
     {
         const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);

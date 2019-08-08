@@ -24,7 +24,7 @@ enum {
     ALGO_NULL
 };
 
-const unsigned int ALGO_ACTIVE_COUNT = 2;
+const unsigned int ALGO_ACTIVE_COUNT = 1; // X16R only
 // EXOSIS END
 
 /** Nodes collect new transactions into a block, hash them into a hash tree,

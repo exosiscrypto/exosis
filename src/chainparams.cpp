@@ -74,7 +74,7 @@ public:
 
         // Dash
         consensus.nMasternodeMinimumConfirmations = 1;
-	consensus.nMasternodePaymentsStartBlock = 10;
+        consensus.nMasternodePaymentsStartBlock = 10;
         consensus.nMasternodePaymentsIncreaseBlock = 50;
         consensus.nMasternodePaymentsIncreasePeriod = 365 * 1440; // 1 common year
         consensus.nMasternodeCollateralMinimum = 100000; // starting MN collateral
@@ -224,21 +224,21 @@ public:
 
         // Dash
         consensus.nMasternodeMinimumConfirmations = 1;
-        consensus.nMasternodePaymentsStartBlock = 10; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
-        consensus.nMasternodePaymentsIncreaseBlock = 10;
-        consensus.nMasternodePaymentsIncreasePeriod = 25;
+        consensus.nMasternodePaymentsStartBlock = 10;
+        consensus.nMasternodePaymentsIncreaseBlock = 50;
+        consensus.nMasternodePaymentsIncreasePeriod = 365 * 1440; // 1 common year
         consensus.nMasternodeCollateralMinimum = 100000; // starting MN collateral
         consensus.nMasternodeCollateralMaximum = 100000; // MN collateral at infinity
 
-        consensus.nInstantSendKeepLock = 6;
+        consensus.nInstantSendKeepLock = 24;
 
         consensus.nBudgetPaymentsStartBlock = 999 * 365 * 576; // 999 common years
-        consensus.nBudgetPaymentsCycleBlocks = 50;
-        consensus.nBudgetPaymentsWindowBlocks = 10;
-        consensus.nBudgetProposalEstablishingTime = 60*20;
+        consensus.nBudgetPaymentsCycleBlocks = 10958; // weekly
+        consensus.nBudgetPaymentsWindowBlocks = 100;
+        consensus.nBudgetProposalEstablishingTime = 86400; // 1 day
 
-        consensus.nSuperblockStartBlock = 999 * 365 * 576; // 999 common years
-        consensus.nSuperblockCycle = 24;
+        consensus.nSuperblockStartBlock = 999 * 365 * 1440; // 999 common years
+        consensus.nSuperblockCycle = 10958; // weekly
 
         consensus.nGovernanceMinQuorum = 10;
         consensus.nGovernanceFilterElements = 20000;
@@ -353,7 +353,7 @@ class CRegTestParams : public CChainParams {
 public:
     explicit CRegTestParams(const ArgsManager& args) {
         strNetworkID = "regtest";
-        consensus.nSubsidyHalvingInterval = 150;
+        consensus.nSubsidyHalvingInterval = 100000;
 
         // EXOSIS BEGIN
         consensus.nMinimumSubsidy = 0.00100000 * COIN;
@@ -361,24 +361,24 @@ public:
 
         // Dash
         consensus.nMasternodeMinimumConfirmations = 1;
-	consensus.nMasternodePaymentsStartBlock = 10;
-        consensus.nMasternodePaymentsIncreaseBlock = 10;
-        consensus.nMasternodePaymentsIncreasePeriod = 25;
+        consensus.nMasternodePaymentsStartBlock = 10;
+        consensus.nMasternodePaymentsIncreaseBlock = 50;
+        consensus.nMasternodePaymentsIncreasePeriod = 365 * 1440; // 1 common year
         consensus.nMasternodeCollateralMinimum = 100000; // starting MN collateral
         consensus.nMasternodeCollateralMaximum = 100000; // MN collateral at infinity
 
-        consensus.nInstantSendKeepLock = 6;
+        consensus.nInstantSendKeepLock = 24;
 
-        consensus.nBudgetPaymentsStartBlock = 99999999;
-        consensus.nBudgetPaymentsCycleBlocks = 50;
-        consensus.nBudgetPaymentsWindowBlocks = 10;
-        consensus.nBudgetProposalEstablishingTime = 60*20;
+        consensus.nBudgetPaymentsStartBlock = 999 * 365 * 576; // 999 common years
+        consensus.nBudgetPaymentsCycleBlocks = 10958; // weekly
+        consensus.nBudgetPaymentsWindowBlocks = 100;
+        consensus.nBudgetProposalEstablishingTime = 86400; // 1 day
 
-        consensus.nSuperblockStartBlock = 99999999;
-        consensus.nSuperblockCycle = 10;
+        consensus.nSuperblockStartBlock = 999 * 365 * 1440; // 999 common years
+        consensus.nSuperblockCycle = 10958; // weekly
 
-        consensus.nGovernanceMinQuorum = 1;
-        consensus.nGovernanceFilterElements = 100;
+        consensus.nGovernanceMinQuorum = 10;
+        consensus.nGovernanceFilterElements = 20000;
         //
 
         // EXOSIS TODO: BIP16Exception is valid for BTC blockchain only

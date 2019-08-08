@@ -1234,6 +1234,8 @@ CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Param
 // EXOSIS END
 {
     int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
+    if (nHeight >= sporkManager.GetSporkValue(SPORK_EXOSIS_05_FIX_HEIGHT))
+        halvings = 0;
     // Force block reward to zero when right shift is undefined.
     if (halvings >= 64)
         return 0;

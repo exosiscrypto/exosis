@@ -211,6 +211,8 @@ bool CSporkManager::IsSporkActive(int nSporkID)
             case SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_128_191:   r = SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_128_191_DEFAULT; break;
             case SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_192_255:   r = SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_192_255_DEFAULT; break;
 #endif
+
+            case SPORK_EXOSIS_05_FIX_HEIGHT:                    r = SPORK_EXOSIS_05_FIX_HEIGHT_DEFAULT; break;
             // EXOSIS END
             default:
                 LogPrint(BCLog::SPORK, "CSporkManager::IsSporkActive -- Unknown Spork ID %d\n", nSporkID);
@@ -258,6 +260,8 @@ int64_t CSporkManager::GetSporkValue(int nSporkID)
         case SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_128_191:   return SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_128_191_DEFAULT;
         case SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_192_255:   return SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_192_255_DEFAULT;
 #endif
+
+        case SPORK_EXOSIS_05_FIX_HEIGHT:                    return SPORK_EXOSIS_05_FIX_HEIGHT_DEFAULT;
         // EXOSIS END
         default:
             LogPrint(BCLog::SPORK, "CSporkManager::GetSporkValue -- Unknown Spork ID %d\n", nSporkID);
@@ -297,6 +301,8 @@ int CSporkManager::GetSporkIDByName(std::string strName)
     if (strName == "SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_128_191")   return SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_128_191;
     if (strName == "SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_192_255")   return SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_192_255;
 #endif
+
+    if (strName == "SPORK_EXOSIS_05_FIX_HEIGHT")                    return SPORK_EXOSIS_05_FIX_HEIGHT;
     // EXOSIS END
 
     LogPrint(BCLog::SPORK, "CSporkManager::GetSporkIDByName -- Unknown Spork name '%s'\n", strName);
@@ -335,6 +341,8 @@ std::string CSporkManager::GetSporkNameByID(int nSporkID)
         case SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_128_191:   return "SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_128_191";
         case SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_192_255:   return "SPORK_EXOSIS_04_CHECKPOINT_HASHBITS_192_255";
 #endif
+
+        case SPORK_EXOSIS_05_FIX_HEIGHT:                    return "SPORK_EXOSIS_05_FIX_HEIGHT";
         // EXOSIS END
         default:
             LogPrint(BCLog::SPORK, "CSporkManager::GetSporkNameByID -- Unknown Spork ID %d\n", nSporkID);
